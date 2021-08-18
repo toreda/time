@@ -1,0 +1,10 @@
+{
+	"recommendations": [
+		"esbenp.prettier-vscode",
+		"aaron-bond.better-comments",
+		"eg2.vscode-npm-script",
+		"dbaeumer.vscode-eslint",
+		"amatiasq.sort-imports",
+		"sonarsource.sonarlint-vscode"
+	]
+}

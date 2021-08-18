@@ -1,0 +1,58 @@
+{
+  "name": "@toreda/time",
+  "version": "0.0.1",
+  "description": "Simple, small footprint library for common time operations and converting between units of time. ",
+  "main": "./dist/index",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "yarn build:prod",
+    "build:prod": "yarn gulp --prod",
+    "build:dev": "yarn gulp --dev",
+    "test": "yarn jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toreda/time.git"
+  },
+  "keywords": [
+    "time",
+    "helpers",
+    "timestamp",
+    "typescript"
+  ],
+  "author": "Toreda, Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/toreda/time/issues"
+  },
+  "prettier": "@toreda/prettier-config",
+  "homepage": "https://github.com/toreda/time#readme",
+  "devDependencies": {
+    "@toreda/build-tools": "^0.1.15",
+    "@toreda/eslint-config": "^2.2.0",
+    "@toreda/prettier-config": "^1.0.1",
+    "@toreda/strong-types": "^0.11.1",
+    "@toreda/types": "^1.1.0",
+    "@types/node": "^15.12.4",
+    "@typescript-eslint/eslint-plugin": "^4.27.0",
+    "@typescript-eslint/parser": "^4.27.0",
+    "bufferutil": "^4.0.3",
+    "eslint": "^7.29.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "gulp": "^4.0.2",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "jest": "26.6.3",
+    "jest-sonar-reporter": "^2.0.0",
+    "mockdate": "^3.0.5",
+    "prettier": "^2.3.2",
+    "sonar-scanner": "^3.1.0",
+    "ts-jest": "26.5.6",
+    "ts-loader": "^9.2.3",
+    "ts-node": "^10.0.0",
+    "typedoc": "^0.21.0",
+    "typescript": "^4.3.4"
+  }
+}

@@ -1,0 +1,39 @@
+{
+	"exclude": ["node_modules", "**/*.spec.ts", "tests", "dist/**"],
+	"include": ["./src/index.ts", "./src/"],
+	"filesGlob": ["./src/**", "!./src/evt/**", "!./node_modules/**"],
+	"compilerOptions": {
+		"allowUnreachableCode": false,
+		"alwaysStrict": true,
+		"composite": true,
+		"declaration": true,
+		"esModuleInterop": true,
+		"isolatedModules": false,
+		"lib": ["es6", "ES2015", "dom"],
+		"module": "es2015",
+		"moduleResolution": "node",
+		"noImplicitUseStrict": false,
+		"outDir": "./dist",
+		"preserveConstEnums": true,
+		"removeComments": false,
+		"resolveJsonModule": true,
+		"rootDir": ".",
+		"sourceMap": true,
+		"strictBindCallApply": true,
+		"strictNullChecks": true,
+		"strictPropertyInitialization": true,
+		"target": "es2015",
+		"traceResolution": false,
+		"paths": {}
+	},
+	"ts-jest": {
+		"compilerOptions": {
+			"module": "commonjs"
+		}
+	},
+	"ts-node": {
+		"compilerOptions": {
+			"module": "commonjs"
+		}
+	}
+}

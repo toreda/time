@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testExecutions version="1">
+  <file path="D:\Projects\Toreda\time\tests\time\convert.spec.ts">
+    <testCase name="timeConvert Bad Input should return null when input value is undefined" duration="2"/>
+    <testCase name="timeConvert Bad Input should return null when input value is null" duration="0"/>
+    <testCase name="timeConvert Bad Input should return null when input value is a truthy string" duration="0"/>
+    <testCase name="timeConvert Bad Input should return null when input value is an empty string" duration="1"/>
+    <testCase name="timeConvert Bad Input should return null when to is not a valid timeKey" duration="0"/>
+    <testCase name="timeConvert Bad Input should return null when from is not a valid timeKey" duration="0"/>
+    <testCase name="timeConvert Bad Input should return null when to and from are both invalid timeKeys" duration="0"/>
+    <testCase name="timeConvert Unit Conversions seconds (id:0) should convert seconds to seconds: 99910s (multiple units) -&gt; 99910s (multiple units) [testid:0]" duration="1"/>
+    <testCase name="timeConvert Unit Conversions seconds (id:0) should convert seconds to hours: 3600s (multiple units) -&gt; 1h (single unit) [testid:1]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions seconds (id:0) should convert seconds to hours: 36000s (multiple units) -&gt; 10h (multiple units) [testid:2]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions seconds (id:0) should convert seconds to hours: 360s (multiple units) -&gt; 0.1h (partial unit) [testid:3]" duration="1"/>
+    <testCase name="timeConvert Unit Conversions seconds (id:0) should convert seconds to hours: 1800s (multiple units) -&gt; 0.5h (partial unit) [testid:4]" duration="4"/>
+    <testCase name="timeConvert Unit Conversions seconds (id:0) should convert seconds to hours: 1188s (multiple units) -&gt; 0.33h (partial unit) [testid:5]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions seconds (id:0) should convert seconds to milliseconds: 60s (multiple units) -&gt; 60000ms (multiple units) [testid:6]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions seconds (id:0) should convert seconds to milliseconds: 33.1s (multiple units) -&gt; 33100ms (multiple units) [testid:7]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to minutes: 338m (multiple units) -&gt; 338m (multiple units) [testid:8]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to hours: 600m (multiple units) -&gt; 10h (multiple units) [testid:9]" duration="1"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to hours: 60m (multiple units) -&gt; 1h (single unit) [testid:10]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to hours: 30m (multiple units) -&gt; 0.5h (partial unit) [testid:11]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to hours: 23m (multiple units) -&gt; 0.38h (partial unit) [testid:12]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to days: 1440m (multiple units) -&gt; 1d (single unit) [testid:13]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to days: 11520m (multiple units) -&gt; 8d (multiple units) [testid:14]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to days: 360m (multiple units) -&gt; 0.25d (partial unit) [testid:15]" duration="1"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to weeks: 10080m (multiple units) -&gt; 1w (single unit) [testid:16]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to weeks: 30240m (multiple units) -&gt; 3w (multiple units) [testid:17]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to weeks: 2520m (multiple units) -&gt; 0.25w (partial unit) [testid:18]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to months: 43800m (multiple units) -&gt; 1mo (single unit) [testid:19]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to months: 87600m (multiple units) -&gt; 2mo (multiple units) [testid:20]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions minutes (id:1) should convert minutes to months: 10950m (multiple units) -&gt; 0.25mo (partial unit) [testid:21]" duration="1"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to minutes: 1h (single unit) -&gt; 60m (multiple units) [testid:22]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to minutes: 0.5h (partial unit) -&gt; 30m (multiple units) [testid:23]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to minutes: 4h (multiple units) -&gt; 240m (multiple units) [testid:24]" duration="1"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to hours: 100h (multiple units) -&gt; 100h (multiple units) [testid:25]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to seconds: 1h (single unit) -&gt; 3600s (multiple units) [testid:26]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to seconds: 2h (multiple units) -&gt; 7200s (multiple units) [testid:27]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to seconds: 0.5h (partial unit) -&gt; 1800s (multiple units) [testid:28]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to days: 72h (multiple units) -&gt; 3d (multiple units) [testid:29]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to days: 12h (multiple units) -&gt; 0.5d (partial unit) [testid:30]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to days: 24h (multiple units) -&gt; 1d (single unit) [testid:31]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to weeks: 55.440000000000005h (multiple units) -&gt; 0.33w (partial unit) [testid:32]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to weeks: 1176h (multiple units) -&gt; 7w (multiple units) [testid:33]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to weeks: 168h (multiple units) -&gt; 1w (single unit) [testid:34]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to milliseconds: 3h (multiple units) -&gt; 10800000ms (multiple units) [testid:35]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to milliseconds: 1h (single unit) -&gt; 3600000ms (multiple units) [testid:36]" duration="1"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to milliseconds: 0.5h (partial unit) -&gt; 1800000ms (multiple units) [testid:37]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to microseconds: 1h (single unit) -&gt; 3600000000μs (multiple units) [testid:38]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to microseconds: 2h (multiple units) -&gt; 7200000000μs (multiple units) [testid:39]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions hours (id:2) should convert hours to microseconds: 0.5h (partial unit) -&gt; 1800000000μs (multiple units) [testid:40]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to minutes: 4d (multiple units) -&gt; 5760m (multiple units) [testid:41]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to minutes: 1d (single unit) -&gt; 1440m (multiple units) [testid:42]" duration="1"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to minutes: 0.5d (partial unit) -&gt; 720m (multiple units) [testid:43]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to seconds: 4d (multiple units) -&gt; 345600s (multiple units) [testid:44]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to seconds: 0.5d (partial unit) -&gt; 43200s (multiple units) [testid:45]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to seconds: 1d (single unit) -&gt; 86400s (multiple units) [testid:46]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to hours: 3d (multiple units) -&gt; 72h (multiple units) [testid:47]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to hours: 1d (single unit) -&gt; 24h (multiple units) [testid:48]" duration="1"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to weeks: 14d (multiple units) -&gt; 2w (multiple units) [testid:49]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to weeks: 7d (multiple units) -&gt; 1w (single unit) [testid:50]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to weeks: 3.5d (multiple units) -&gt; 0.5w (partial unit) [testid:51]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to months: 15.2083333333335d (multiple units) -&gt; 0.5mo (partial unit) [testid:52]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to months: 121.666666666668d (multiple units) -&gt; 4mo (multiple units) [testid:53]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to months: 30.416666666667d (multiple units) -&gt; 1mo (single unit) [testid:54]" duration="1"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to years: 365d (multiple units) -&gt; 1y (single unit) [testid:55]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to years: 1825d (multiple units) -&gt; 5y (multiple units) [testid:56]" duration="0"/>
+    <testCase name="timeConvert Unit Conversions days (id:3) should convert days to years: 182.5d (multiple units) -&gt; 0.5y (partial unit) [testid:57]" duration="0"/>
+  </file>
+</testExecutions>
