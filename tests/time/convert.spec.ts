@@ -1,7 +1,11 @@
+import {canConvert, timeConvert} from '../../src/time/convert';
+
 import {TimeConstants} from '../../src/time/constants';
 import {TimeUnit} from '../../src/time/unit';
-import {timeConvert} from '../../src/time/convert';
 import {timeUnitLabels} from '../../src/time/unit/labels';
+
+const MOCK_FROM = 's';
+const MOCK_TO = 'ms';
 
 function unitsAmtLabel(amt: number): string {
 	if (amt < 1) {
@@ -124,7 +128,7 @@ const CONVERT_TESTS = [
 				from: 'd',
 				to: 'h',
 				value: 1,
-				result: 24
+				result: TimeConstants.DAYS_TO_HOURS * 1
 			},
 			{
 				from: 'd',
@@ -181,10 +185,77 @@ const CONVERT_TESTS = [
 				result: 0.5
 			}
 		]
+	},
+	{
+		name: 'weeks',
+		units: 'w',
+		tests: [
+			{from: 'w', to: 's', value: 1, result: TimeConstants.WEEKS_TO_SECONDS},
+			{from: 'w', to: 's', value: 0.25, result: TimeConstants.WEEKS_TO_SECONDS / 4},
+			{from: 'w', to: 's', value: 5, result: TimeConstants.WEEKS_TO_SECONDS * 5},
+			{from: 'w', to: 'h', value: 1, result: TimeConstants.WEEKS_TO_HOURS},
+			{from: 'w', to: 'h', value: 0.5, result: TimeConstants.WEEKS_TO_HOURS / 2},
+			{from: 'w', to: 'h', value: 8, result: TimeConstants.WEEKS_TO_HOURS * 8},
+			{from: 'w', to: 'm', value: 1, result: TimeConstants.WEEKS_TO_MINUTES},
+			{from: 'w', to: 'm', value: 0.5, result: TimeConstants.WEEKS_TO_MINUTES / 2},
+			{from: 'w', to: 'm', value: 10, result: TimeConstants.WEEKS_TO_MINUTES * 10},
+			{from: 'w', to: 's', value: 3, result: TimeConstants.WEEKS_TO_SECONDS * 3},
+			{from: 'w', to: 's', value: 1, result: TimeConstants.WEEKS_TO_SECONDS},
+			{from: 'w', to: 's', value: 0.5, result: TimeConstants.WEEKS_TO_SECONDS / 2},
+			{from: 'w', to: 'ms', value: TimeConstants.MILLISECONDS_TO_WEEKS * 4, result: 4},
+			{from: 'w', to: 'ms', value: TimeConstants.MILLISECONDS_TO_WEEKS, result: 1},
+			{from: 'w', to: 'ms', value: TimeConstants.MILLISECONDS_TO_WEEKS / 4, result: 0.25},
+			{from: 'w', to: 'y', value: TimeConstants.YEARS_TO_WEEKS * 2, result: 2},
+			{from: 'w', to: 'y', value: TimeConstants.YEARS_TO_WEEKS, result: 1},
+			{from: 'w', to: 'y', value: TimeConstants.YEARS_TO_WEEKS / 2, result: 0.5},
+			{from: 'w', to: 'mo', value: TimeConstants.MONTHS_TO_WEEKS * 2, result: 2},
+			{from: 'w', to: 'mo', value: TimeConstants.MONTHS_TO_WEEKS, result: 1},
+			{from: 'w', to: 'mo', value: TimeConstants.MONTHS_TO_WEEKS / 2, result: 0.5},
+
+			{from: 'w', to: 'd', value: 2, result: TimeConstants.WEEKS_TO_DAYS * 2},
+			{from: 'w', to: 'd', value: 1, result: TimeConstants.WEEKS_TO_DAYS},
+			{from: 'w', to: 'd', value: 0.5, result: TimeConstants.WEEKS_TO_DAYS / 2},
+			{from: 'w', to: 'μs', value: 2, result: TimeConstants.WEEKS_TO_MICROSECONDS * 2},
+			{from: 'w', to: 'μs', value: 1, result: TimeConstants.WEEKS_TO_MICROSECONDS},
+			{from: 'w', to: 'μs', value: 0.5, result: TimeConstants.WEEKS_TO_MICROSECONDS / 2}
+		]
 	}
 ];
 
 describe('timeConvert', () => {
+	describe('Helpers', () => {
+		describe('canConvert', () => {
+			it(`should return false when value is undefined`, () => {
+				expect(canConvert(MOCK_FROM, MOCK_TO, undefined as any)).toBe(false);
+			});
+
+			it(`should return false when value is null`, () => {
+				expect(canConvert(MOCK_FROM, MOCK_TO, null as any)).toBe(false);
+			});
+
+			it(`should return false when value is a truthy non-number`, () => {
+				expect(canConvert(MOCK_FROM, MOCK_TO, 'aaaa' as any)).toBe(false);
+			});
+
+			it(`should return false when value is NaN`, () => {
+				expect(canConvert(MOCK_FROM, MOCK_TO, NaN)).toBe(false);
+			});
+
+			it(`should return false when value exceeds max safe int`, () => {
+				expect(canConvert(MOCK_FROM, MOCK_TO, Number.MAX_SAFE_INTEGER + 111)).toBe(false);
+			});
+
+			it(`should return false when value is smaller than min safe int`, () => {
+				expect(canConvert(MOCK_FROM, MOCK_TO, Number.MIN_SAFE_INTEGER - 100)).toBe(false);
+			});
+
+			it(`should return false when value is not finite`, () => {
+				expect(canConvert(MOCK_FROM, MOCK_TO, Number.POSITIVE_INFINITY)).toBe(false);
+				expect(canConvert(MOCK_FROM, MOCK_TO, Number.NEGATIVE_INFINITY)).toBe(false);
+			});
+		});
+	});
+
 	describe('Bad Input', () => {
 		it('should return null when input value is undefined', () => {
 			expect(timeConvert('s', 'm', undefined as any)).toBeNull();
@@ -216,6 +287,22 @@ describe('timeConvert', () => {
 	});
 
 	describe('Unit Conversions', () => {
+		it(`should return 0 when value is zero and both units are the same`, ()=> {
+			expect(timeConvert('s', 's', 0)).toBe(0);
+		});
+
+		it(`should return 0 when value is zero and units are different`, () => {
+			expect(timeConvert('s', 'h', 0)).toBe(0);
+		});
+
+		it(`should return null when converted value is too big to be converted accurately`, () => {
+			expect(timeConvert('d', 'ms', 99999999999999999999999)).toBeNull();
+		});
+
+		it(`should return null when output value is not finite`, () => {
+			expect(timeConvert('μs', 'y', Number.POSITIVE_INFINITY)).toBeNull();
+		});
+
 		let sectionId = 0;
 		let testId = 0;
 		for (const section of CONVERT_TESTS) {

@@ -1,12 +1,13 @@
 import {TimeConstants} from '../constants';
 import {TimeUnit} from '../unit';
-import {timeUnitSupported} from '../unit/supported';
 
+/**
+ * Get conversion factor to convert original units into seconds by
+ * multiplying value * factor.
+ * @param unit
+ * @returns
+ */
 export function toSecondsFactor(unit?: TimeUnit): number {
-	if (!timeUnitSupported(unit)) {
-		return 0;
-	}
-
 	switch (unit) {
 		case 'y':
 			return TimeConstants.YEARS_TO_SECONDS;
@@ -31,6 +32,12 @@ export function toSecondsFactor(unit?: TimeUnit): number {
 	}
 }
 
+/**
+ * Get conversion factor to convert seconds into target unit type by
+ * multiplying value * factor.
+ * @param unit
+ * @returns
+ */
 export function fromSecondsFactor(unit?: TimeUnit): number {
 	switch (unit) {
 		case 'y':

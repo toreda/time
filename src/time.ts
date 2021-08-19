@@ -5,6 +5,7 @@ export interface Time {
 	add: (value: Time | number) => Time;
 	sub: (value: Time | number) => Time;
 	setNow: () => Time;
+	set: (value: number) => Time;
 	reset: () => Time;
 	units: () => TimeUnit;
 	since: (time: Time | number) => Time | null;

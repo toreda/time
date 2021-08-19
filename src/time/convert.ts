@@ -3,14 +3,53 @@ import {fromSecondsFactor, toSecondsFactor} from './conversion/factor';
 import {TimeUnit} from './unit';
 import {timeUnitSupported} from './unit/supported';
 
+/**
+ * Check whether time conversion is possible before calling time convert.
+ * @param from
+ * @param to
+ * @param value
+ * @returns
+ */
+export function canConvert(from: TimeUnit, to: TimeUnit, value: number): boolean {
+	if (!timeUnitSupported(from)) {
+		return false;
+	}
+
+	if (!timeUnitSupported(to)) {
+		return false;
+	}
+
+	if (typeof value !== 'number' || isNaN(value)) {
+		return false;
+	}
+
+	if (!isFinite(value)) {
+		return false;
+	}
+
+	if (value > Number.MAX_SAFE_INTEGER) {
+		return false;
+	}
+
+	if (value < Number.MIN_SAFE_INTEGER) {
+		return false;
+	}
+
+	return true;
+}
+
+/**
+ * Convert time value from a supported time unit to another supported time unit.
+ * @param from
+ * @param to
+ * @param value
+ * @param decimals
+ * @returns
+ */
 export function timeConvert(from: TimeUnit, to: TimeUnit, value: number, decimals?: number): number | null {
 	const decimalCount = typeof decimals === 'number' ? decimals : 2;
 
-	if (typeof value !== 'number' || isNaN(value)) {
-		return null;
-	}
-
-	if (!timeUnitSupported(from) || !timeUnitSupported(to)) {
+	if (!canConvert(from, to, value)) {
 		return null;
 	}
 
@@ -24,21 +63,14 @@ export function timeConvert(from: TimeUnit, to: TimeUnit, value: number, decimal
 
 	// Get conversion factor to go from input value units to seconds.
 	const toSeconds = toSecondsFactor(from);
-	if (toSeconds === 0) {
-		return null;
-	}
-
 	// Get conversion factor to go from seconds to output unit.
 	const fromSeconds = fromSecondsFactor(to);
-	if (fromSeconds === 0) {
-		return null;
-	}
 
 	// Convert input unit to seconds.
 	const valueIn = value * toSeconds;
 	const valueOut = valueIn * fromSeconds;
 
-	if (isNaN(valueOut) || !isFinite(valueOut)) {
+	if (isNaN(valueOut)) {
 		return null;
 	}
 

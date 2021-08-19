@@ -14,7 +14,7 @@ describe('TimeData', () => {
 	});
 
 	beforeEach(() => {
-		instance.value(0);
+		instance.set(time, 0);
 	});
 
 	describe('Constructor', () => {
@@ -76,7 +76,7 @@ describe('TimeData', () => {
 				const now = timeNow();
 				//const now = Math.floor(Date.now() / 1000);
 				const offset = 10000;
-				instance.value(now());
+				instance.set(time, now());
 				const future = now() + offset;
 				const result = instance.timeUntilNumber(future);
 				expect(result).not.toBeNull();
@@ -88,7 +88,7 @@ describe('TimeData', () => {
 				const now = timeNow();
 				const offset = 86400;
 
-				instance.value(now());
+				instance.set(time, now());
 				const future = now() + offset;
 				const result = instance.timeUntilNumber(future);
 				expect(result).not.toBeNull();
@@ -116,7 +116,7 @@ describe('TimeData', () => {
 				const curr = Math.floor(Date.now() / 1000);
 				const offset = 330100;
 				const target = curr - offset;
-				instance.value(curr);
+				instance.set(time, curr);
 				const result = instance.timeSinceNumber(target);
 				expect(result).not.toBeNull();
 				expect(result!()).toBe(offset);
@@ -125,33 +125,33 @@ describe('TimeData', () => {
 
 		describe('addNumber', () => {
 			it(`should add positive number when current value is 0`, () => {
-				instance.value(0);
+				instance.set(time, 0);
 				instance.addNumber(time, 333);
-				expect(instance.value()).toBe(333);
+				expect(instance.get()).toBe(333);
 			});
 
 			it(`should add negative number when current value is 0`, () => {
-				instance.value(0);
+				instance.set(time, 0);
 				instance.addNumber(time, -212);
-				expect(instance.value()).toBe(-212);
+				expect(instance.get()).toBe(-212);
 			});
 
 			it(`should add positive number when current value is negative`, () => {
-				instance.value(-30);
+				instance.set(time, -30);
 				instance.addNumber(time, 100);
-				expect(instance.value()).toBe(70);
+				expect(instance.get()).toBe(70);
 			});
 
 			it(`should add negative number when current value is negative`, () => {
-				instance.value(-100);
+				instance.set(time, -100);
 				instance.addNumber(time, -100);
-				expect(instance.value()).toBe(-200);
+				expect(instance.get()).toBe(-200);
 			});
 
 			it(`should add positive number when current value is positive`, () => {
-				instance.value(55);
+				instance.set(time, 55);
 				instance.addNumber(time, 30);
-				expect(instance.value()).toBe(85);
+				expect(instance.get()).toBe(85);
 			});
 		});
 
@@ -166,24 +166,24 @@ describe('TimeData', () => {
 
 			it(`should subtract input from instance's value`, () => {
 				const value = 1081;
-				instance.value(value);
+				instance.set(time, value);
 				instance.subNumber(time, 33);
 				const result = value - 33;
-				expect(instance.value()).toBe(result);
+				expect(instance.get()).toBe(result);
 			});
 
 			it(`should not change instance's value when called with 0`, () => {
 				const value = 3131;
-				instance.value(value);
+				instance.set(time, value);
 				instance.subNumber(time, 0);
-				expect(instance.value()).toBe(value);
+				expect(instance.get()).toBe(value);
 			});
 
 			it(`should add negative value`, () => {
 				const value = -50;
-				instance.value(0);
+				instance.set(time, 0);
 				instance.subNumber(time, value);
-				expect(instance.value()).toBe(50);
+				expect(instance.get()).toBe(50);
 			});
 		});
 
@@ -193,18 +193,10 @@ describe('TimeData', () => {
 			});
 
 			it(`should reset value to 0`, () => {
-				instance.value(333);
-				expect(instance.value()).toBe(333);
+				instance.set(time, 333);
+				expect(instance.get()).toBe(333);
 				instance.reset(time);
-				expect(instance.value()).toBe(0);
-			});
-
-			it(`should reset units to starting time unit`, () => {
-				const custom = new TimeData('ms', 1);
-				custom.units('w');
-				expect(custom.units()).toBe('w');
-				custom.reset(time);
-				expect(custom.units()).toBe('ms');
+				expect(instance.get()).toBe(0);
 			});
 		});
 	});

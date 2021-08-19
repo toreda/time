@@ -7,13 +7,44 @@ import {timeMake} from './make';
 
 export class TimeData {
 	public readonly units: StrongType<TimeUnit>;
-	public readonly value: StrongDouble;
+	private readonly value: StrongDouble;
 
 	constructor(units: TimeUnit, value: number) {
 		this.units = makeStrong(units);
 		this.value = makeDouble(0, value);
 	}
 
+	public get(): number {
+		return this.value();
+	}
+
+	public set(caller: Time, time: number | Time): Time {
+		let units: TimeUnit = 's';
+
+		if (!time && time !== 0) {
+			return caller;
+		}
+
+		let value: number = 0;
+
+		if (typeof time !== 'number') {
+			units = time.units();
+			value = time();
+		} else {
+			value = time;
+		}
+
+		const updated = timeConvert(units, this.units(), value);
+		this.value(updated);
+
+		return caller;
+	}
+	/**
+	 * Subtract value of target time object from the current time value.
+	 * @param caller
+	 * @param input
+	 * @returns
+	 */
 	public subUnit(caller: Time, input: Time): Time {
 		if (!input) {
 			return caller;
@@ -29,6 +60,12 @@ export class TimeData {
 		return caller;
 	}
 
+	/**
+	 * Subtract number value from the current time.
+	 * @param caller
+	 * @param value
+	 * @returns
+	 */
 	public subNumber(caller: Time, value: number): Time {
 		if (typeof value !== 'number') {
 			return caller;
@@ -102,6 +139,13 @@ export class TimeData {
 		return timeMake(this.units(), result);
 	}
 
+	/**
+	 * Get time object containing time left until target time. May return
+	 * negative vamlue when target time is in the past. The returned time
+	 * object's time left value uses the same time units as the calling instance.
+	 * @param targetTime
+	 * @returns
+	 */
 	public timeUntilTime(targetTime: Time): Time | null {
 		if (!targetTime) {
 			return null;
@@ -152,7 +196,7 @@ export class TimeData {
 	 */
 	public reset(caller: Time): Time {
 		this.value.reset();
-		this.units.reset();
+
 		return caller;
 	}
 }

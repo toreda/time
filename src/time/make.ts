@@ -2,17 +2,18 @@ import {Time} from '../time';
 import {TimeData} from './data';
 import {TimeUnit} from './unit';
 import {timeConvert} from './convert';
+import {timeNow} from './now';
 
 export function timeMake(units: TimeUnit, initial: number): Time {
 	const data = new TimeData(units, initial);
 
 	return Object.assign(
-		(setTo?: number): number => {
-			if (typeof setTo === 'number') {
-				return data.value(setTo);
+		(setTo?: number | Time): number => {
+			if (typeof setTo === 'number' || typeof setTo === 'function') {
+				data.set(this, setTo);
 			}
 
-			return data.value();
+			return data.get();
 		},
 		{
 			add: (value: Time | number): Time => {
@@ -27,18 +28,18 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 					return data.subNumber(this, value);
 				}
 
-				return data.addUnit(this, value);
+				return data.subUnit(this, value);
 			},
 			reset: (): Time => {
 				return data.reset(this);
 			},
+			set: (value: number): Time => {
+				return data.set(this, value);
+			},
 			setNow: (): Time => {
-				const now = Math.floor(Date.now() / 1000);
-				const nowValue = timeConvert(data.units(), 's', now);
+				const now = timeNow();
+				data.set(this, now);
 
-				if (nowValue !== null) {
-					data.value(nowValue);
-				}
 				return this;
 			},
 			units: (): TimeUnit => {
@@ -59,31 +60,31 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 				return data.timeUntilTime(time);
 			},
 			toMicroseconds: (): number | null => {
-				return timeConvert(data.units(), 'μs', data.value());
+				return timeConvert(data.units(), 'μs', data.get());
 			},
 			toMilliseconds: () => {
-				return timeConvert(data.units(), 'ms', data.value());
+				return timeConvert(data.units(), 'ms', data.get());
 			},
 			toSeconds: () => {
-				return timeConvert(data.units(), 's', data.value());
+				return timeConvert(data.units(), 's', data.get());
 			},
 			toMinutes: () => {
-				return timeConvert(data.units(), 'm', data.value());
+				return timeConvert(data.units(), 'm', data.get());
 			},
 			toHours: () => {
-				return timeConvert(data.units(), 'h', data.value());
+				return timeConvert(data.units(), 'h', data.get());
 			},
 			toDays: () => {
-				return timeConvert(data.units(), 'd', data.value());
+				return timeConvert(data.units(), 'd', data.get());
 			},
 			toWeeks: () => {
-				return timeConvert(data.units(), 'w', data.value());
+				return timeConvert(data.units(), 'w', data.get());
 			},
 			toMonths: () => {
-				return timeConvert(data.units(), 'mo', data.value());
+				return timeConvert(data.units(), 'mo', data.get());
 			},
 			toYears: () => {
-				return timeConvert(data.units(), 'y', data.value());
+				return timeConvert(data.units(), 'y', data.get());
 			}
 		}
 	);
