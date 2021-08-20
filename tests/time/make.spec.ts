@@ -1,10 +1,8 @@
 import MockDate from 'mockdate';
 import {Time} from '../../src/time';
-import {TimeConstants} from '../../src/time/constants';
-import {toSecondsFactor} from '../../src/time/conversion/factor';
+import {TimeUnit} from '../../src/time/unit';
 import {timeConvert} from '../../src/time/convert';
 import {timeMake} from '../../src/time/make';
-import {TimeUnit} from '../../src/time/unit';
 import {timeUnitLabels} from '../../src/time/unit/labels';
 
 const INTERFACE_METHODS = [
