@@ -2,7 +2,7 @@ import {TimeUnit} from '../unit';
 import {timeUnits} from '../units';
 
 /**
- * Check whether target
+ * Check whether target time unit is supported.
  * @param key
  * @returns
  */

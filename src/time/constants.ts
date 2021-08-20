@@ -109,96 +109,99 @@ export enum TimeConstants {
 	/**
 	 * DAYS
 	 */
-	/** Conversion factor to convert days to months. */
+	/** Conversion factor from days -> months. */
 	DAYS_TO_MONTHS = 0.032876712328767,
-	/** Conversion factor to convert days to weeks. */
+	/** Conversion factor from days -> weeks. */
 	DAYS_TO_WEEKS = 0.14285714285714,
-	/** Conversion factor to convert days to years. */
+	/** Conversion factor from days -> years. */
 	DAYS_TO_YEARS = 0.0027397260273973,
-	/** Conversion factor to convert days to minutes. */
+	/** Conversion factor from days -> minutes. */
 	DAYS_TO_MINUTES = 1440,
-	/** Conversion factor to convert days to hours. */
+	/** Conversion factor from days -> hours. */
 	DAYS_TO_HOURS = 24,
-	/** Conversion factor to convert days to seconds. */
+	/** Conversion factor from days -> seconds. */
 	DAYS_TO_SECONDS = 86400,
-	/** Conversion factor to convert days to milliseconds. */
+	/** Conversion factor from days -> milliseconds. */
 	DAYS_TO_MILLISECONDS = 86400000,
-	/** Conversion factor to convert days to microseconds. */
+	/** Conversion factor from days -> microseconds. */
 	DAYS_TO_MICROSECONDS = 86400000000,
 
 	/**
 	 * WEEKS
 	 */
-	/** Conversion factor to convert weeks to years. */
+	/** Conversion factor from weeks -> years. */
 	WEEKS_TO_YEARS = 0.019178082191781,
-	/** Conversion factor to convert weeks to months. */
+	/** Conversion factor from weeks -> months. */
 	WEEKS_TO_MONTHS = 0.23013698630137,
-	/** Conversion factor to convert weeks to days. */
+	/** Conversion factor from weeks -> days. */
 	WEEKS_TO_DAYS = 7,
-	/** Conversion factor to convert weeks to hours. */
+	/** Conversion factor from weeks -> hours. */
 	WEEKS_TO_HOURS = 168,
-	/** Conversion factor to convert weeks to minutes. */
+	/** Conversion factor from weeks -> minutes. */
 	WEEKS_TO_MINUTES = 10080,
-	/** Conversion factor to convert weeks to seconds. */
+	/** Conversion factor from weeks -> seconds. */
 	WEEKS_TO_SECONDS = 604800,
-	/** Conversion factor to convert weeks to milliseconds. */
+	/** Conversion factor from weeks -> milliseconds. */
 	WEEKS_TO_MILLISECONDS = 604800000,
-	/** Conversion factor to convert weeks to microseconds. */
+	/** Conversion factor from weeks -> microseconds. */
 	WEEKS_TO_MICROSECONDS = 604800000000,
 
 	/**
 	 * MONTHS
 	 */
-	/** Conversion factor to convert months to years. */
+	/** Conversion factor from months -> years. */
 	MONTHS_TO_YEARS = 12,
-	/** Conversion factor to convert months to weeks. */
+	/** Conversion factor from months -> weeks. */
 	MONTHS_TO_WEEKS = 4.3452380952381,
-	/** Conversion factor to convert months to days. */
+	/** Conversion factor from months -> days. */
 	MONTHS_TO_DAYS = 30.416666666667,
-	/** Conversion factor to convert months to hours. */
+	/** Conversion factor from months -> hours. */
 	MONTHS_TO_HOURS = 730,
-	/** Conversion factor to convert months to minutes. */
+	/** Conversion factor from months -> minutes. */
 	MONTHS_TO_MINUTES = 43800,
-	/** Conversion factor to convert months to seconds. */
+	/** Conversion factor from months -> seconds. */
 	MONTHS_TO_SECONDS = 2628000,
+	/** Conversion factor from months -> microseconds. */
+	MONTHS_TO_MICROSECONDS = 3.8051750380518e-13,
+	MONTHS_TO_MILLISECONDS = 3.8051750380518e-10,
 
 	/**
 	 * YEARS
 	 */
-	/** Conversion factor to convert months to decades. */
+	/** Conversion factor from years -> decades. */
 	YEARS_TO_DECADES = 10,
-	/** Conversion factor to convert months to months */
+	/** Conversion factor from years -> months. */
 	YEARS_TO_MONTHS = 12,
-	/** Conversion factor to convert months to weeks*/
+	/** Conversion factor from years -> weeks. */
 	YEARS_TO_WEEKS = 52.142857142857,
-	/** Conversion factor to convert months to days */
+	/** Conversion factor from years -> days. */
 	YEARS_TO_DAYS = 365,
-	/** Conversion factor to convert months to hours */
+	/** Conversion factor from years -> hours. */
 	YEARS_TO_HOURS = 8760,
-	/** Conversion factor to convert months to minutes */
+	/** Conversion factor from years -> minutes. */
 	YEARS_TO_MINUTES = 525600,
-	/** Conversion factor to convert months to seconds */
+	/** Conversion factor from years -> seconds. */
 	YEARS_TO_SECONDS = 31536000,
-	/** Conversion factor to convert months to milliseconds */
+	/** Conversion factor from years -> milliseconds. */
 	YEARS_TO_MILLISECONDS = 31536000000,
-	/** Conversion factor to convert months to microseconds */
+	/** Conversion factor from years -> microseconds. */
 	YEARS_TO_MICROSECONDS = 31536000000000,
 
 	/**
 	 * DECADES
 	 */
-	/** Conversion factor to convert decades to days. */
+	/** Conversion factor from decades -> days. */
 	DECADES_TO_DAYS = 3650,
-	/** Conversion factor to convert decades to months. */
+	/** Conversion factor from decades -> months. */
 	DECADES_TO_MONTHS = 120,
-	/** Conversion factor to convert decades to hours. */
+	/** Conversion factor from decades -> hours. */
 	DECADES_TO_HOURS = 87600,
-	/** Conversion factor to convert decades to minutes. */
+	/** Conversion factor from decades -> minutes. */
 	DECADES_TO_MINUTES = 5256000,
-	/** Conversion factor to convert decades to seconds. */
+	/** Conversion factor from decades -> seconds. */
 	DECADES_TO_SECONDS = 315360000,
-	/** Conversion factor to convert decades to milliseconds. */
+	/** Conversion factor from decades -> milliseconds. */
 	DECADES_TO_MILLISECONDS = 315360000000,
-	/** Conversion factor to convert decades to microseconds.*/
+	/** Conversion factor from decades -> microseconds. */
 	DECADES_TO_MICROSECONDS = 3.1536e14
 }

@@ -4,6 +4,9 @@ import {timeConvert} from './convert';
 import {timeMake} from './make';
 import {TimeUnit} from './unit';
 
+/**
+ * Internal state data created and wrapped by Time instances.
+ */
 export class TimeData {
 	public readonly units: StrongType<TimeUnit>;
 	private readonly value: StrongDouble;
@@ -13,6 +16,10 @@ export class TimeData {
 		this.value = makeDouble(0, value);
 	}
 
+	/**
+	 * Get the current time value in instance's native time unit.
+	 * @returns
+	 */
 	public get(): number {
 		return this.value();
 	}
@@ -68,6 +75,15 @@ export class TimeData {
 		return this.subNumber(caller, converted);
 	}
 
+	/**
+	 * Convert value from provided unit type into object's native time units and
+	 * add it to the current value.
+	 * @param caller		Time instance calling this function to be returned by function.
+	 * @param units			Time Unit of provided value.
+	 * @param value			Value to be converted and added to current time.
+	 * @param decimals		Number of decimals to include in final added value.
+	 * @returns
+	 */
 	public addUnit(caller: Time, units: TimeUnit, value?: number | null, decimals?: number): Time {
 		if (!units || typeof value !== 'number') {
 			return caller;

@@ -1,6 +1,5 @@
-import {fromSecondsFactor, toSecondsFactor} from './conversion/factor';
-
 import {TimeUnit} from './unit';
+import {timeConversions} from './conversions';
 import {timeUnitSupported} from './unit/supported';
 
 /**
@@ -66,22 +65,16 @@ export function timeConvert(
 		return value;
 	}
 
-	// Get conversion factor to go from input value units to seconds.
-	const toSeconds = toSecondsFactor(from);
-	// Get conversion factor to go from seconds to output unit.
-	const fromSeconds = fromSecondsFactor(to);
+	const conversionFactor = timeConversions[from][to];
+	const result = value * conversionFactor;
 
-	// Convert input unit to seconds.
-	const valueIn = value * toSeconds;
-	const valueOut = valueIn * fromSeconds;
-
-	if (isNaN(valueOut)) {
+	if (isNaN(result)) {
 		return null;
 	}
 
-	if (Math.floor(valueOut) === valueOut) {
-		return valueOut;
+	if (Math.floor(result) === result) {
+		return result;
 	}
 
-	return Number.parseFloat(valueOut.toFixed(decimalCount));
+	return Number.parseFloat(result.toFixed(decimalCount));
 }
