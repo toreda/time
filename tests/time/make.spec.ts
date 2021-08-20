@@ -1,11 +1,11 @@
 import MockDate from 'mockdate';
 import {Time} from '../../src/time';
 import {TimeConstants} from '../../src/time/constants';
-import {TimeUnit} from '../../src/time/unit';
+import {toSecondsFactor} from '../../src/time/conversion/factor';
 import {timeConvert} from '../../src/time/convert';
 import {timeMake} from '../../src/time/make';
+import {TimeUnit} from '../../src/time/unit';
 import {timeUnitLabels} from '../../src/time/unit/labels';
-import {toSecondsFactor} from '../../src/time/conversion/factor';
 
 const INTERFACE_METHODS = [
 	{name: 'add', method: 'add'},
@@ -14,15 +14,15 @@ const INTERFACE_METHODS = [
 	{name: 'units', method: 'units'},
 	{name: 'since', method: 'since'},
 	{name: 'until', method: 'until'},
-	{name: 'toMicroseconds', method: 'toMicroseconds'},
-	{name: 'asSeconds', method: 'toSeconds'},
-	{name: 'asMilliseconds', method: 'toMilliseconds'},
-	{name: 'asMinutes', method: 'toMinutes'},
-	{name: 'asHours', method: 'toHours'},
-	{name: 'asDays', method: 'toDays'},
-	{name: 'asWeeks', method: 'toWeeks'},
-	{name: 'asMonths', method: 'toMonths'},
-	{name: 'asYears', method: 'toYears'},
+	{name: 'toMicroseconds', method: 'asMicroseconds'},
+	{name: 'toSeconds', method: 'asSeconds'},
+	{name: 'toMilliseconds', method: 'asMilliseconds'},
+	{name: 'toMinutes', method: 'asMinutes'},
+	{name: 'toHours', method: 'asHours'},
+	{name: 'toDays', method: 'asDays'},
+	{name: 'toWeeks', method: 'asWeeks'},
+	{name: 'toMonths', method: 'asMonths'},
+	{name: 'toYears', method: 'asYears'},
 	{name: 'setNow', method: 'setNow'}
 ];
 
@@ -438,15 +438,16 @@ describe('timeMake', () => {
 							throw new Error(`timeUnits label not found for unit '${timeUnit}.`);
 						}
 
-						it(`should ${method.op} ${timeUnitLabel.full.plural} from time object using ${methodUnitLabel.full.plural}`, () => {
+						it(`${method.name} - should ${method.op} ${timeUnitLabel.full.plural} from time object using ${methodUnitLabel.full.plural}`, () => {
 							const initial = 10;
 							const opValue = 100;
-							const custom = timeMake(method.unit, initial);
+							const decimals = 10;
+							const custom = timeMake(timeUnit, initial);
 							expect(custom()).toBe(initial);
-							expect(custom.units()).toBe(method.unit);
+							expect(custom.units()).toBe(timeUnit);
 
 							let expectedResult: number;
-							const converted = timeConvert(timeUnit, method.unit, opValue, 10);
+							const converted = timeConvert(method.unit, timeUnit, opValue, decimals);
 							expect(converted).not.toBeNull();
 
 							switch (method.op) {
@@ -464,7 +465,9 @@ describe('timeMake', () => {
 
 							custom[method.name](opValue);
 
-							expect(custom()).toBe(expectedResult);
+							const result = parseFloat(custom().toFixed(decimals));
+
+							expect(result).toBeCloseTo(expectedResult, 2);
 						});
 					}
 				});

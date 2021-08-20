@@ -1,9 +1,8 @@
 import {StrongDouble, StrongType, makeDouble, makeStrong} from '@toreda/strong-types';
-
 import {Time} from '../time';
-import {TimeUnit} from './unit';
 import {timeConvert} from './convert';
 import {timeMake} from './make';
+import {TimeUnit} from './unit';
 
 export class TimeData {
 	public readonly units: StrongType<TimeUnit>;
@@ -19,20 +18,17 @@ export class TimeData {
 	}
 
 	public set(caller: Time, time: number | Time): Time {
-		let units: TimeUnit = 's';
-
 		if (!time && time !== 0) {
 			return caller;
 		}
 
-		let value: number = 0;
-
-		if (typeof time !== 'number') {
-			units = time.units();
-			value = time();
-		} else {
-			value = time;
+		if (typeof time === 'number') {
+			this.value(time);
+			return caller;
 		}
+
+		const units = time.units();
+		const value = time();
 
 		const updated = timeConvert(units, this.units(), value);
 		this.value(updated);
