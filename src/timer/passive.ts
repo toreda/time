@@ -62,7 +62,7 @@ export class TimerPassive implements Timer {
 
 		const elapsed = timeSince(this.timeStart());
 
-		const seconds = elapsed.toSeconds();
+		const seconds = elapsed.asSeconds();
 		if (seconds === null) {
 			return;
 		}

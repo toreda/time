@@ -10,7 +10,7 @@ import {timeUnitSupported} from './unit/supported';
  * @param value
  * @returns
  */
-export function canConvert(from: TimeUnit, to: TimeUnit, value: number): boolean {
+export function canConvert(from: TimeUnit, to: TimeUnit, value?: number | null): value is number {
 	if (!timeUnitSupported(from)) {
 		return false;
 	}
@@ -46,7 +46,12 @@ export function canConvert(from: TimeUnit, to: TimeUnit, value: number): boolean
  * @param decimals
  * @returns
  */
-export function timeConvert(from: TimeUnit, to: TimeUnit, value: number, decimals?: number): number | null {
+export function timeConvert(
+	from: TimeUnit,
+	to: TimeUnit,
+	value?: number | null,
+	decimals?: number
+): number | null {
 	const decimalCount = typeof decimals === 'number' ? decimals : 2;
 
 	if (!canConvert(from, to, value)) {

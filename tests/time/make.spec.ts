@@ -1,6 +1,11 @@
 import MockDate from 'mockdate';
 import {Time} from '../../src/time';
+import {TimeConstants} from '../../src/time/constants';
+import {TimeUnit} from '../../src/time/unit';
+import {timeConvert} from '../../src/time/convert';
 import {timeMake} from '../../src/time/make';
+import {timeUnitLabels} from '../../src/time/unit/labels';
+import {toSecondsFactor} from '../../src/time/conversion/factor';
 
 const INTERFACE_METHODS = [
 	{name: 'add', method: 'add'},
@@ -10,15 +15,38 @@ const INTERFACE_METHODS = [
 	{name: 'since', method: 'since'},
 	{name: 'until', method: 'until'},
 	{name: 'toMicroseconds', method: 'toMicroseconds'},
-	{name: 'toSeconds', method: 'toSeconds'},
-	{name: 'toMilliseconds', method: 'toMilliseconds'},
-	{name: 'toMinutes', method: 'toMinutes'},
-	{name: 'toHours', method: 'toHours'},
-	{name: 'toDays', method: 'toDays'},
-	{name: 'toWeeks', method: 'toWeeks'},
-	{name: 'toMonths', method: 'toMonths'},
-	{name: 'toYears', method: 'toYears'},
+	{name: 'asSeconds', method: 'toSeconds'},
+	{name: 'asMilliseconds', method: 'toMilliseconds'},
+	{name: 'asMinutes', method: 'toMinutes'},
+	{name: 'asHours', method: 'toHours'},
+	{name: 'asDays', method: 'toDays'},
+	{name: 'asWeeks', method: 'toWeeks'},
+	{name: 'asMonths', method: 'toMonths'},
+	{name: 'asYears', method: 'toYears'},
 	{name: 'setNow', method: 'setNow'}
+];
+
+const TIME_UNITS: TimeUnit[] = ['s', 'm', 'mo', 'd', 'y', 'w', 'ms', 'μs'];
+
+const MATH_METHODS: {name: string; unit: TimeUnit; label: string; op: 'add' | 'sub'}[] = [
+	{name: 'addDays', unit: 'd', label: 'days', op: 'add'},
+	{name: 'addHours', unit: 'h', label: 'hours', op: 'add'},
+	{name: 'addMicroseconds', unit: 'μs', label: 'microseconds', op: 'add'},
+	{name: 'addMilliseconds', unit: 'ms', label: 'milliseconds', op: 'add'},
+	{name: 'addMinutes', unit: 'm', label: 'minutes', op: 'add'},
+	{name: 'addMonths', unit: 'mo', label: 'months', op: 'add'},
+	{name: 'addSeconds', unit: 's', label: 'seconds', op: 'add'},
+	{name: 'addWeeks', unit: 'w', label: 'weeks', op: 'add'},
+	{name: 'addYears', unit: 'y', label: 'years', op: 'add'},
+	{name: 'subDays', unit: 'd', label: 'days', op: 'sub'},
+	{name: 'subHours', unit: 'h', label: 'hours', op: 'sub'},
+	{name: 'subMicroseconds', unit: 'μs', label: 'microseconds', op: 'sub'},
+	{name: 'subMilliseconds', unit: 'ms', label: 'milliseconds', op: 'sub'},
+	{name: 'subMinutes', unit: 'm', label: 'minutes', op: 'sub'},
+	{name: 'subMonths', unit: 'mo', label: 'months', op: 'sub'},
+	{name: 'subSeconds', unit: 's', label: 'seconds', op: 'sub'},
+	{name: 'subWeeks', unit: 'w', label: 'weeks', op: 'sub'},
+	{name: 'subYears', unit: 'y', label: 'years', op: 'sub'}
 ];
 
 describe('timeMake', () => {
@@ -370,6 +398,77 @@ describe('timeMake', () => {
 				expect(custom()).toBe(nowHours);
 				MockDate.reset();
 			});
+		});
+
+		describe('Math Methods', () => {
+			for (const method of MATH_METHODS) {
+				describe(method.label, () => {
+					it(`should not change instance time when value arg is null`, () => {
+						const value = 21;
+						instance(value);
+						expect(instance()).toBe(value);
+						instance[method.name](null);
+
+						expect(instance()).toBe(value);
+					});
+
+					it(`should not change instance time when value arg is undefined`, () => {
+						const value = 33;
+						instance(value);
+						expect(instance()).toBe(value);
+						instance[method.name]();
+
+						expect(instance()).toBe(value);
+					});
+
+					it(`should not change instance time when value arg is 0`, () => {
+						const value = 9101;
+						instance(value);
+						expect(instance()).toBe(value);
+						instance[method.name](0);
+
+						expect(instance()).toBe(value);
+					});
+
+					for (const timeUnit of TIME_UNITS) {
+						const timeUnitLabel = timeUnitLabels[timeUnit];
+						const methodUnitLabel = timeUnitLabels[method.unit];
+
+						if (!timeUnitLabel) {
+							throw new Error(`timeUnits label not found for unit '${timeUnit}.`);
+						}
+
+						it(`should ${method.op} ${timeUnitLabel.full.plural} from time object using ${methodUnitLabel.full.plural}`, () => {
+							const initial = 10;
+							const opValue = 100;
+							const custom = timeMake(method.unit, initial);
+							expect(custom()).toBe(initial);
+							expect(custom.units()).toBe(method.unit);
+
+							let expectedResult: number;
+							const converted = timeConvert(timeUnit, method.unit, opValue, 10);
+							expect(converted).not.toBeNull();
+
+							switch (method.op) {
+								case 'add':
+									expectedResult = initial + converted!;
+									break;
+								case 'sub':
+									expectedResult = initial - converted!;
+									break;
+								default:
+									throw new Error(
+										`Unsupported method op '${method.op}' for ${method.name} in timeMake tests.`
+									);
+							}
+
+							custom[method.name](opValue);
+
+							expect(custom()).toBe(expectedResult);
+						});
+					}
+				});
+			}
 		});
 	});
 });

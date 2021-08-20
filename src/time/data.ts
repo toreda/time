@@ -39,68 +39,50 @@ export class TimeData {
 
 		return caller;
 	}
-	/**
-	 * Subtract value of target time object from the current time value.
-	 * @param caller
-	 * @param input
-	 * @returns
-	 */
-	public subUnit(caller: Time, input: Time): Time {
-		if (!input) {
-			return caller;
-		}
 
-		const sub = timeConvert(input.units(), this.units(), input());
-		if (sub === null) {
-			return caller;
-		}
-
-		const updated = this.value() - sub;
-		this.value(updated);
-		return caller;
-	}
-
-	/**
-	 * Subtract number value from the current time.
-	 * @param caller
-	 * @param value
-	 * @returns
-	 */
-	public subNumber(caller: Time, value: number): Time {
-		if (typeof value !== 'number') {
-			return caller;
-		}
-
-		const total = this.value() - value;
-		this.value(total);
-
-		return caller;
-	}
-
-	public addNumber(caller: Time, value: number): Time {
+	public addNumber(caller: Time, value?: number | null): Time {
 		if (typeof value !== 'number') {
 			return caller;
 		}
 
 		const total = this.value() + value;
-		this.value(total);
+		this.set(caller, total);
 
 		return caller;
 	}
 
-	public addUnit(caller: Time, input: Time): Time {
-		if (!input) {
+	public subNumber(caller: Time, value?: number | null): Time {
+		if (typeof value !== 'number') {
 			return caller;
 		}
 
-		const add = timeConvert(input.units(), this.units(), input());
-		if (add === null) {
+		return this.addNumber(caller, value * -1);
+	}
+
+	public subUnit(caller: Time, units: TimeUnit, value?: number | null, decimals?: number): Time {
+		if (!units || typeof value !== 'number') {
 			return caller;
 		}
 
-		const updated = this.value() + add;
-		this.value(updated);
-		return caller;
+		const converted = timeConvert(units, this.units(), value, decimals);
+		if (converted === null) {
+			return caller;
+		}
+
+		return this.subNumber(caller, converted);
+	}
+
+	public addUnit(caller: Time, units: TimeUnit, value?: number | null, decimals?: number): Time {
+		if (!units || typeof value !== 'number') {
+			return caller;
+		}
+
+		const converted = timeConvert(units, this.units(), value, decimals);
+		if (converted === null) {
+			return caller;
+		}
+
+		return this.addNumber(caller, converted);
 	}
 
 	public timeSinceTime(target: Time): Time | null {
@@ -164,7 +146,7 @@ export class TimeData {
 	 * @param target
 	 * @returns
 	 */
-	public timeUntilNumber(target: number): Time | null {
+	public timeUntilNumber(target?: number | null): Time | null {
 		if (typeof target !== 'number') {
 			return null;
 		}

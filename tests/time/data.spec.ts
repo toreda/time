@@ -61,15 +61,15 @@ describe('TimeData', () => {
 				expect(result).not.toBeNull();
 
 				expect(result!()).toBe(0);
-				expect(result!.toDays()).toBe(0);
-				expect(result!.toHours()).toBe(0);
-				expect(result!.toWeeks()).toBe(0);
-				expect(result!.toYears()).toBe(0);
-				expect(result!.toMicroseconds()).toBe(0);
-				expect(result!.toMilliseconds()).toBe(0);
-				expect(result!.toMinutes()).toBe(0);
-				expect(result!.toMonths()).toBe(0);
-				expect(result!.toSeconds()).toBe(0);
+				expect(result!.asDays()).toBe(0);
+				expect(result!.asHours()).toBe(0);
+				expect(result!.asWeeks()).toBe(0);
+				expect(result!.asYears()).toBe(0);
+				expect(result!.asMicroseconds()).toBe(0);
+				expect(result!.asMilliseconds()).toBe(0);
+				expect(result!.asMinutes()).toBe(0);
+				expect(result!.asMonths()).toBe(0);
+				expect(result!.asSeconds()).toBe(0);
 			});
 
 			it(`should return time with number of seconds until target time`, () => {
@@ -92,8 +92,8 @@ describe('TimeData', () => {
 				const future = now() + offset;
 				const result = instance.timeUntilNumber(future);
 				expect(result).not.toBeNull();
-				expect(result!.toDays()).toBe(1);
-				expect(result!.toHours()).toBe(24);
+				expect(result!.asDays()).toBe(1);
+				expect(result!.asHours()).toBe(24);
 			});
 		});
 

@@ -42,11 +42,13 @@ const CONVERT_TESTS = [
 		name: 'minutes',
 		units: 'm',
 		tests: [
-			{from: 'm', to: 'm', value: 338, result: 338},
 			{from: 'm', to: 'h', value: TimeConstants.HOURS_TO_MINUTES * 10, result: 10},
 			{from: 'm', to: 'h', value: TimeConstants.HOURS_TO_MINUTES, result: 1},
 			{from: 'm', to: 'h', value: TimeConstants.HOURS_TO_MINUTES / 2, result: 0.5},
 			{from: 'm', to: 'h', value: 23, result: 0.38},
+			{from: 'm', to: 's', value: 1, result: TimeConstants.MINUTES_TO_SECONDS},
+			{from: 'm', to: 's', value: 8, result: TimeConstants.MINUTES_TO_SECONDS * 8},
+			{from: 'm', to: 's', value: 0.25, result: TimeConstants.MINUTES_TO_SECONDS / 4},
 			{from: 'm', to: 'd', value: TimeConstants.DAYS_TO_MINUTES, result: 1},
 			{from: 'm', to: 'd', value: TimeConstants.DAYS_TO_MINUTES * 8, result: 8},
 			{from: 'm', to: 'd', value: TimeConstants.DAYS_TO_MINUTES / 4, result: 0.25},
@@ -55,7 +57,13 @@ const CONVERT_TESTS = [
 			{from: 'm', to: 'w', value: TimeConstants.WEEKS_TO_MINUTES / 4, result: 0.25},
 			{from: 'm', to: 'mo', value: TimeConstants.MONTHS_TO_MINUTES, result: 1},
 			{from: 'm', to: 'mo', value: TimeConstants.MONTHS_TO_MINUTES * 2, result: 2},
-			{from: 'm', to: 'mo', value: TimeConstants.MONTHS_TO_MINUTES / 4, result: 0.25}
+			{from: 'm', to: 'mo', value: TimeConstants.MONTHS_TO_MINUTES / 4, result: 0.25},
+			{from: 'm', to: 'y', value: TimeConstants.YEARS_TO_MINUTES, result: 1},
+			{from: 'm', to: 'y', value: TimeConstants.YEARS_TO_MINUTES * 8, result: 8},
+			{from: 'm', to: 'y', value: TimeConstants.YEARS_TO_MINUTES / 4, result: 0.25},
+			{from: 'm', to: 'm', value: 1, result: 1},
+			{from: 'm', to: 'm', value: 2, result: 2},
+			{from: 'm', to: 'm', value: 0.25, result: 0.25}
 		]
 	},
 	{
@@ -65,22 +73,32 @@ const CONVERT_TESTS = [
 			{from: 'h', to: 'm', value: 1, result: TimeConstants.HOURS_TO_MINUTES},
 			{from: 'h', to: 'm', value: 0.5, result: TimeConstants.HOURS_TO_MINUTES / 2},
 			{from: 'h', to: 'm', value: 4, result: TimeConstants.HOURS_TO_MINUTES * 4},
-			{from: 'h', to: 'h', value: 100, result: 100},
+			{from: 'h', to: 'y', value: TimeConstants.YEARS_TO_HOURS, result: 1},
+			{from: 'h', to: 'y', value: TimeConstants.YEARS_TO_HOURS / 2, result: 0.5},
+			{from: 'h', to: 'y', value: TimeConstants.YEARS_TO_HOURS * 4, result: 4},
+			{from: 'h', to: 'mo', value: TimeConstants.MONTHS_TO_HOURS, result: 1},
+			{from: 'h', to: 'mo', value: TimeConstants.MONTHS_TO_HOURS / 2, result: 0.5},
+			{from: 'h', to: 'mo', value: TimeConstants.MONTHS_TO_HOURS * 4, result: 4},
+			{from: 'h', to: 'w', value: TimeConstants.WEEKS_TO_HOURS * 0.33, result: 0.33},
+			{from: 'h', to: 'w', value: TimeConstants.WEEKS_TO_HOURS * 7, result: 7},
+			{from: 'h', to: 'w', value: TimeConstants.WEEKS_TO_HOURS, result: 1},
 			{from: 'h', to: 's', value: 1, result: TimeConstants.HOURS_TO_SECONDS},
 			{from: 'h', to: 's', value: 2, result: TimeConstants.HOURS_TO_SECONDS * 2},
 			{from: 'h', to: 's', value: 0.5, result: TimeConstants.HOURS_TO_SECONDS / 2},
 			{from: 'h', to: 'd', value: TimeConstants.DAYS_TO_HOURS * 3, result: 3},
 			{from: 'h', to: 'd', value: TimeConstants.DAYS_TO_HOURS / 2, result: 0.5},
 			{from: 'h', to: 'd', value: TimeConstants.DAYS_TO_HOURS, result: 1},
-			{from: 'h', to: 'w', value: TimeConstants.WEEKS_TO_HOURS * 0.33, result: 0.33},
-			{from: 'h', to: 'w', value: TimeConstants.WEEKS_TO_HOURS * 7, result: 7},
-			{from: 'h', to: 'w', value: TimeConstants.WEEKS_TO_HOURS, result: 1},
+
 			{from: 'h', to: 'ms', value: 1 * 3, result: TimeConstants.HOURS_TO_MILLISECONDS * 3},
 			{from: 'h', to: 'ms', value: 1, result: TimeConstants.HOURS_TO_MILLISECONDS},
 			{from: 'h', to: 'ms', value: 0.5, result: TimeConstants.HOURS_TO_MILLISECONDS / 2},
 			{from: 'h', to: 'μs', value: 1, result: TimeConstants.HOURS_TO_MICROSECONDS},
 			{from: 'h', to: 'μs', value: 2, result: TimeConstants.HOURS_TO_MICROSECONDS * 2},
-			{from: 'h', to: 'μs', value: 0.5, result: TimeConstants.HOURS_TO_MICROSECONDS / 2}
+			{from: 'h', to: 'μs', value: 0.5, result: TimeConstants.HOURS_TO_MICROSECONDS / 2},
+
+			{from: 'h', to: 'h', value: 1, result: 1},
+			{from: 'h', to: 'h', value: 2, result: 2},
+			{from: 'h', to: 'h', value: 0.5, result: 0.5}
 		]
 	},
 	{
@@ -217,7 +235,11 @@ const CONVERT_TESTS = [
 			{from: 'w', to: 'd', value: 0.5, result: TimeConstants.WEEKS_TO_DAYS / 2},
 			{from: 'w', to: 'μs', value: 2, result: TimeConstants.WEEKS_TO_MICROSECONDS * 2},
 			{from: 'w', to: 'μs', value: 1, result: TimeConstants.WEEKS_TO_MICROSECONDS},
-			{from: 'w', to: 'μs', value: 0.5, result: TimeConstants.WEEKS_TO_MICROSECONDS / 2}
+			{from: 'w', to: 'μs', value: 0.5, result: TimeConstants.WEEKS_TO_MICROSECONDS / 2},
+
+			{from: 'w', to: 'w', value: 2, result: 2},
+			{from: 'w', to: 'w', value: 1, result: 1},
+			{from: 'w', to: 'w', value: 0.5, result: 0.5}
 		]
 	}
 ];
