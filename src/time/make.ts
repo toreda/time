@@ -242,7 +242,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addDays(value?: number | null): Time {
-				return data.subUnit(this, 'd', value, 4);
+				return data.addUnit(this, 'd', value, 4);
 			},
 			/**
 			 * Converts provided value from weeks to instance's unit type
@@ -251,7 +251,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addWeeks(value?: number | null): Time {
-				return data.subUnit(this, 'w', value, 4);
+				return data.addUnit(this, 'w', value, 4);
 			},
 			/**
 			 * Converts provided value from months to instance's unit type
@@ -260,7 +260,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addMonths(value?: number | null): Time {
-				return data.subUnit(this, 'mo', value, 4);
+				return data.addUnit(this, 'mo', value, 4);
 			},
 			/**
 			 * Converts provided value from years to instance's unit type
@@ -269,7 +269,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addYears(value?: number | null): Time {
-				return data.subUnit(this, 'y', value, 4);
+				return data.addUnit(this, 'y', value, 4);
 			},
 			/**
 			 * Converts provided value from microseconds to instance's unit type
