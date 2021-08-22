@@ -3,28 +3,63 @@ import {Time} from '../../src/time';
 import {TimeUnit} from '../../src/time/unit';
 import {timeConvert} from '../../src/time/convert';
 import {timeMake} from '../../src/time/make';
+import {timeMethods} from '../../src/time/methods';
 import {timeUnitLabels} from '../../src/time/unit/labels';
 
 const INTERFACE_METHODS = [
-	{name: 'add', method: 'add'},
-	{name: 'sub', method: 'sub'},
-	{name: 'reset', method: 'reset'},
-	{name: 'units', method: 'units'},
-	{name: 'since', method: 'since'},
-	{name: 'until', method: 'until'},
-	{name: 'toMicroseconds', method: 'asMicroseconds'},
-	{name: 'toSeconds', method: 'asSeconds'},
-	{name: 'toMilliseconds', method: 'asMilliseconds'},
-	{name: 'toMinutes', method: 'asMinutes'},
-	{name: 'toHours', method: 'asHours'},
-	{name: 'toDays', method: 'asDays'},
-	{name: 'toWeeks', method: 'asWeeks'},
-	{name: 'toMonths', method: 'asMonths'},
-	{name: 'toYears', method: 'asYears'},
-	{name: 'setNow', method: 'setNow'}
+	{name: 'add', method: 'add', expectedArgs: 2},
+	{name: 'asDays', method: 'asDays', expectedArgs: 0},
+	{name: 'asHours', method: 'asHours', expectedArgs: 0},
+	{name: 'asMicroseconds', method: 'asMicroseconds', expectedArgs: 0},
+	{name: 'asMilliseconds', method: 'asMilliseconds', expectedArgs: 0},
+	{name: 'asMinutes', method: 'asMinutes', expectedArgs: 0},
+	{name: 'asMonths', method: 'asMonths', expectedArgs: 0},
+	{name: 'asSeconds', method: 'asSeconds', expectedArgs: 0},
+	{name: 'asWeeks', method: 'asWeeks', expectedArgs: 0},
+	{name: 'asYears', method: 'asYears', expectedArgs: 0},
+	{name: 'reset', method: 'reset', expectedArgs: 0},
+	{name: 'set', method: 'set', expectedArgs: 1},
+	{name: 'setNow', method: 'setNow', expectedArgs: 0},
+	{name: 'since', method: 'since', expectedArgs: 1},
+	{name: 'sub', method: 'sub', expectedArgs: 2},
+	{name: 'toDays', method: 'toDays', expectedArgs: 0},
+	{name: 'toHours', method: 'toHours', expectedArgs: 0},
+	{name: 'toMicroseconds', method: 'toMicroseconds', expectedArgs: 0},
+	{name: 'toMilliseconds', method: 'toMilliseconds', expectedArgs: 0},
+	{name: 'toMinutes', method: 'toMinutes', expectedArgs: 0},
+	{name: 'toMonths', method: 'toMonths', expectedArgs: 0},
+	{name: 'toSeconds', method: 'toSeconds', expectedArgs: 0},
+	{name: 'toWeeks', method: 'toWeeks', expectedArgs: 0},
+	{name: 'toYears', method: 'toYears', expectedArgs: 0},
+	{name: 'units', method: 'units', expectedArgs: 0},
+	{name: 'until', method: 'until', expectedArgs: 1}
 ];
 
 const TIME_UNITS: TimeUnit[] = ['s', 'm', 'mo', 'd', 'y', 'w', 'ms', 'μs'];
+
+const AS_METHODS = [
+	{name: 'asMilliseconds', unit: 'ms'},
+	{name: 'asMicroseconds', unit: 'μs'},
+	{name: 'asSeconds', unit: 's'},
+	{name: 'asMinutes', unit: 'm'},
+	{name: 'asHours', unit: 'h'},
+	{name: 'asDays', unit: 'd'},
+	{name: 'asMonths', unit: 'mo'},
+	{name: 'asYears', unit: 'y'},
+	{name: 'asWeeks', unit: 'w'}
+];
+
+const TO_METHODS = [
+	{name: 'toMilliseconds', unit: 'ms'},
+	{name: 'toMicroseconds', unit: 'μs'},
+	{name: 'toSeconds', unit: 's'},
+	{name: 'toMinutes', unit: 'm'},
+	{name: 'toHours', unit: 'h'},
+	{name: 'toDays', unit: 'd'},
+	{name: 'toMonths', unit: 'mo'},
+	{name: 'toYears', unit: 'y'},
+	{name: 'toWeeks', unit: 'w'}
+];
 
 const MATH_METHODS: {name: string; unit: TimeUnit; label: string; op: 'add' | 'sub'}[] = [
 	{name: 'addDays', unit: 'd', label: 'days', op: 'add'},
@@ -93,10 +128,12 @@ describe('timeMake', () => {
 
 	describe('Time interface', () => {
 		describe('Methods', () => {
-			for (const method of INTERFACE_METHODS) {
-				it(`should return instance which implements required interface method '${method.name}`, () => {
-					expect(instance[method.method]).not.toBeUndefined();
-					expect(typeof instance[method.method]).toBe('function');
+			for (const timeMethod of timeMethods) {
+				describe(timeMethod, () => {
+					it(`should return instance implementing method '${timeMethod}'`, () => {
+						expect(instance[timeMethod]).not.toBeUndefined();
+						expect(typeof instance[timeMethod]).toBe('function');
+					});
 				});
 			}
 		});
@@ -374,6 +411,47 @@ describe('timeMake', () => {
 			});
 		});
 
+		describe('set', () => {
+			it(`should set instance time value when input arg is a number`, () => {
+				const input = 8614861;
+				const result = instance.set(input);
+				expect(instance()).toBe(input);
+			});
+
+			it(`should set instance time value when input arg is a negative number`, () => {
+				const input = -97141;
+				instance(140108);
+				const result = instance.set(input);
+				expect(instance()).toBe(input);
+			});
+		});
+
+		describe('until', () => {
+			it(`should return time object with value 0 when time value is 0`, () => {
+				const result = instance.until(0);
+				expect(result!()).toBe(0);
+			});
+
+			it(`should return time object with value 0 when time is a Time object with value 0`, () => {
+				const time = timeMake('s', 0);
+				const result = instance.until(time);
+				expect(result!()).toBe(0);
+			});
+		});
+
+		describe('since', () => {
+			it(`should return time object with value 0 when time value is 0`, () => {
+				const result = instance.since(0);
+				expect(result!()).toBe(0);
+			});
+
+			it(`should return time object with value 0 when time is a Time object with value 0`, () => {
+				const time = timeMake('s', 0);
+				const result = instance.since(time);
+				expect(result!()).toBe(0);
+			});
+		});
+
 		describe('setNow', () => {
 			it(`should set value to the current time in seconds`, () => {
 				const custom = timeMake('s', 0);
@@ -389,7 +467,7 @@ describe('timeMake', () => {
 				const custom = timeMake('h', 0);
 				expect(custom()).toBe(0);
 				MockDate.set(`2006-08-08 12:13:14`);
-				const now = Math.floor(new Date().getTime() / 1000) / 3600;
+				const now = Math.floor(Date.now() / 1000) / 3600;
 
 				const nowHours = Number.parseFloat(now.toFixed(2));
 				custom.setNow();
@@ -398,7 +476,61 @@ describe('timeMake', () => {
 			});
 		});
 
+		describe('Unit Conversions', () => {
+			describe('As Methods', () => {
+				for (const method of AS_METHODS) {
+					describe(method.name, () => {
+						it(`should return 0 when value is 0`, () => {
+							instance(0);
+							const units = instance.units();
+							expect(instance()).toBe(0);
+							expect(instance[method.name]()).toBe(0);
+							expect(instance.units()).toBe(units);
+						});
+
+						it(`should copy and return value converted to '${method.unit}' without changing original time value`, () => {
+							const value = 5000;
+							instance(value);
+							expect(instance()).toBe(value);
+							const result = timeConvert(instance.units(), method.unit as TimeUnit, instance());
+							expect(instance[method.name]()).toBe(result);
+							expect(instance()).toBe(value);
+						});
+					});
+				}
+			});
+			describe('To Methods', () => {
+				for (const method of TO_METHODS) {
+					describe(method.name, () => {
+						it(`should change unit type to '${method.unit}`, () => {
+							const custom = timeMake('s', 100);
+							expect(custom.units()).toBe('s');
+							custom[method.name]();
+							expect(custom.units()).toBe(method.unit);
+						});
+
+						it(`should convert time value from 's' to '${method.unit}'`, () => {
+							const initial = 500000;
+							const custom = timeMake('s', initial);
+							custom[method.name]();
+							const result = timeConvert('s', method.unit as TimeUnit, initial);
+							expect(custom()).toBe(result);
+						});
+
+						it(`should unit type but not value when time value is 0`, () => {
+							const custom = timeMake('s', 0);
+							expect(custom()).toBe(0);
+							custom[method.name]();
+							expect(custom()).toBe(0);
+							expect(custom.units()).toBe(method.unit);
+						});
+					});
+				}
+			});
+		});
+
 		describe('Math Methods', () => {
+
 			for (const method of MATH_METHODS) {
 				describe(method.label, () => {
 					it(`should not change instance time when value arg is null`, () => {

@@ -1,8 +1,11 @@
 import {StrongDouble, StrongType, makeDouble, makeStrong} from '@toreda/strong-types';
+
 import {Time} from '../time';
+import {TimeUnit} from './unit';
+import {timeCheckType} from './check/type';
+import {timeCheckValid} from './check/valid';
 import {timeConvert} from './convert';
 import {timeMake} from './make';
-import {TimeUnit} from './unit';
 
 /**
  * Internal state data created and wrapped by Time instances.
@@ -24,31 +27,32 @@ export class TimeData {
 		return this.value();
 	}
 
-	public set(caller: Time, time: number | Time): Time {
-		if (!time && time !== 0) {
+	public set(caller: Time, input?: number | Time | null): Time {
+		if (input === null || input === undefined) {
 			return caller;
 		}
 
-		if (typeof time === 'number') {
-			this.value(time);
+		if (typeof input === 'number') {
+			this.value(input);
 			return caller;
 		}
 
-		const units = time.units();
-		const value = time();
+		if (!timeCheckValid(input)) {
+			return caller;
+		}
 
-		const updated = timeConvert(units, this.units(), value);
+		const updated = timeConvert(input.units(), this.units(), input());
 		this.value(updated);
 
 		return caller;
 	}
 
-	public addNumber(caller: Time, value?: number | null): Time {
-		if (typeof value !== 'number') {
+	public addNumber(caller: Time, input?: number | null): Time {
+		if (typeof input !== 'number') {
 			return caller;
 		}
 
-		const total = this.value() + value;
+		const total = this.value() + input;
 		this.set(caller, total);
 
 		return caller;
@@ -85,7 +89,7 @@ export class TimeData {
 	 * @returns
 	 */
 	public addUnit(caller: Time, units: TimeUnit, value?: number | null, decimals?: number): Time {
-		if (!units || typeof value !== 'number') {
+		if (value === null || value === undefined) {
 			return caller;
 		}
 
@@ -97,17 +101,30 @@ export class TimeData {
 		return this.addNumber(caller, converted);
 	}
 
+	public invert(caller: Time, posOnly?: boolean): Time {
+		const value = this.get();
+		// When posOnly flag is set only positive values
+		// will be inverted.
+		if (posOnly === true && value < 0) {
+			return caller;
+		}
+
+		this.set(caller, value * -1);
+
+		return caller;
+	}
+
 	public timeSinceTime(target: Time): Time | null {
-		if (!target) {
+		if (!timeCheckType(target)) {
 			return null;
 		}
 
-		const seconds = timeConvert(target.units(), 's', target());
-		if (seconds === null) {
+		const since = timeConvert(target.units(), this.units(), target());
+		if (since === null) {
 			return null;
 		}
 
-		return this.timeSinceNumber(seconds);
+		return this.timeSinceNumber(since);
 	}
 
 	public timeSinceNumber(target: number): Time | null {
@@ -119,16 +136,7 @@ export class TimeData {
 			return timeMake(this.units(), 0);
 		}
 
-		const curr = timeConvert(this.units(), 's', this.value());
-		if (curr === null) {
-			return null;
-		}
-
-		const secondsSince = curr - target;
-		const result = timeConvert('s', this.units(), secondsSince);
-		if (result === null) {
-			return null;
-		}
+		const result = this.value() - target;
 
 		return timeMake(this.units(), result);
 	}
@@ -137,15 +145,15 @@ export class TimeData {
 	 * Get time object containing time left until target time. May return
 	 * negative vamlue when target time is in the past. The returned time
 	 * object's time left value uses the same time units as the calling instance.
-	 * @param targetTime
+	 * @param time
 	 * @returns
 	 */
-	public timeUntilTime(targetTime: Time): Time | null {
-		if (!targetTime) {
+	public timeUntilTime(time?: Time | null): Time | null {
+		if (!timeCheckType(time)) {
 			return null;
 		}
 
-		const target = timeConvert(targetTime.units(), 's', targetTime());
+		const target = timeConvert(time.units(), 's', time());
 		if (target === null) {
 			return null;
 		}
@@ -167,18 +175,7 @@ export class TimeData {
 			return timeMake('s', 0);
 		}
 
-		const curr = timeConvert(this.units(), 's', this.value());
-		if (curr === null) {
-			return null;
-		}
-
-		const dt = target - curr;
-
-		const result = timeConvert('s', this.units(), dt);
-
-		if (result === null) {
-			return null;
-		}
+		const result = target - this.value();
 
 		return timeMake(this.units(), result);
 	}

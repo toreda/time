@@ -1,9 +1,9 @@
 import {TimeUnit} from './time/unit';
 
 export interface Time {
-	(setTo?: number): number;
-	add: (value: Time | number) => Time;
-	sub: (value: Time | number) => Time;
+	(setTo?: number | Time): number;
+	add: (value: Time | number, decimals?: number) => Time;
+	sub: (value: Time | number, decimals?: number) => Time;
 	setNow: () => Time;
 	set: (value: number) => Time;
 	reset: () => Time;
@@ -37,4 +37,14 @@ export interface Time {
 	subSeconds: (value?: number | null) => Time;
 	subMilliseconds: (value?: number | null) => Time;
 	subMicroseconds: (value?: number | null) => Time;
+	toYears: () => Time;
+	toMonths: () => Time;
+	toWeeks: () => Time;
+	toDays: () => Time;
+	toHours: () => Time;
+	toMinutes: () => Time;
+	toSeconds: () => Time;
+	toMilliseconds: () => Time;
+	toMicroseconds: () => Time;
+	type: 'Time' | string;
 }

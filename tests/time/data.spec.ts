@@ -27,12 +27,100 @@ describe('TimeData', () => {
 	});
 
 	describe('Implementation', () => {
+		describe('Invert', () => {
+			it(`should change 1 to -1 when posOnly is flag`, () => {
+				instance.set(time, 1);
+				expect(instance.get()).toBe(1);
+				instance.invert(time);
+				expect(instance.get()).toBe(-1);
+			});
+
+			it(`should change -1 to 1 when posOnly is flag`, () => {
+				instance.set(time, -1);
+				expect(instance.get()).toBe(-1);
+				instance.invert(time);
+				expect(instance.get()).toBe(1);
+			});
+
+			it(`should change -1 to 1 when posOnly flag is false`, () => {
+				instance.set(time, -1);
+				expect(instance.get()).toBe(-1);
+				instance.invert(time);
+				expect(instance.get()).toBe(1);
+			});
+
+			it(`should change 1 to -1 when posOnly flag is false`, () => {
+				instance.set(time, 1);
+				expect(instance.get()).toBe(1);
+				instance.invert(time);
+				expect(instance.get()).toBe(-1);
+			});
+
+			it(`should change 1 to -1 when posOnly flag is true`, () => {
+				instance.set(time, 1);
+				expect(instance.get()).toBe(1);
+				instance.invert(time);
+				expect(instance.get()).toBe(-1);
+			});
+
+			it(`should not change -1 to 1 when posOnly flag is true`, () => {
+				instance.set(time, 1);
+				expect(instance.get()).toBe(1);
+				instance.invert(time);
+				expect(instance.get()).toBe(-1);
+			});
+		});
+		describe('set', () => {
+			it(`should not change value or time units when input is null`, () => {
+				const units = instance.units();
+				const value = 11974;
+				instance.set(time, value);
+				instance.set(time, null);
+				expect(instance.get()).toBe(value);
+				expect(instance.units()).toBe(units);
+			});
+
+			it(`should not change value or time units when input is undefined`, () => {
+				const units = instance.units();
+				const value = 11974;
+				instance.set(time, value);
+				instance.set(time, undefined);
+				expect(instance.get()).toBe(value);
+				expect(instance.units()).toBe(units);
+			});
+
+			it(`should be able to set value to 0`, () => {
+				const value = 1497141;
+				instance.set(time, 1497141);
+				expect(instance.get()).toBe(value);
+				instance.set(time, 0);
+				expect(instance.get()).toBe(0);
+			});
+		});
+
 		describe('timeUntilTime', () => {
 			it(`should return 0 when target time value is 0`, () => {
 				const time = timeMake('s', 0);
 				const result = instance.timeUntilTime(time);
 				expect(result).not.toBeNull();
 				expect(result!()).toBe(0);
+			});
+
+			it(`should return null when time arg is undefined`, () => {
+				expect(instance.timeUntilTime(undefined)).toBeNull();
+			});
+
+			it(`should return null when time arg is null`, () => {
+				expect(instance.timeUntilTime(null)).toBeNull();
+			});
+
+			it(`should return null when time arg is not a valid time object`, () => {
+				const sampleData = {
+					timeSinceNumber: jest.fn(),
+					timeUntilTime: jest.fn(),
+					timeSinceTime: jest.fn()
+				};
+				expect(instance.timeUntilTime(sampleData as any)).toBeNull();
 			});
 		});
 
@@ -123,7 +211,93 @@ describe('TimeData', () => {
 			});
 		});
 
+		describe('timeSinceTime', () => {
+			it(`should return null when target time arg is null`, () => {
+				expect(instance.timeSinceTime(null as any)).toBeNull();
+			});
+
+			it(`should return null when target time arg is undefined`, () => {
+				expect(instance.timeSinceTime(undefined as any)).toBeNull();
+			});
+
+			it(`should return 0 when target time value is 0`, () => {
+				instance.set(time, 0);
+				const target = timeMake('s', 0);
+				const result = instance.timeSinceTime(target);
+
+				expect(result!()).toBe(0);
+			});
+
+			it(`should return null when target time arg is not a Time object`, () => {
+				const notTime = {
+					timeUntilNumber: jest.fn(),
+					timeUntilTime: jest.fn()
+				};
+
+				expect(instance.timeSinceTime(notTime as any)).toBeNull();
+			});
+
+			it(`should return null when time conversion fails`, () => {
+				const data = new TimeData('ms', Number.MAX_SAFE_INTEGER);
+				const target = timeMake('y', Number.MAX_SAFE_INTEGER);
+
+				expect(data.timeSinceTime(target)).toBeNull();
+			});
+
+			it(`should return time since target time in instance's native time units`, () => {
+				const target = timeMake('s', 3600);
+				const data = new TimeData('h', 10);
+				const result = data.timeSinceTime(target);
+
+				expect(result!()).toBe(9);
+			});
+		});
+
+		describe('addUnit', () => {
+			it(`should not change value when value is null`, () => {
+				const value = 77911;
+				instance.set(time, value);
+				expect(instance.get()).toBe(value);
+
+				instance.addUnit(time, null as any);
+				expect(instance.get()).toBe(value);
+			});
+
+			it(`should not change value when unit conversion fails`, () => {
+				const target = timeMake('y', Number.MAX_SAFE_INTEGER);
+
+				const value = 871901;
+				instance.set(time, value);
+				expect(instance.get()).toBe(value);
+				instance.addUnit(time, target.units(), target());
+			});
+		});
+
 		describe('addNumber', () => {
+			it(`should not change current value when input is null`, () => {
+				const input = 971971;
+				instance.set(time, input);
+				expect(instance.get()).toBe(input);
+				instance.addNumber(time, null);
+				expect(instance.get()).toBe(input);
+			});
+
+			it(`should not change current value when input is undefined`, () => {
+				const input = 668198761;
+				instance.set(time, input);
+				expect(instance.get()).toBe(input);
+				instance.addNumber(time, undefined);
+				expect(instance.get()).toBe(input);
+			});
+
+			it(`should not change current value when input is a truthy non-number`, () => {
+				const input = 61818999;
+				instance.set(time, input);
+				expect(instance.get()).toBe(input);
+				instance.addNumber(time, 'aaaaaa' as any);
+				expect(instance.get()).toBe(input);
+			});
+
 			it(`should add positive number when current value is 0`, () => {
 				instance.set(time, 0);
 				instance.addNumber(time, 333);

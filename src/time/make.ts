@@ -1,6 +1,7 @@
 import {Time} from '../time';
 import {TimeData} from './data';
 import {TimeUnit} from './unit';
+import {timeCheckType} from './check/type';
 import {timeConvert} from './convert';
 import {timeNow} from './now';
 
@@ -31,12 +32,16 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @param value
 			 * @returns
 			 */
-			add: (value: Time | number, decimals?: number): Time => {
-				if (typeof value === 'number') {
-					return data.addNumber(this, value);
+			add: (time: Time | number, decimals?: number): Time => {
+				if (typeof time === 'number') {
+					return data.addNumber(this, time);
 				}
 
-				return data.addUnit(this, value.units(), value(), decimals);
+				if (!timeCheckType(time)) {
+					return this;
+				}
+
+				return data.addUnit(this, time.units(), time(), decimals);
 			},
 			/**
 			 * Subtract provided time value from instance's current time value.
@@ -46,12 +51,17 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @param value
 			 * @returns
 			 */
-			sub: (value: Time | number): Time => {
-				if (typeof value === 'number') {
-					return data.addNumber(this, value * -1);
+			sub: (time: Time | number, decimals?: number): Time => {
+				if (typeof time === 'number') {
+					return data.addNumber(this, time * -1);
 				}
 
-				return data.addUnit(this, value.units(), value() * -1);
+				if (!timeCheckType(time)) {
+					return this;
+				}
+				// Invert value to subtract it.
+				const value = time() * -1;
+				return data.addUnit(this, time.units(), value, decimals);
 			},
 			/**
 			 * Reset time value to it's starting state, but does
@@ -67,8 +77,8 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @param time 		Unix timestamp or new time value in seconds.
 			 * @returns
 			 */
-			set: (time: number): Time => {
-				return data.set(this, time);
+			set: (value: number): Time => {
+				return data.set(this, value);
 			},
 			/**
 			 * Replace instance time value with the current time according
@@ -76,10 +86,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			setNow: (): Time => {
-				const now = timeNow();
-				data.set(this, now);
-
-				return this;
+				return data.set(this, timeNow());
 			},
 			/**
 			 * Current unit type as a TimeUnit.
@@ -347,11 +354,102 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * Converts provided value from years to instance's unit type
 			 * and subtracts it from the current time value.
 			 * @param value		Number of years to substract.
-			 * @returns
+			 * @returns		Time Instance
 			 */
 			subYears(value?: number | null): Time {
 				return data.subUnit(this, 'y', value, 4);
-			}
+			},
+			/**
+			 * Converts current time value to years.
+			 * @returns		Time Instance
+			 */
+			toYears(): Time {
+				const value = timeConvert(data.units(), 'y', data.get());
+				data.units('y');
+
+				return data.set(this, value);
+			},
+			/**
+			 * Convert current time value to months.
+			 * @returns		Time Instance
+			 */
+			toMonths(): Time {
+				const value = timeConvert(data.units(), 'mo', data.get());
+				data.units('mo');
+
+				return data.set(this, value);
+			},
+			/**
+			 * Convert current time value to weeks.
+			 * @returns		Time instance
+			 */
+			toWeeks(): Time {
+				const value = timeConvert(data.units(), 'w', data.get());
+				data.units('w');
+
+				return data.set(this, value);
+			},
+			/**
+			 * Convert current time value to days.
+			 * @returns		Time instance
+			 */
+			toDays(): Time {
+				const value = timeConvert(data.units(), 'd', data.get());
+				data.units('d');
+
+				return data.set(this, value);
+			},
+			/**
+			 * Convert current time value to hours.
+			 * @returns 	Time instance
+			 */
+			toHours(): Time {
+				const value = timeConvert(data.units(), 'h', data.get());
+				data.units('h');
+
+				return data.set(this, value);
+			},
+			/**
+			 * Convert current time value to minutes.
+			 * @returns		Time instance
+			 */
+			toMinutes(): Time {
+				const value = timeConvert(data.units(), 'm', data.get());
+				data.units('m');
+
+				return data.set(this, value);
+			},
+			/**
+			 * Convert current time value to seconds.
+			 * @returns		Time instance
+			 */
+			toSeconds(): Time {
+				const value = timeConvert(data.units(), 's', data.get());
+				data.units('s');
+
+				return data.set(this, value);
+			},
+			/**
+			 * Convert current time value to milliseconds.
+			 * @returns
+			 */
+			toMilliseconds(): Time {
+				const value = timeConvert(data.units(), 'ms', data.get());
+				data.units('ms');
+
+				return data.set(this, value);
+			},
+			/**
+			 * Convert current time value to microseconds.
+			 * @returns
+			 */
+			toMicroseconds(): Time {
+				const value = timeConvert(data.units(), 'μs', data.get());
+				data.units('μs');
+
+				return data.set(this, value);
+			},
+			type: 'Time'
 		}
 	);
 }

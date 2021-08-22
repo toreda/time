@@ -19,3 +19,6 @@ export {weeks} from './weeks';
 export {years} from './years';
 export {TimerActive} from './timer/active';
 export {TimerPassive} from './timer/passive';
+export {timeCheckType} from './time/check/type';
+export {timeCheckValid} from './time/check/valid';
+export {timeCheckMethods} from './time/check/methods';

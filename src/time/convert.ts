@@ -72,6 +72,10 @@ export function timeConvert(
 		return null;
 	}
 
+	if (result < Number.MIN_SAFE_INTEGER || result > Number.MAX_SAFE_INTEGER) {
+		return null;
+	}
+
 	if (Math.floor(result) === result) {
 		return result;
 	}
