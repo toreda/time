@@ -1,4 +1,5 @@
 import {timeCheckValid} from '../../../src/time/check/valid';
+import {timeMake} from '../../../src/time/make';
 
 const EMPTY_STRING = '';
 
@@ -47,11 +48,8 @@ describe('timeCheckValid', () => {
 	});
 
 	it(`should return true when o.type is 'Time'`, () => {
-		const o = {
-			until: jest.fn(),
-			type: 'Time'
-		};
-
+		const o = timeMake('s', 0);
+		expect(o.type).toBe('Time');
 		expect(timeCheckValid(o)).toBe(true);
 	});
 });
