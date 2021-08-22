@@ -22,3 +22,4 @@ export {TimerPassive} from './timer/passive';
 export {timeCheckType} from './time/check/type';
 export {timeCheckValid} from './time/check/valid';
 export {timeCheckMethods} from './time/check/methods';
+export {Defaults} from './defaults';

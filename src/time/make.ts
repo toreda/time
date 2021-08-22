@@ -1,3 +1,4 @@
+import {Defaults} from '../defaults';
 import {Time} from '../time';
 import {TimeData} from './data';
 import {TimeUnit} from './unit';
@@ -204,7 +205,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addMicroseconds(value?: number | null): Time {
-				return data.addUnit(this, 'μs', value, 10);
+				return data.addUnit(this, 'μs', value, Defaults.Math.Precision.Microseconds);
 			},
 			/**
 			 * Converts provided value from milliseconds to instance's unit type
@@ -213,7 +214,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addMilliseconds(value?: number | null): Time {
-				return data.addUnit(this, 'ms', value, 10);
+				return data.addUnit(this, 'ms', value, Defaults.Math.Precision.Milliseconds);
 			},
 			/**
 			 * Converts provided value from seconds to instance's unit type
@@ -222,7 +223,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addSeconds(value?: number | null): Time {
-				return data.addUnit(this, 's', value, 10);
+				return data.addUnit(this, 's', value, Defaults.Math.Precision.Seconds);
 			},
 			/**
 			 * Converts provided value from minutes to instance's unit type
@@ -231,7 +232,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addMinutes(value?: number | null): Time {
-				return data.addUnit(this, 'm', value, 10);
+				return data.addUnit(this, 'm', value, Defaults.Math.Precision.Minutes);
 			},
 			/**
 			 * Converts provided value from hours to instance's unit type
@@ -240,7 +241,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addHours(value?: number | null): Time {
-				return data.addUnit(this, 'h', value, 10);
+				return data.addUnit(this, 'h', value, Defaults.Math.Precision.Hours);
 			},
 			/**
 			 * Converts provided value from days to instance's unit type
@@ -249,7 +250,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addDays(value?: number | null): Time {
-				return data.addUnit(this, 'd', value, 4);
+				return data.addUnit(this, 'd', value, Defaults.Math.Precision.Days);
 			},
 			/**
 			 * Converts provided value from weeks to instance's unit type
@@ -258,7 +259,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addWeeks(value?: number | null): Time {
-				return data.addUnit(this, 'w', value, 4);
+				return data.addUnit(this, 'w', value, Defaults.Math.Precision.Weeks);
 			},
 			/**
 			 * Converts provided value from months to instance's unit type
@@ -267,7 +268,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addMonths(value?: number | null): Time {
-				return data.addUnit(this, 'mo', value, 4);
+				return data.addUnit(this, 'mo', value, Defaults.Math.Precision.Months);
 			},
 			/**
 			 * Converts provided value from years to instance's unit type
@@ -285,7 +286,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			subMicroseconds(value?: number | null): Time {
-				return data.subUnit(this, 'μs', value, 10);
+				return data.subUnit(this, 'μs', value, Defaults.Math.Precision.Microseconds);
 			},
 			/**
 			 * Converts provided value from milliseconds to instance's unit type
@@ -294,7 +295,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			subMilliseconds(value?: number | null): Time {
-				return data.subUnit(this, 'ms', value, 10);
+				return data.subUnit(this, 'ms', value, Defaults.Math.Precision.Milliseconds);
 			},
 			/**
 			 * Converts provided value from seconds to instance's unit type
@@ -303,7 +304,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			subSeconds(value?: number | null): Time {
-				return data.subUnit(this, 's', value, 10);
+				return data.subUnit(this, 's', value, Defaults.Math.Precision.Seconds);
 			},
 			/**
 			 * Converts provided value from minutes to instance's unit type
@@ -312,7 +313,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			subMinutes(value?: number | null): Time {
-				return data.subUnit(this, 'm', value, 8);
+				return data.subUnit(this, 'm', value, Defaults.Math.Precision.Minutes);
 			},
 			/**
 			 * Converts provided value from hours to instance's unit type
@@ -321,7 +322,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			subHours(value?: number | null): Time {
-				return data.subUnit(this, 'h', value, 4);
+				return data.subUnit(this, 'h', value, Defaults.Math.Precision.Hours);
 			},
 			/**
 			 * Converts provided value from days to instance's unit type
@@ -330,7 +331,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			subDays(value?: number | null): Time {
-				return data.subUnit(this, 'd', value, 4);
+				return data.subUnit(this, 'd', value, Defaults.Math.Precision.Days);
 			},
 			/**
 			 * Converts provided value from weeks to instance's unit type
@@ -339,7 +340,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			subWeeks(value?: number | null): Time {
-				return data.subUnit(this, 'w', value, 4);
+				return data.subUnit(this, 'w', value, Defaults.Math.Precision.Weeks);
 			},
 			/**
 			 * Converts provided value from months to instance's unit type
@@ -348,7 +349,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			subMonths(value?: number | null): Time {
-				return data.subUnit(this, 'mo', value, 4);
+				return data.subUnit(this, 'mo', value, Defaults.Math.Precision.Months);
 			},
 			/**
 			 * Converts provided value from years to instance's unit type
@@ -357,7 +358,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns		Time Instance
 			 */
 			subYears(value?: number | null): Time {
-				return data.subUnit(this, 'y', value, 4);
+				return data.subUnit(this, 'y', value, Defaults.Math.Precision.Years);
 			},
 			/**
 			 * Converts current time value to years.
