@@ -15,8 +15,6 @@ export class TimerActive {
 		this.lastIntervalEnd = makeDouble(0);
 		this.running = makeBoolean(false);
 		this.handlersBound = makeBoolean(false);
-
-		this.bindHandlers();
 	}
 
 	public bindHandlers(): void {
@@ -39,6 +37,8 @@ export class TimerActive {
 		if (this.running()) {
 			return false;
 		}
+
+		this.bindHandlers();
 
 		return this.running(true);
 	}

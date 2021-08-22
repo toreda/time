@@ -1,3 +1,4 @@
+import {Defaults} from '../defaults';
 import {TimeUnit} from './unit';
 import {timeConversions} from './conversions';
 import {timeUnitSupported} from './unit/supported';
@@ -51,7 +52,7 @@ export function timeConvert(
 	value?: number | null,
 	decimals?: number
 ): number | null {
-	const decimalCount = typeof decimals === 'number' ? decimals : 2;
+	const decimalCount = typeof decimals === 'number' ? decimals : Defaults.Math.Precision.Base;
 
 	if (!canConvert(from, to, value)) {
 		return null;
