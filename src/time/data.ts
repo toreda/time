@@ -101,6 +101,12 @@ export class TimeData {
 		return this.addNumber(caller, converted);
 	}
 
+	/**
+	 * Invert current value.
+	 * @param caller
+	 * @param posOnly
+	 * @returns
+	 */
 	public invert(caller: Time, posOnly?: boolean): Time {
 		const value = this.get();
 		// When posOnly flag is set only positive values

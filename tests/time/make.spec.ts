@@ -6,35 +6,6 @@ import {timeMake} from '../../src/time/make';
 import {timeMethods} from '../../src/time/methods';
 import {timeUnitLabels} from '../../src/time/unit/labels';
 
-const INTERFACE_METHODS = [
-	{name: 'add', method: 'add', expectedArgs: 2},
-	{name: 'asDays', method: 'asDays', expectedArgs: 0},
-	{name: 'asHours', method: 'asHours', expectedArgs: 0},
-	{name: 'asMicroseconds', method: 'asMicroseconds', expectedArgs: 0},
-	{name: 'asMilliseconds', method: 'asMilliseconds', expectedArgs: 0},
-	{name: 'asMinutes', method: 'asMinutes', expectedArgs: 0},
-	{name: 'asMonths', method: 'asMonths', expectedArgs: 0},
-	{name: 'asSeconds', method: 'asSeconds', expectedArgs: 0},
-	{name: 'asWeeks', method: 'asWeeks', expectedArgs: 0},
-	{name: 'asYears', method: 'asYears', expectedArgs: 0},
-	{name: 'reset', method: 'reset', expectedArgs: 0},
-	{name: 'set', method: 'set', expectedArgs: 1},
-	{name: 'setNow', method: 'setNow', expectedArgs: 0},
-	{name: 'since', method: 'since', expectedArgs: 1},
-	{name: 'sub', method: 'sub', expectedArgs: 2},
-	{name: 'toDays', method: 'toDays', expectedArgs: 0},
-	{name: 'toHours', method: 'toHours', expectedArgs: 0},
-	{name: 'toMicroseconds', method: 'toMicroseconds', expectedArgs: 0},
-	{name: 'toMilliseconds', method: 'toMilliseconds', expectedArgs: 0},
-	{name: 'toMinutes', method: 'toMinutes', expectedArgs: 0},
-	{name: 'toMonths', method: 'toMonths', expectedArgs: 0},
-	{name: 'toSeconds', method: 'toSeconds', expectedArgs: 0},
-	{name: 'toWeeks', method: 'toWeeks', expectedArgs: 0},
-	{name: 'toYears', method: 'toYears', expectedArgs: 0},
-	{name: 'units', method: 'units', expectedArgs: 0},
-	{name: 'until', method: 'until', expectedArgs: 1}
-];
-
 const TIME_UNITS: TimeUnit[] = ['s', 'm', 'mo', 'd', 'y', 'w', 'ms', 'μs'];
 
 const AS_METHODS = [
@@ -154,6 +125,20 @@ describe('timeMake', () => {
 
 				const value = 319;
 				instance.add(value);
+				expect(instance()).toBe(value);
+			});
+
+			it(`should not change value when time arg is only a partially valid Time object`, () => {
+				const o = {
+					reset: jest.fn(),
+					set: jest.fn(),
+					setNow: jest.fn()
+				};
+
+				const value = 81333111;
+				instance(value);
+				expect(instance()).toBe(value);
+				instance.add(o as any);
 				expect(instance()).toBe(value);
 			});
 
@@ -409,19 +394,33 @@ describe('timeMake', () => {
 				instance.sub(time);
 				expect(instance()).toBe(current - value);
 			});
+
+			it(`should not change value when time arg is only a partially valid Time object`, () => {
+				const o = {
+					reset: jest.fn(),
+					set: jest.fn(),
+					setNow: jest.fn()
+				};
+
+				const value = 1121817;
+				instance(value);
+				expect(instance()).toBe(value);
+				instance.sub(o as any);
+				expect(instance()).toBe(value);
+			});
 		});
 
 		describe('set', () => {
 			it(`should set instance time value when input arg is a number`, () => {
 				const input = 8614861;
-				const result = instance.set(input);
+				instance.set(input);
 				expect(instance()).toBe(input);
 			});
 
 			it(`should set instance time value when input arg is a negative number`, () => {
 				const input = -97141;
 				instance(140108);
-				const result = instance.set(input);
+				instance.set(input);
 				expect(instance()).toBe(input);
 			});
 		});
@@ -530,7 +529,6 @@ describe('timeMake', () => {
 		});
 
 		describe('Math Methods', () => {
-
 			for (const method of MATH_METHODS) {
 				describe(method.label, () => {
 					it(`should not change instance time when value arg is null`, () => {

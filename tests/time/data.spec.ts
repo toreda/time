@@ -28,14 +28,14 @@ describe('TimeData', () => {
 
 	describe('Implementation', () => {
 		describe('Invert', () => {
-			it(`should change 1 to -1 when posOnly is flag`, () => {
+			it(`should change 1 to -1 when posOnly flag is not set`, () => {
 				instance.set(time, 1);
 				expect(instance.get()).toBe(1);
 				instance.invert(time);
 				expect(instance.get()).toBe(-1);
 			});
 
-			it(`should change -1 to 1 when posOnly is flag`, () => {
+			it(`should change -1 to 1 when posOnly flag is not set`, () => {
 				instance.set(time, -1);
 				expect(instance.get()).toBe(-1);
 				instance.invert(time);
@@ -45,28 +45,28 @@ describe('TimeData', () => {
 			it(`should change -1 to 1 when posOnly flag is false`, () => {
 				instance.set(time, -1);
 				expect(instance.get()).toBe(-1);
-				instance.invert(time);
+				instance.invert(time, false);
 				expect(instance.get()).toBe(1);
 			});
 
 			it(`should change 1 to -1 when posOnly flag is false`, () => {
 				instance.set(time, 1);
 				expect(instance.get()).toBe(1);
-				instance.invert(time);
+				instance.invert(time, false);
 				expect(instance.get()).toBe(-1);
 			});
 
 			it(`should change 1 to -1 when posOnly flag is true`, () => {
 				instance.set(time, 1);
 				expect(instance.get()).toBe(1);
-				instance.invert(time);
+				instance.invert(time, true);
 				expect(instance.get()).toBe(-1);
 			});
 
 			it(`should not change -1 to 1 when posOnly flag is true`, () => {
-				instance.set(time, 1);
-				expect(instance.get()).toBe(1);
-				instance.invert(time);
+				instance.set(time, -1);
+				expect(instance.get()).toBe(-1);
+				instance.invert(time, true);
 				expect(instance.get()).toBe(-1);
 			});
 		});
@@ -96,6 +96,20 @@ describe('TimeData', () => {
 				instance.set(time, 0);
 				expect(instance.get()).toBe(0);
 			});
+
+			it(`should not change value when input is an invalid Time object`, () => {
+				const o = {
+					until: jest.fn(),
+					since: jest.fn(),
+					units: 's'
+				};
+
+				const value = 7417691;
+				instance.set(time, value);
+				expect(instance.get()).toBe(value);
+				instance.set(time, o as any);
+				expect(instance.get()).toBe(value);
+			});
 		});
 
 		describe('timeUntilTime', () => {
@@ -121,6 +135,12 @@ describe('TimeData', () => {
 					timeSinceTime: jest.fn()
 				};
 				expect(instance.timeUntilTime(sampleData as any)).toBeNull();
+			});
+
+			it(`should return null when time conversion fails`, () => {
+				const input = timeMake('d', Number.MAX_SAFE_INTEGER);
+				const custom = new TimeData('ms', Number.MAX_SAFE_INTEGER);
+				expect(custom.timeUntilTime(input)).toBeNull();
 			});
 		});
 
@@ -326,6 +346,53 @@ describe('TimeData', () => {
 				instance.set(time, 55);
 				instance.addNumber(time, 30);
 				expect(instance.get()).toBe(85);
+			});
+		});
+
+		describe('subUnit', () => {
+			it(`should not change value when units arg is undefined`, () => {
+				const value = 6766191;
+				instance.set(time, value);
+				expect(instance.get()).toBe(value);
+
+				instance.subUnit(time, undefined as any, value);
+				expect(instance.get()).toBe(value);
+			});
+
+			it(`should not change value when units arg is null`, () => {
+				const value = 6766191;
+				instance.set(time, value);
+				expect(instance.get()).toBe(value);
+
+				instance.subUnit(time, null as any, value);
+				expect(instance.get()).toBe(value);
+			});
+
+			it(`should not change value when value is undefined`, () => {
+				const value = 444111;
+				instance.set(time, value);
+				expect(instance.get()).toBe(value);
+
+				instance.subUnit(time, 's', undefined);
+				expect(instance.get()).toBe(value);
+			});
+
+			it(`should not change value when value is null`, () => {
+				const value = 3311441;
+				instance.set(time, value);
+				expect(instance.get()).toBe(value);
+
+				instance.subUnit(time, 's', null);
+				expect(instance.get()).toBe(value);
+			});
+
+			it(`should not change when value unit conversion fails`, () => {
+				const value = 8819818161;
+				instance.set(time, value);
+				expect(instance.get()).toBe(value);
+
+				instance.subUnit(time, 'd', Number.MAX_SAFE_INTEGER);
+				expect(instance.get()).toBe(value);
 			});
 		});
 

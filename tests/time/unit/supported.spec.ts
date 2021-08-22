@@ -31,4 +31,5 @@ describe('timeUnitSupported', () => {
 			});
 		}
 	}
+
 });

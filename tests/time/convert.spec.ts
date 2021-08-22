@@ -306,10 +306,22 @@ describe('timeConvert', () => {
 		it('should return null when to and from are both invalid timeKeys', () => {
 			expect(timeConvert('ssssss' as any, 'mmmmmm' as any, 100)).toBeNull();
 		});
+
+		it(`should return null when conversion result is NaN`, () => {
+			expect(timeConvert('s', 's', Number.POSITIVE_INFINITY)).toBeNull();
+		});
+
+		it(`should return null when conversion result is too big`, () => {
+			expect(timeConvert('y', 'ms', Number.MAX_SAFE_INTEGER)).toBeNull();
+		});
+
+		it(`should return null when conversion result is too small`, () => {
+			expect(timeConvert('y', 'ms', Number.MIN_SAFE_INTEGER - 100)).toBeNull();
+		});
 	});
 
 	describe('Unit Conversions', () => {
-		it(`should return 0 when value is zero and both units are the same`, ()=> {
+		it(`should return 0 when value is zero and both units are the same`, () => {
 			expect(timeConvert('s', 's', 0)).toBe(0);
 		});
 
