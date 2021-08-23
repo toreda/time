@@ -277,7 +277,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 			 * @returns
 			 */
 			addYears(value?: number | null): Time {
-				return data.addUnit(this, 'y', value, 4);
+				return data.addUnit(this, 'y', value, Defaults.Math.Precision.Years);
 			},
 			/**
 			 * Converts provided value from microseconds to instance's unit type

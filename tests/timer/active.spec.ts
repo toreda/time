@@ -33,7 +33,7 @@ describe('TimerActive', () => {
 		});
 	});
 
-	describe('Implementation', ()=> {
+	describe('Implementation', () => {
 		describe('start', () => {
 			it(`should set running true when timer is not running`, () => {
 				instance.running(false);

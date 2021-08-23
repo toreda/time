@@ -32,6 +32,10 @@ export class TimerActive {
 		this.onUpdate = this.onUpdate.bind(this);
 	}
 
+	/**
+	 * Start the timer.
+	 * @returns
+	 */
 	public start(): boolean {
 		// Timer is already running.
 		if (this.running()) {
