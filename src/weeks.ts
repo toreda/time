@@ -1,6 +1,11 @@
 import {Time} from './time';
 import {timeMake} from './time/make';
 
-export function weeks(value: number): Time {
-	return timeMake('w', value);
+/**
+ * Create Time object in 'weeks'
+ * @param initial		Object's initial value (in weeks).
+ * @returns				Time object
+ */
+export function weeks(initial: number): Time {
+	return timeMake('w', initial);
 }

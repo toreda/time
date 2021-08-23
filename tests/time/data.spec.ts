@@ -1,3 +1,4 @@
+import {Defaults} from '../../src/defaults';
 import {Time} from '../../src/time';
 import {TimeData} from '../../src/time/data';
 import {timeMake} from '../../src/time/make';
@@ -182,7 +183,6 @@ describe('TimeData', () => {
 
 			it(`should return time with number of seconds until target time`, () => {
 				const now = timeNow();
-				//const now = Math.floor(Date.now() / 1000);
 				const offset = 10000;
 				instance.set(time, now());
 				const future = now() + offset;
@@ -221,7 +221,7 @@ describe('TimeData', () => {
 			});
 
 			it(`should return seconds since target time`, () => {
-				const curr = Math.floor(Date.now() / 1000);
+				const curr = Math.floor(Date.now() / Defaults.Time.MsPerSec);
 				const offset = 330100;
 				const target = curr - offset;
 				instance.set(time, curr);

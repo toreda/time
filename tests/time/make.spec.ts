@@ -1,3 +1,4 @@
+import {Defaults} from '../../src/defaults';
 import MockDate from 'mockdate';
 import {Time} from '../../src/time';
 import {TimeUnit} from '../../src/time/unit';
@@ -456,7 +457,7 @@ describe('timeMake', () => {
 				const custom = timeMake('s', 0);
 				expect(custom()).toBe(0);
 				MockDate.set(`2005-08-08 12:13:14`);
-				const now = Math.floor(new Date().getTime() / 1000);
+				const now = Math.floor(new Date().getTime() / Defaults.Time.MsPerSec);
 				custom.setNow();
 				expect(custom()).toBe(now);
 				MockDate.reset();
@@ -466,7 +467,7 @@ describe('timeMake', () => {
 				const custom = timeMake('h', 0);
 				expect(custom()).toBe(0);
 				MockDate.set(`2006-08-08 12:13:14`);
-				const now = Math.floor(Date.now() / 1000) / 3600;
+				const now = Math.floor(Date.now() / Defaults.Time.MsPerSec) / 3600;
 
 				const nowHours = Number.parseFloat(now.toFixed(2));
 				custom.setNow();

@@ -1,6 +1,11 @@
 import {Time} from './time';
 import {timeMake} from './time/make';
 
-export function years(value: number): Time {
-	return timeMake('y', value);
+/**
+ * Create Time object in 'years'
+ * @param initial		Object's initial value (in years).
+ * @returns				Time object
+ */
+export function years(initial: number): Time {
+	return timeMake('y', initial);
 }

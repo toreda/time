@@ -47,6 +47,13 @@ export class TimeData {
 		return caller;
 	}
 
+	/**
+	 * Add number input to current value.
+	 * @param caller		Time instance calling this method.
+	 * @param input			number value to be added.
+	 * @returns				Returns the Time instance which invoked the function
+	 *						to support method chaining.
+	 */
 	public addNumber(caller: Time, input?: number | null): Time {
 		if (typeof input !== 'number') {
 			return caller;
@@ -58,14 +65,29 @@ export class TimeData {
 		return caller;
 	}
 
-	public subNumber(caller: Time, value?: number | null): Time {
-		if (typeof value !== 'number') {
+	/**
+	 * Subtract number input from the current value.
+	 * @param caller		Time instance calling this method.
+	 * @param input			number value to be subtracted.
+	 * @returns				Returns the Time instance which invoked the function
+	 *						to support method chaining.
+	 */
+	public subNumber(caller: Time, input?: number | null): Time {
+		if (typeof input !== 'number') {
 			return caller;
 		}
 
-		return this.addNumber(caller, value * -1);
+		return this.addNumber(caller, input * -1);
 	}
 
+	/**
+	 * Convert value from specified units into object's native time units, then
+	 * subtract it from the current value.
+	 * @param caller		Time instance calling this method.
+	 * @param input			number value to be added.
+	 * @returns				Returns the Time instance which invoked the function
+	 *						to support method chaining.
+	 */
 	public subUnit(caller: Time, units: TimeUnit, value?: number | null, decimals?: number): Time {
 		if (!units || typeof value !== 'number') {
 			return caller;
@@ -102,7 +124,7 @@ export class TimeData {
 	}
 
 	/**
-	 * Invert current value.
+	 * Invert current value's sign.
 	 * @param caller
 	 * @param posOnly
 	 * @returns

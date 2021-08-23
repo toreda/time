@@ -4,7 +4,7 @@ import {timeConversions} from './conversions';
 import {timeUnitSupported} from './unit/supported';
 
 /**
- * Check whether time conversion is possible before calling time convert.
+ * Check whether timeConvert can convert between the provided units.
  * @param from
  * @param to
  * @param value
@@ -39,7 +39,7 @@ export function canConvert(from: TimeUnit, to: TimeUnit, value?: number | null):
 }
 
 /**
- * Convert time value from a supported time unit to another supported time unit.
+ * Convert value to a different time unit.
  * @param from
  * @param to
  * @param value

@@ -13,4 +13,7 @@ export class Defaults {
 			Milliseconds: 10
 		}
 	};
+	public static Time = {
+		MsPerSec: 1000
+	};
 }
