@@ -1,7 +1,9 @@
 import {StrongDouble, StrongType, makeDouble, makeStrong} from '@toreda/strong-types';
 
+import {Log} from '@toreda/log';
 import {Time} from '../time';
 import {TimeUnit} from './unit';
+import {isType} from '@toreda/strong-types';
 import {timeCheckType} from './check/type';
 import {timeCheckValid} from './check/valid';
 import {timeConvert} from './convert';
@@ -13,10 +15,24 @@ import {timeMake} from './make';
 export class TimeData {
 	public readonly units: StrongType<TimeUnit>;
 	private readonly value: StrongDouble;
+	public readonly log: Log;
 
-	constructor(units: TimeUnit, value: number) {
+	constructor(units: TimeUnit, value: number, log?: Log) {
 		this.units = makeStrong(units);
 		this.value = makeDouble(0, value);
+		this.log = this.makeLog(log);
+	}
+
+	private makeLog(log?: Log | null): Log {
+		let classLog: Log;
+
+		if (!log || !isType(log, Log)) {
+			classLog = new Log();
+		} else {
+			classLog = log;
+		}
+
+		return classLog.makeLog('TimeData');
 	}
 
 	/**
@@ -28,7 +44,10 @@ export class TimeData {
 	}
 
 	public set(caller: Time, input?: number | Time | null): Time {
+		const fnLog = this.log.makeLog('set');
+
 		if (input === null || input === undefined) {
+			fnLog.error(`input arg is missing.`);
 			return caller;
 		}
 
@@ -38,6 +57,7 @@ export class TimeData {
 		}
 
 		if (!timeCheckValid(input)) {
+			fnLog.error(`time arg failed validity check.`);
 			return caller;
 		}
 
@@ -56,6 +76,8 @@ export class TimeData {
 	 */
 	public addNumber(caller: Time, input?: number | null): Time {
 		if (typeof input !== 'number') {
+			const fnLog = this.log.makeLog('addNumber');
+			fnLog.error(`input arg is not a number.`);
 			return caller;
 		}
 
@@ -74,6 +96,8 @@ export class TimeData {
 	 */
 	public subNumber(caller: Time, input?: number | null): Time {
 		if (typeof input !== 'number') {
+			const fnLog = this.log.makeLog('subNumber');
+			fnLog.error(`input arg is not a number.`);
 			return caller;
 		}
 
@@ -89,12 +113,21 @@ export class TimeData {
 	 *						to support method chaining.
 	 */
 	public subUnit(caller: Time, units: TimeUnit, value?: number | null, decimals?: number): Time {
-		if (!units || typeof value !== 'number') {
+		const fnLog = this.log.makeLog('subUnit');
+
+		if (!units) {
+			fnLog.error(`units arg missing.`);
+			return caller;
+		}
+
+		if (typeof value !== 'number') {
+			fnLog.error(`units arg is not a number.`);
 			return caller;
 		}
 
 		const converted = timeConvert(units, this.units(), value, decimals);
 		if (converted === null) {
+			fnLog.error(`bad timeConvert result for value.`);
 			return caller;
 		}
 
@@ -111,12 +144,16 @@ export class TimeData {
 	 * @returns
 	 */
 	public addUnit(caller: Time, units: TimeUnit, value?: number | null, decimals?: number): Time {
+		const fnLog = this.log.makeLog('addUnit');
+
 		if (value === null || value === undefined) {
+			fnLog.error(`value arg missing`);
 			return caller;
 		}
 
 		const converted = timeConvert(units, this.units(), value, decimals);
 		if (converted === null) {
+			fnLog.error(`bad timeConvert result for value.`);
 			return caller;
 		}
 
@@ -143,12 +180,16 @@ export class TimeData {
 	}
 
 	public timeSinceTime(target: Time): Time | null {
+		const fnLog = this.log.makeLog('timeSinceTime');
+
 		if (!timeCheckType(target)) {
+			fnLog.error(`target arg did not pass time check type test. target is not a valid Time instance.`);
 			return null;
 		}
 
 		const since = timeConvert(target.units(), this.units(), target());
 		if (since === null) {
+			fnLog.error(`bad timeConvert result for target.`);
 			return null;
 		}
 
@@ -156,7 +197,10 @@ export class TimeData {
 	}
 
 	public timeSinceNumber(target: number): Time | null {
+		const fnLog = this.log.makeLog('timeSinceNumber');
+
 		if (typeof target !== 'number') {
+			fnLog.error(`target arg is not a number.`);
 			return null;
 		}
 
@@ -177,12 +221,16 @@ export class TimeData {
 	 * @returns
 	 */
 	public timeUntilTime(time?: Time | null): Time | null {
+		const fnLog = this.log.makeLog('timeUntilTime');
+
 		if (!timeCheckType(time)) {
+			fnLog.error(`time arg did not pass type check and is not a valid Time instance.`);
 			return null;
 		}
 
 		const target = timeConvert(time.units(), 's', time());
 		if (target === null) {
+			fnLog.error(`Bad timeConvertresult for time arg.`);
 			return null;
 		}
 
@@ -195,7 +243,10 @@ export class TimeData {
 	 * @returns
 	 */
 	public timeUntilNumber(target?: number | null): Time | null {
+		const fnLog = this.log.makeLog(`timeUntilNumber`);
+
 		if (typeof target !== 'number') {
+			fnLog.error(`target arg is not a number.`);
 			return null;
 		}
 
@@ -215,6 +266,7 @@ export class TimeData {
 	 */
 	public reset(caller: Time): Time {
 		this.value.reset();
+		this.log.debug(`TimeData reset complete`);
 
 		return caller;
 	}

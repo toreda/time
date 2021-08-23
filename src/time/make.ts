@@ -1,4 +1,5 @@
 import {Defaults} from '../defaults';
+import {Log} from '@toreda/log';
 import {Time} from '../time';
 import {TimeData} from './data';
 import {TimeUnit} from './unit';
@@ -13,8 +14,9 @@ import {timeNow} from './now';
  * @param initial
  * @returns
  */
-export function timeMake(units: TimeUnit, initial: number): Time {
-	const data = new TimeData(units, initial);
+export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
+	const data = new TimeData(units, initial, log);
+	const fnLog = data.log.makeLog('timeMake');
 
 	return Object.assign(
 		(setTo?: number | Time): number => {
@@ -39,6 +41,7 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 				}
 
 				if (!timeCheckType(time)) {
+					fnLog.error('time arg is not a valid number or Time object.');
 					return this;
 				}
 
@@ -58,8 +61,10 @@ export function timeMake(units: TimeUnit, initial: number): Time {
 				}
 
 				if (!timeCheckType(time)) {
+					fnLog.error(`time arg is not a valid number or Time object.`);
 					return this;
 				}
+
 				// Invert value to subtract it.
 				const value = time() * -1;
 				return data.addUnit(this, time.units(), value, decimals);
