@@ -1,6 +1,6 @@
 {
 	"name": "@toreda/time",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "Simple, small footprint library for common time operations and converting between units of time. ",
 	"main": "./dist/index",
 	"directories": {
