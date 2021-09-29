@@ -1,4 +1,4 @@
-import {StrongBoolean, StrongDouble, makeBoolean, makeDouble} from '@toreda/strong-types';
+import {Bool, Float, boolMake, floatMake} from '@toreda/strong-types';
 
 import {timeNow} from '../time/now';
 
@@ -7,14 +7,14 @@ import {timeNow} from '../time/now';
  * every timer trigger.
  */
 export class TimerActive {
-	public readonly lastIntervalEnd: StrongDouble;
-	public readonly running: StrongBoolean;
-	public readonly handlersBound: StrongBoolean;
+	public readonly lastIntervalEnd: Float;
+	public readonly running: Bool;
+	public readonly handlersBound: Bool;
 
 	constructor() {
-		this.lastIntervalEnd = makeDouble(0);
-		this.running = makeBoolean(false);
-		this.handlersBound = makeBoolean(false);
+		this.lastIntervalEnd = floatMake(0);
+		this.running = boolMake(false);
+		this.handlersBound = boolMake(false);
 	}
 
 	public bindHandlers(): void {
@@ -25,7 +25,6 @@ export class TimerActive {
 		// Mark handlers as bound.
 		this.handlersBound(true);
 
-		this.onUpdate = this.onUpdate.bind(this);
 		this.start = this.start.bind(this);
 		this.stop = this.stop.bind(this);
 		this.reset = this.reset.bind(this);

@@ -1,29 +1,22 @@
-import {
-	StrongBoolean,
-	StrongDouble,
-	StrongUInt,
-	makeBoolean,
-	makeDouble,
-	makeUInt
-} from '@toreda/strong-types';
+import {Bool, Float, UInt, boolMake, floatMake, uIntMake} from '@toreda/strong-types';
 
 import {Time} from '../time';
-import {Timer} from '../timer';
 import {timeMake} from '../time/make';
 import {timeSince} from '../time/since';
+import {Timer} from '../timer';
 
 export class TimerPassive implements Timer {
-	public readonly running: StrongBoolean;
-	public readonly interval: StrongDouble;
-	public readonly lastTrigger: StrongDouble;
-	public readonly triggerLimit: StrongUInt;
+	public readonly running: Bool;
+	public readonly interval: Float;
+	public readonly lastTrigger: Float;
+	public readonly triggerLimit: UInt;
 	public timeStart: Time;
 
 	constructor() {
-		this.running = makeBoolean(false);
-		this.interval = makeDouble(0);
-		this.lastTrigger = makeDouble(0);
-		this.triggerLimit = makeUInt(0);
+		this.running = boolMake(false);
+		this.interval = floatMake(0);
+		this.lastTrigger = floatMake(0);
+		this.triggerLimit = uIntMake(0);
 		this.timeStart = timeMake('s', 0);
 	}
 
@@ -52,7 +45,9 @@ export class TimerPassive implements Timer {
 		return this.running(false);
 	}
 
-	public trigger(): void {}
+	public trigger(): void {
+		// Todo
+	}
 
 	public onUpdate(): void {
 		// do nothing

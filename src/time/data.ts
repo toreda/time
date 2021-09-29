@@ -1,32 +1,31 @@
-import {StrongDouble, StrongType, makeDouble, makeStrong} from '@toreda/strong-types';
-
 import {Log} from '@toreda/log';
+import {Float, StrongType, floatMake, typeMatch, strongMake} from '@toreda/strong-types';
+
 import {Time} from '../time';
-import {TimeUnit} from './unit';
-import {isType} from '@toreda/strong-types';
 import {timeCheckType} from './check/type';
 import {timeCheckValid} from './check/valid';
 import {timeConvert} from './convert';
 import {timeMake} from './make';
+import {TimeUnit} from './unit';
 
 /**
  * Internal state data created and wrapped by Time instances.
  */
 export class TimeData {
 	public readonly units: StrongType<TimeUnit>;
-	private readonly value: StrongDouble;
+	private readonly value: Float;
 	public readonly log: Log;
 
 	constructor(units: TimeUnit, value: number, log?: Log) {
-		this.units = makeStrong(units);
-		this.value = makeDouble(0, value);
+		this.units = strongMake(units);
+		this.value = floatMake(0, value);
 		this.log = this.makeLog(log);
 	}
 
 	private makeLog(log?: Log | null): Log {
 		let classLog: Log;
 
-		if (!log || !isType(log, Log)) {
+		if (!log || !typeMatch(log, Log)) {
 			classLog = new Log();
 		} else {
 			classLog = log;
