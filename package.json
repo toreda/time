@@ -1,6 +1,6 @@
 {
 	"name": "@toreda/time",
-	"version": "0.0.9",
+	"version": "0.0.10",
 	"description": "Simple, small footprint library for common time operations and converting between units of time. ",
 	"main": "./dist/index",
 	"directories": {
@@ -48,13 +48,13 @@
 		"jest-sonar-reporter": "^2.0.0",
 		"mockdate": "^3.0.5",
 		"prettier": "^2.3.2",
-		"ts-jest": "^27.0.5",
+		"ts-jest": "^26.5.6",
 		"ts-loader": "^9.2.5",
 		"ts-node": "^10.2.1",
 		"typedoc": "^0.21.7",
 		"typescript": "^4.4.2"
 	},
 	"dependencies": {
-		"@toreda/log": "^0.5.4"
+		"@toreda/log": "^0.6.4"
 	}
 }

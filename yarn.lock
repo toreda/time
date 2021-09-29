@@ -785,6 +785,11 @@
     "@toreda/strong-types" "^0.11.2"
     "@toreda/types" "^0.0.3"
 
+"@toreda/log@^0.6.4":
+  version "0.6.4"
+  resolved "https://registry.yarnpkg.com/@toreda/log/-/log-0.6.4.tgz#8a50b045577d1d5b3f1585b72ff69a58411f98ef"
+  integrity sha512-wXrUfHybg7Nne/tge3P6hihmiabOp1DyiQ/5/wR2qf9diOLcfO1QFrBqhyyLnRSQm+EYkLaoEJbk3pAJgsxepA==
+
 "@toreda/prettier-config@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@toreda/prettier-config/-/prettier-config-1.0.1.tgz#bd6c47352aa99560617f0f4a29f16ab7c3070b86"
@@ -6012,7 +6017,7 @@ truncate-utf8-bytes@^1.0.0:
   dependencies:
     utf8-byte-length "^1.0.1"
 
-ts-jest@^26.5.5:
+ts-jest@^26.5.5, ts-jest@^26.5.6:
   version "26.5.6"
   resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.5.6.tgz#c32e0746425274e1dfe333f43cd3c800e014ec35"
   dependencies:

@@ -1,6 +1,8 @@
 import {TimeUnit} from './time/unit';
 
 export interface Time {
+	type: 'Time' | string;
+
 	(setTo?: number | Time): number;
 	add: (value: Time | number, decimals?: number) => Time;
 	sub: (value: Time | number, decimals?: number) => Time;
@@ -8,8 +10,10 @@ export interface Time {
 	set: (value: number) => Time;
 	reset: () => Time;
 	units: () => TimeUnit;
+
 	since: (time: Time | number) => Time | null;
 	until: (time: Time | number) => Time | null;
+
 	asDays: () => number | null;
 	asHours: () => number | null;
 	asMicroseconds: () => number | null;
@@ -19,6 +23,7 @@ export interface Time {
 	asSeconds: () => number | null;
 	asWeeks: () => number | null;
 	asYears: () => number | null;
+
 	addYears: (value?: number | null) => Time;
 	addMonths: (value?: number | null) => Time;
 	addWeeks: (value?: number | null) => Time;
@@ -28,6 +33,7 @@ export interface Time {
 	addSeconds: (value?: number | null) => Time;
 	addMilliseconds: (value?: number | null) => Time;
 	addMicroseconds: (value?: number | null) => Time;
+
 	subYears: (value?: number | null) => Time;
 	subMonths: (value?: number | null) => Time;
 	subWeeks: (value?: number | null) => Time;
@@ -37,6 +43,7 @@ export interface Time {
 	subSeconds: (value?: number | null) => Time;
 	subMilliseconds: (value?: number | null) => Time;
 	subMicroseconds: (value?: number | null) => Time;
+
 	toYears: () => Time;
 	toMonths: () => Time;
 	toWeeks: () => Time;
@@ -46,5 +53,4 @@ export interface Time {
 	toSeconds: () => Time;
 	toMilliseconds: () => Time;
 	toMicroseconds: () => Time;
-	type: 'Time' | string;
 }

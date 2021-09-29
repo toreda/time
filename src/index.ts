@@ -12,6 +12,7 @@ export {timeCheckValid} from './time/check/valid';
 export {TimeConstants} from './time/constants';
 export {timeConversions} from './time/conversions';
 export {timeConvert} from './time/convert';
+export {timeMake} from './time/make';
 export {timeNow} from './time/now';
 export {timeNowOffset} from './time/now/offset';
 export {TimerActive} from './timer/active';
