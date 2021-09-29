@@ -30,7 +30,7 @@
 	"prettier": "@toreda/prettier-config",
 	"homepage": "https://github.com/toreda/time#readme",
 	"devDependencies": {
-		"@toreda/build-tools": "^0.2.1",
+		"@toreda/build-tools": "^0.3.4",
 		"@toreda/eslint-config": "^2.2.0",
 		"@toreda/prettier-config": "^1.0.1",
 		"@toreda/strong-types": "^0.11.2",

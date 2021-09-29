@@ -1,15 +1,10 @@
-import {series, src} from 'gulp';
+import {EventEmitter} from 'events';
 
 import {Build} from '@toreda/build-tools';
-import {EventEmitter} from 'events';
-import {Log} from '@toreda/log';
+import {series, src} from 'gulp';
 
 const eslint = require('gulp-eslint');
-const log = new Log();
-const build: Build = new Build({
-	events: new EventEmitter(),
-	log: log
-});
+const build: Build = new Build({events: new EventEmitter()});
 
 function runLint(): Promise<NodeJS.ReadWriteStream> {
 	return (
