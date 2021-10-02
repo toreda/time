@@ -1,18 +1,19 @@
-import {Log} from '@toreda/log';
-import {Float, StrongType, floatMake, typeMatch, strongMake} from '@toreda/strong-types';
+import type {Float, Strong} from '@toreda/strong-types';
+import {floatMake, strongMake, typeMatch} from '@toreda/strong-types';
 
+import {Log} from '@toreda/log';
 import {Time} from '../time';
+import {TimeUnit} from './unit';
 import {timeCheckType} from './check/type';
 import {timeCheckValid} from './check/valid';
 import {timeConvert} from './convert';
 import {timeMake} from './make';
-import {TimeUnit} from './unit';
 
 /**
  * Internal state data created and wrapped by Time instances.
  */
 export class TimeData {
-	public readonly units: StrongType<TimeUnit>;
+	public readonly units: Strong<TimeUnit>;
 	private readonly value: Float;
 	public readonly log: Log;
 

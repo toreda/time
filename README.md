@@ -9,7 +9,7 @@
 Helpers for common time &amp; timer functionality.
 
 # Install
-`@toreda/time` is available as an [NPM package](https://www.npmjs.com/package/@toreda/time). 
+`@toreda/time` is available as an [NPM package](https://www.npmjs.com/package/@toreda/time).
 
 ## TypeScript Type Files
 All package type files are included in the package. There's no need to install a separate `@types` package.
@@ -27,7 +27,7 @@ npm install @toreda/time
 
 
 # Source Code
-`@toreda/time` is an open source package provided under the MIT License. Download, clone, or check the complete project source [here on Github](https://www.npmjs.com/package/@toreda/time). We welcome bug reports, comments, and pull requests. 
+`@toreda/time` is an open source package provided under the MIT License. Download, clone, or check the complete project source [here on Github](https://www.npmjs.com/package/@toreda/time). We welcome bug reports, comments, and pull requests.
 
 
 # License
