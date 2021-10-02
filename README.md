@@ -8,22 +8,52 @@
 
 Helpers for common time &amp; timer functionality.
 
+&nbsp;
+
 # Install
 `@toreda/time` is available as an [NPM package](https://www.npmjs.com/package/@toreda/time).
 
-## TypeScript Type Files
-All package type files are included in the package. There's no need to install a separate `@types` package.
+&nbsp;
 
-## Installing with Yarn
-
+**Install with yarn:**
 ```bash
 yarn add @toreda/time
 ```
 
-## Installing with NPM
+**or Install with NPM:**
 ```bash
 npm install @toreda/time
 ```
+
+&nbsp;
+# Usage
+
+## Time Objects
+
+**Create new Time object**
+```typescript
+import type {Time} from '@toreda/time';
+import {timeMake} from '@toreda/time';
+
+// Create time object in unit 'seconds' with value 0.
+const time = timeMake('s', ,0);
+```
+
+## Timestamps
+
+### Unix Timestamp
+
+**Create unix timestamp**
+```typescript
+import {unixTimestampNow} from '@toreda/time';
+
+// Returns current unix timestamp in seconds at time of call.
+const now = unixTimestampNow();
+
+```
+
+
+&nbsp;
 
 
 # Source Code

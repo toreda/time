@@ -16,3 +16,4 @@ gulpfile.ts
 jest.config.js
 tsconfig.json
 ./src/
+examples/

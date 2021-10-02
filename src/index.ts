@@ -27,3 +27,4 @@ export {timeUntil} from './time/until';
 export {weeks} from './weeks';
 export {years} from './years';
 export {unixTimestampNow} from './unix/timestamp/now';
+export {Timer} from './timer';

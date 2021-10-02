@@ -2,8 +2,8 @@ import type {Float, Strong} from '@toreda/strong-types';
 import {floatMake, strongMake, typeMatch} from '@toreda/strong-types';
 
 import {Log} from '@toreda/log';
-import {Time} from '../time';
-import {TimeUnit} from './unit';
+import type {Time} from '../time';
+import type {TimeUnit} from './unit';
 import {timeCheckType} from './check/type';
 import {timeCheckValid} from './check/valid';
 import {timeConvert} from './convert';
