@@ -1,10 +1,13 @@
 import {Bool, Float, UInt, boolMake, floatMake, uIntMake} from '@toreda/strong-types';
 
 import {Time} from '../time';
+import {Timer} from '../timer';
 import {timeMake} from '../time/make';
 import {timeSince} from '../time/since';
-import {Timer} from '../timer';
 
+/**
+ * @category Timers
+ */
 export class TimerPassive implements Timer {
 	public readonly running: Bool;
 	public readonly interval: Float;

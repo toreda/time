@@ -3,11 +3,11 @@ import {TimeUnit} from './time/unit';
 export interface Time {
 	type: 'Time' | string;
 
-	(setTo?: number | Time): number;
+	(setTo?: number | Time | null): number;
 	add: (value: Time | number, decimals?: number) => Time;
 	sub: (value: Time | number, decimals?: number) => Time;
 	setNow: () => Time;
-	set: (value: number) => Time;
+	set: (value?: number | null) => Time;
 	reset: () => Time;
 	units: () => TimeUnit;
 

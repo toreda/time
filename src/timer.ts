@@ -1,3 +1,6 @@
+/**
+ * @category Timers
+ */
 export interface Timer {
 	start: () => boolean;
 	stop: () => boolean;

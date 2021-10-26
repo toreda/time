@@ -9,7 +9,7 @@
 		"declaration": true,
 		"esModuleInterop": true,
 		"isolatedModules": false,
-		"lib": ["es6", "dom"],
+		"lib": ["es6", "DOM", "DOM.Iterable"],
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"noImplicitUseStrict": false,

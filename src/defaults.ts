@@ -13,6 +13,9 @@ export class Defaults {
 			Milliseconds: 10
 		}
 	};
+	public static Timer = {
+		CheckIntervalMs: 50
+	};
 	public static Time = {
 		MsPerSec: 1000
 	};
