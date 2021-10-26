@@ -1,5 +1,10 @@
 import {TimeUnit} from './unit';
 
+/**
+ * Maps common time unit aliases to unique time unique keys.
+ *
+ * @category Time Units
+ */
 export const timeUnits = new Map<string, TimeUnit>([
 	['d', 'd'],
 	['day', 'd'],

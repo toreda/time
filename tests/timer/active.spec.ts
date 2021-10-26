@@ -1,5 +1,8 @@
 import {TimerActive} from '../../src/timer/active';
 import {TimerEventId} from '../../src/timer/event/id';
+import {seconds} from '../../src/seconds';
+import {timeNow} from '../../src/time/now';
+import {timeNowOffset} from '../../src/time/now/offset';
 
 const EVENT_IDS: TimerEventId[] = ['pause', 'reset', 'restart', 'start', 'stop', 'unpause', 'done'];
 const EMPTY_STRING = '';
@@ -82,7 +85,6 @@ describe('TimerActive', () => {
 				await instance.executeCallbacks('restart');
 				expect(fn).toHaveBeenCalledTimes(1);
 			});
-
 
 			for (const eventId of EVENT_IDS) {
 				it(`should invoke registered ${eventId} one-time callback only once when ${eventId} event fires`, async () => {
@@ -184,6 +186,159 @@ describe('TimerActive', () => {
 				instance.handlersBound(false);
 				instance.bindHandlers();
 				expect(instance.handlersBound()).toBe(true);
+			});
+		});
+
+		describe('pause', () => {
+			it(`should call pause callbacks`, async () => {
+				const fn1 = jest.fn();
+				const fn2 = jest.fn();
+				instance.on('pause', fn1);
+				instance.on('pause', fn2);
+				instance.running(true);
+				instance.paused(false);
+
+				expect(fn1).not.toHaveBeenCalled();
+				expect(fn2).not.toHaveBeenCalled();
+				await instance.pause();
+
+				expect(fn1).toHaveBeenCalledTimes(1);
+				expect(fn2).toHaveBeenCalledTimes(1);
+			});
+
+			it(`should not call pause callbacks when timer is not running`, async () => {
+				const fn1 = jest.fn();
+				const fn2 = jest.fn();
+				instance.on('pause', fn1);
+				instance.on('pause', fn2);
+				instance.running(false);
+				instance.paused(false);
+
+				expect(fn1).not.toHaveBeenCalled();
+				expect(fn2).not.toHaveBeenCalled();
+				await instance.pause();
+
+				expect(fn1).not.toHaveBeenCalled();
+				expect(fn2).not.toHaveBeenCalled();
+			});
+
+			it(`should not call pause callbacks when timer is already paused`, async () => {
+				const fn1 = jest.fn();
+				const fn2 = jest.fn();
+				instance.on('pause', fn1);
+				instance.on('pause', fn2);
+				instance.running(true);
+				instance.paused(true);
+
+				expect(fn1).not.toHaveBeenCalled();
+				expect(fn2).not.toHaveBeenCalled();
+				await instance.pause();
+
+				expect(fn1).not.toHaveBeenCalled();
+				expect(fn2).not.toHaveBeenCalled();
+			});
+		});
+
+		describe('unpause', () => {
+			it(`should call unpause callbacks`, async () => {
+				const fn1 = jest.fn();
+				const fn2 = jest.fn();
+				instance.on('unpause', fn1);
+				instance.on('unpause', fn2);
+				instance.running(true);
+				instance.paused(true);
+
+				expect(fn1).not.toHaveBeenCalled();
+				expect(fn2).not.toHaveBeenCalled();
+				await instance.unpause();
+
+				expect(fn1).toHaveBeenCalledTimes(1);
+				expect(fn2).toHaveBeenCalledTimes(1);
+			});
+
+			it(`should not call unpause callbacks when timer is not running`, async () => {
+				const fn1 = jest.fn();
+				const fn2 = jest.fn();
+				instance.on('unpause', fn1);
+				instance.on('unpause', fn2);
+				instance.running(false);
+				instance.paused(false);
+
+				expect(fn1).not.toHaveBeenCalled();
+				expect(fn2).not.toHaveBeenCalled();
+				await instance.unpause();
+
+				expect(fn1).not.toHaveBeenCalled();
+				expect(fn2).not.toHaveBeenCalled();
+			});
+
+			it(`should not call unpause callbacks when timer is not paused`, async () => {
+				const fn1 = jest.fn();
+				const fn2 = jest.fn();
+				instance.on('unpause', fn1);
+				instance.on('unpause', fn2);
+				instance.running(true);
+				instance.paused(false);
+
+				expect(fn1).not.toHaveBeenCalled();
+				expect(fn2).not.toHaveBeenCalled();
+				await instance.unpause();
+
+				expect(fn1).not.toHaveBeenCalled();
+				expect(fn2).not.toHaveBeenCalled();
+			});
+		});
+
+		describe('onUpdate', () => {
+			let stopSpy: jest.SpyInstance;
+			beforeAll(() => {
+				stopSpy = jest.spyOn(instance, 'stop');
+			});
+
+			beforeEach(() => {
+				stopSpy.mockClear();
+			});
+
+			afterAll(() => {
+				stopSpy.mockRestore();
+			});
+
+			it(`-`, () => {
+
+			});
+			/**
+			it(`should stop timer when the max duration has elapsed`, () => {
+				expect(stopSpy).not.toHaveBeenCalled();
+				const start = timeNowOffset(-1000);
+				instance.timeStart(start);
+				instance.timeStart.subHours(10);
+				instance.limitDuration(true);
+				instance.timeLimit(seconds(1));
+
+				instance.running(true);
+				instance.onUpdate();
+				expect(stopSpy).toHaveBeenCalledTimes(1);
+			});
+			**/
+
+
+		});
+
+		describe('reset', () => {
+			it(`should reset running to false`, () => {
+				instance.running(true);
+				instance.reset();
+				expect(instance.running()).toBe(false);
+			});
+
+			it(`should reset paused to false`, () => {
+				instance.paused(true);
+				instance.reset();
+				expect(instance.paused()).toBe(false);
+			});
+
+			it(`should reset limitDuration to its fallback value`, () => {
+
 			});
 		});
 	});

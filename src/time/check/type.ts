@@ -1,11 +1,11 @@
 import {Time} from '../../time';
 
 /**
- *
+ * Check whether provided object is a Time object.
  * @param o
  * @returns
  *
- * @category Helpers
+ * @category Validators
  */
 export function timeCheckType(o: unknown): o is Time {
 	if (!o) {

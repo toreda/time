@@ -7,6 +7,8 @@ import {timeCheckType} from './type';
  * all required properties and methods to determine validity.
  * @param o
  * @returns
+ *
+ * @category Validators
  */
 export function timeCheckValid(o: unknown): o is Time {
 	if (!timeCheckType(o)) {

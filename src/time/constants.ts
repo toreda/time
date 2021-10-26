@@ -2,6 +2,8 @@
  * Values used throughout the package and condensed into one class to
  * provide standardized constant values, so that they are not redefined
  * in multiple classes.
+ *
+ * @category Time
  */
 export enum TimeConstants {
 	/**

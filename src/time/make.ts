@@ -13,6 +13,8 @@ import {timeNow} from './now';
  * @param units
  * @param initial
  * @returns
+ *
+ * @category Factories
  */
 export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 	const data = new TimeData(units, initial, log);

@@ -194,6 +194,8 @@ export class TimerActive {
 		this.listeners.stop.reset();
 		this.listeners.unpause.reset();
 		this.running(false);
+		this.paused(false);
+		this.limitDuration.reset();
 	}
 
 	public onUpdate(): void {
