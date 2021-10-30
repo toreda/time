@@ -1,6 +1,6 @@
-import {Time} from '../../time';
-import {timeCheckMethods} from './methods';
-import {timeCheckType} from './type';
+import {Time} from '../time';
+import {timeCheckMethods} from './check/methods';
+import {timeCheckType} from './check/type';
 
 /**
  * Determine if target object is a valid Time object. Inspects object for
@@ -10,7 +10,7 @@ import {timeCheckType} from './type';
  *
  * @category Validators
  */
-export function timeCheckValid(o: unknown): o is Time {
+export function timeValid(o: unknown): o is Time {
 	if (!timeCheckType(o)) {
 		return false;
 	}

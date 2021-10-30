@@ -1,8 +1,8 @@
-import {StrongArray, arrayMake, idMake} from '@toreda/strong-types';
+import type {Id, StrongArray} from '@toreda/strong-types';
+import {arrayMake, idMake} from '@toreda/strong-types';
 
-import type {Id} from '@toreda/strong-types';
-import {TimerCallback} from '../callback';
-import {TimerCallbackSync} from './sync';
+import type {TimerCallback} from '../callback';
+import type {TimerCallbackSync} from './sync';
 
 /**
  * @category Timers
@@ -34,12 +34,12 @@ export class TimerCallbackGroup {
 		const value = typeof duration === 'number' ? duration : 0;
 
 		try {
-			if (fn.constructor.name === 'AsyncFunction') {
-				await fn(value);
-			} else {
-				fn(value);
+			await fn(value);
+		} catch (e: unknown) {
+			if (e instanceof Error) {
+				console.error(`Callback group invoke error: ${e.message}`);
 			}
-		} catch (e: unknown) {}
+		}
 	}
 
 	public async once(duration?: number | null): Promise<void> {
@@ -55,12 +55,7 @@ export class TimerCallbackGroup {
 	}
 
 	public async always(duration?: number | null): Promise<void> {
-		const items = this._always();
-		if (!Array(items)) {
-			return;
-		}
-
-		for (const item of items) {
+		for (const item of this._always()) {
 			await this.invoke(item, duration);
 		}
 	}

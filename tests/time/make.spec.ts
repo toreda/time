@@ -117,6 +117,10 @@ describe('timeMake', () => {
 				instance.reset();
 				expect(instance()).toBe(0);
 			});
+
+			it(`should return the Time caller`, () => {
+				expect(instance.reset()).toEqual(instance);
+			});
 		});
 
 		describe('add', () => {
@@ -262,6 +266,17 @@ describe('timeMake', () => {
 
 				instance.add(time);
 				expect(instance()).toBe(current + value);
+			});
+
+			it(`should return caller when value is a Time object`, () => {
+				const value = 4414;
+				const time = timeMake('s', value);
+				expect(instance.add(time)).toEqual(instance);
+			});
+
+			it(`should return caller when value is a number`, () => {
+				const value = 881981;
+				expect(instance.add(value)).toEqual(instance);
 			});
 		});
 
@@ -424,6 +439,11 @@ describe('timeMake', () => {
 				instance.set(input);
 				expect(instance()).toBe(input);
 			});
+
+			it(`should return the time object`, () => {
+				const custom = timeMake('s', 25);
+				expect(custom.set(11111)).toEqual(custom);
+			});
 		});
 
 		describe('until', () => {
@@ -452,6 +472,64 @@ describe('timeMake', () => {
 			});
 		});
 
+		describe('elapsed', () => {
+			let sinceSpy: jest.SpyInstance;
+
+			beforeAll(() => {
+				sinceSpy = jest.spyOn(instance, 'since');
+			});
+
+			beforeEach(() => {
+				sinceSpy.mockClear();
+			});
+
+			afterAll(() => {
+				sinceSpy.mockRestore();
+			});
+
+			it(`should return true when target time is a number literal with value 0`, () => {
+				instance.setNow();
+				expect(instance.elapsed(0)).toBe(true);
+			});
+
+			it(`should return true when Time object elapsed time exceeds time since start`, () => {
+				const since = timeMake('s', 20);
+				sinceSpy.mockReturnValueOnce(since);
+
+				expect(instance.elapsed(timeMake('s', 5))).toBe(true);
+			});
+
+			it(`should return true when number value of elapsed time exceeds time since start`, () => {
+				const since = timeMake('s', 20);
+				sinceSpy.mockReturnValueOnce(since);
+
+				expect(instance.elapsed(5)).toBe(true);
+			});
+
+			it(`should return false when time since returns null`, () => {
+				sinceSpy.mockReturnValueOnce(null);
+
+				expect(instance.elapsed(5)).toBe(false);
+			});
+
+			it(`should return true when time since start is exactly equal to elapsed target`, () => {
+				const since = timeMake('s', 5);
+				sinceSpy.mockReturnValueOnce(since);
+
+				expect(instance.elapsed(5)).toBe(true);
+			});
+
+			it(`should return false when target time is now and time limit is several seconds away`, () => {
+				const time = Math.floor(Date.now() / 1000);
+				sinceSpy.mockReturnValue(timeMake('s', 0));
+
+				MockDate.set(time);
+				instance(time);
+
+				expect(instance.elapsed(5)).toBe(false);
+			});
+		});
+
 		describe('setNow', () => {
 			it(`should set value to the current time in seconds`, () => {
 				const custom = timeMake('s', 0);
@@ -473,6 +551,11 @@ describe('timeMake', () => {
 				custom.setNow();
 				expect(custom()).toBe(nowHours);
 				MockDate.reset();
+			});
+
+			it(`should return the caller`, () => {
+				const custom = timeMake('s', 25);
+				expect(custom.setNow()).toEqual(custom);
 			});
 		});
 
@@ -597,6 +680,18 @@ describe('timeMake', () => {
 							const result = parseFloat(custom().toFixed(decimals));
 
 							expect(result).toBeCloseTo(expectedResult, 2);
+						});
+
+						it(`${method.name} should return caller when value is > 0`, () => {
+							expect(instance[method.name](1411)).toEqual(instance);
+						});
+
+						it(`${method.name} should return caller when value is 0`, () => {
+							expect(instance[method.name](0)).toEqual(instance);
+						});
+
+						it(`${method.name} should return caller when value is < 0`, () => {
+							expect(instance[method.name](-310)).toEqual(instance);
 						});
 					}
 				});

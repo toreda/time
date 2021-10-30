@@ -1,6 +1,6 @@
 {
 	"name": "@toreda/time",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Simple, small footprint library for common time operations and converting between units of time. ",
 	"main": "./dist/index",
 	"typings": "./dist/index.d.ts",
@@ -35,7 +35,7 @@
 	"prettier": "@toreda/prettier-config",
 	"homepage": "https://github.com/toreda/time#readme",
 	"devDependencies": {
-		"@swc/core": "^1.2.103",
+		"@swc/core": "^1.2.105",
 		"@swc/wasm": "^1.2.103",
 		"@toreda/build-tools": "^0.5.5",
 		"@toreda/eslint-config": "^2.2.0",

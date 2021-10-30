@@ -20,10 +20,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 	const data = new TimeData(units, initial, log);
 	const fnLog = data.log.makeLog('timeMake');
 
-	return Object.assign(
+	const o = Object.assign(
 		(setTo?: number | Time): number => {
 			if (typeof setTo === 'number' || typeof setTo === 'function') {
-				data.set(this, setTo);
+				o.set(setTo);
 			}
 
 			return data.get();
@@ -39,15 +39,15 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 */
 			add: (time: Time | number, decimals?: number): Time => {
 				if (typeof time === 'number') {
-					return data.addNumber(this, time);
+					return data.addNumber(o, time);
 				}
 
 				if (!timeCheckType(time)) {
 					fnLog.error('time arg is not a valid number or Time object.');
-					return this;
+					return o;
 				}
 
-				return data.addUnit(this, time.units(), time(), decimals);
+				return data.addUnit(o, time.units(), time(), decimals);
 			},
 			/**
 			 * Subtract provided time value from instance's current time value.
@@ -59,17 +59,17 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 */
 			sub: (time: Time | number, decimals?: number): Time => {
 				if (typeof time === 'number') {
-					return data.addNumber(this, time * -1);
+					return data.addNumber(o, time * -1);
 				}
 
 				if (!timeCheckType(time)) {
 					fnLog.error(`time arg is not a valid number or Time object.`);
-					return this;
+					return o;
 				}
 
 				// Invert value to subtract it.
 				const value = time() * -1;
-				return data.addUnit(this, time.units(), value, decimals);
+				return data.addUnit(o, time.units(), value, decimals);
 			},
 			/**
 			 * Reset time value to it's starting state, but does
@@ -78,15 +78,20 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			reset: (): Time => {
-				return data.reset(this);
+				return data.reset(o);
 			},
 			/**
 			 * Reeplace existing time value with the provided time.
 			 * @param time 		Unix timestamp or new time value in seconds.
 			 * @returns
 			 */
-			set: (value: number): Time => {
-				return data.set(this, value);
+			set: (value: number | Time): Time => {
+				const unitValue = data.getUnitValue(data.units(), value);
+				if (unitValue === null) {
+					return o;
+				}
+
+				return data.set(o, unitValue);
 			},
 			/**
 			 * Replace instance time value with the current time according
@@ -94,7 +99,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			setNow: (): Time => {
-				return data.set(this, timeNow());
+				return data.set(o, timeNow());
 			},
 			/**
 			 * Current unit type as a TimeUnit.
@@ -116,6 +121,21 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 				}
 
 				return data.timeSinceTime(time);
+			},
+			elapsed: (target: Time | number): boolean => {
+				const timeSince = o.since(target);
+
+				if (timeSince === null) {
+					return false;
+				}
+
+				const targetValue = data.getUnitValue(o.units(), target);
+
+				if (targetValue === null) {
+					return false;
+				}
+
+				return timeSince() >= targetValue;
 			},
 			until: (time: Time | number): Time | null => {
 				if (typeof time === 'number') {
@@ -211,8 +231,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of microseconds to add.
 			 * @returns
 			 */
-			addMicroseconds(value?: number | null): Time {
-				return data.addUnit(this, 'μs', value, Defaults.Math.Precision.Microseconds);
+			addMicroseconds(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('μs', value);
+
+				return data.addUnit(o, 'μs', unitValue, Defaults.Math.Precision.Microseconds);
 			},
 			/**
 			 * Converts provided value from milliseconds to instance's unit type
@@ -220,8 +242,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of milliseconds to add.
 			 * @returns
 			 */
-			addMilliseconds(value?: number | null): Time {
-				return data.addUnit(this, 'ms', value, Defaults.Math.Precision.Milliseconds);
+			addMilliseconds(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('ms', value);
+
+				return data.addUnit(o, 'ms', unitValue, Defaults.Math.Precision.Milliseconds);
 			},
 			/**
 			 * Converts provided value from seconds to instance's unit type
@@ -229,8 +253,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of milliseconds to add.
 			 * @returns
 			 */
-			addSeconds(value?: number | null): Time {
-				return data.addUnit(this, 's', value, Defaults.Math.Precision.Seconds);
+			addSeconds(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('s', value);
+
+				return data.addUnit(o, 's', unitValue, Defaults.Math.Precision.Seconds);
 			},
 			/**
 			 * Converts provided value from minutes to instance's unit type
@@ -238,8 +264,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of minutes to add.
 			 * @returns
 			 */
-			addMinutes(value?: number | null): Time {
-				return data.addUnit(this, 'm', value, Defaults.Math.Precision.Minutes);
+			addMinutes(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('m', value);
+
+				return data.addUnit(o, 'm', unitValue, Defaults.Math.Precision.Minutes);
 			},
 			/**
 			 * Converts provided value from hours to instance's unit type
@@ -247,8 +275,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of hours to add.
 			 * @returns
 			 */
-			addHours(value?: number | null): Time {
-				return data.addUnit(this, 'h', value, Defaults.Math.Precision.Hours);
+			addHours(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('h', value);
+
+				return data.addUnit(o, 'h', unitValue, Defaults.Math.Precision.Hours);
 			},
 			/**
 			 * Converts provided value from days to instance's unit type
@@ -256,8 +286,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of days to add.
 			 * @returns
 			 */
-			addDays(value?: number | null): Time {
-				return data.addUnit(this, 'd', value, Defaults.Math.Precision.Days);
+			addDays(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('d', value);
+
+				return data.addUnit(o, 'd', unitValue, Defaults.Math.Precision.Days);
 			},
 			/**
 			 * Converts provided value from weeks to instance's unit type
@@ -265,8 +297,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of weeks to add.
 			 * @returns
 			 */
-			addWeeks(value?: number | null): Time {
-				return data.addUnit(this, 'w', value, Defaults.Math.Precision.Weeks);
+			addWeeks(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('w', value);
+
+				return data.addUnit(o, 'w', unitValue, Defaults.Math.Precision.Weeks);
 			},
 			/**
 			 * Converts provided value from months to instance's unit type
@@ -274,8 +308,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of months to add.
 			 * @returns
 			 */
-			addMonths(value?: number | null): Time {
-				return data.addUnit(this, 'mo', value, Defaults.Math.Precision.Months);
+			addMonths(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('mo', value);
+
+				return data.addUnit(o, 'mo', unitValue, Defaults.Math.Precision.Months);
 			},
 			/**
 			 * Converts provided value from years to instance's unit type
@@ -283,8 +319,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of years to add.
 			 * @returns
 			 */
-			addYears(value?: number | null): Time {
-				return data.addUnit(this, 'y', value, Defaults.Math.Precision.Years);
+			addYears(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('y', value);
+
+				return data.addUnit(o, 'y', unitValue, Defaults.Math.Precision.Years);
 			},
 			/**
 			 * Converts provided value from microseconds to instance's unit type
@@ -292,8 +330,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of microseconds to substract.
 			 * @returns
 			 */
-			subMicroseconds(value?: number | null): Time {
-				return data.subUnit(this, 'μs', value, Defaults.Math.Precision.Microseconds);
+			subMicroseconds(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('μs', value);
+
+				return data.subUnit(o, 'μs', unitValue, Defaults.Math.Precision.Microseconds);
 			},
 			/**
 			 * Converts provided value from milliseconds to instance's unit type
@@ -301,8 +341,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of milliseconds to substract.
 			 * @returns
 			 */
-			subMilliseconds(value?: number | null): Time {
-				return data.subUnit(this, 'ms', value, Defaults.Math.Precision.Milliseconds);
+			subMilliseconds(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('ms', value);
+
+				return data.subUnit(o, 'ms', unitValue, Defaults.Math.Precision.Milliseconds);
 			},
 			/**
 			 * Converts provided value from seconds to instance's unit type
@@ -310,8 +352,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of seconds to substract.
 			 * @returns
 			 */
-			subSeconds(value?: number | null): Time {
-				return data.subUnit(this, 's', value, Defaults.Math.Precision.Seconds);
+			subSeconds(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('s', value);
+
+				return data.subUnit(o, 's', unitValue, Defaults.Math.Precision.Seconds);
 			},
 			/**
 			 * Converts provided value from minutes to instance's unit type
@@ -319,8 +363,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of minutes to substract.
 			 * @returns
 			 */
-			subMinutes(value?: number | null): Time {
-				return data.subUnit(this, 'm', value, Defaults.Math.Precision.Minutes);
+			subMinutes(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('m', value);
+
+				return data.subUnit(o, 'm', unitValue, Defaults.Math.Precision.Minutes);
 			},
 			/**
 			 * Converts provided value from hours to instance's unit type
@@ -328,8 +374,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of hours to substract.
 			 * @returns
 			 */
-			subHours(value?: number | null): Time {
-				return data.subUnit(this, 'h', value, Defaults.Math.Precision.Hours);
+			subHours(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('h', value);
+
+				return data.subUnit(o, 'h', unitValue, Defaults.Math.Precision.Hours);
 			},
 			/**
 			 * Converts provided value from days to instance's unit type
@@ -337,8 +385,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of days to substract.
 			 * @returns
 			 */
-			subDays(value?: number | null): Time {
-				return data.subUnit(this, 'd', value, Defaults.Math.Precision.Days);
+			subDays(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('d', value);
+
+				return data.subUnit(o, 'd', unitValue, Defaults.Math.Precision.Days);
 			},
 			/**
 			 * Converts provided value from weeks to instance's unit type
@@ -346,8 +396,10 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @param value		Number of weeks to substract.
 			 * @returns
 			 */
-			subWeeks(value?: number | null): Time {
-				return data.subUnit(this, 'w', value, Defaults.Math.Precision.Weeks);
+			subWeeks(value?: Time | number | null): Time {
+				const unitValue = data.getUnitValue('w', value);
+
+				return data.subUnit(o, 'w', unitValue, Defaults.Math.Precision.Weeks);
 			},
 			/**
 			 * Converts provided value from months to instance's unit type
@@ -356,7 +408,9 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			subMonths(value?: number | null): Time {
-				return data.subUnit(this, 'mo', value, Defaults.Math.Precision.Months);
+				const unitValue = data.getUnitValue('mo', value);
+
+				return data.subUnit(o, 'mo', unitValue, Defaults.Math.Precision.Months);
 			},
 			/**
 			 * Converts provided value from years to instance's unit type
@@ -365,7 +419,9 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns		Time Instance
 			 */
 			subYears(value?: number | null): Time {
-				return data.subUnit(this, 'y', value, Defaults.Math.Precision.Years);
+				const unitValue = data.getUnitValue('y', value);
+
+				return data.subUnit(o, 'y', unitValue, Defaults.Math.Precision.Years);
 			},
 			/**
 			 * Converts current time value to years.
@@ -375,7 +431,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 				const value = timeConvert(data.units(), 'y', data.get());
 				data.units('y');
 
-				return data.set(this, value);
+				return data.set(o, value);
 			},
 			/**
 			 * Convert current time value to months.
@@ -385,7 +441,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 				const value = timeConvert(data.units(), 'mo', data.get());
 				data.units('mo');
 
-				return data.set(this, value);
+				return data.set(o, value);
 			},
 			/**
 			 * Convert current time value to weeks.
@@ -460,4 +516,9 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			type: 'Time'
 		}
 	);
+
+	o.set = o.set.bind(o);
+	o.setNow = o.setNow.bind(o);
+
+	return o;
 }

@@ -1,11 +1,14 @@
 import type {Bool, Float} from '@toreda/strong-types';
-import {Timer, TimerCallback, TimerCallbackSync} from '..';
 import {boolMake, floatMake} from '@toreda/strong-types';
 
 import {Defaults} from '../defaults';
 import type {Time} from '../time';
+import {Timer} from '../timer';
+import {TimerCallback} from './callback';
 import {TimerCallbackGroup} from './callback/group';
+import {TimerCallbackSync} from './callback/sync';
 import type {TimerEventId} from './event/id';
+import {TimerOptions} from './options';
 import {timeMake} from '../time/make';
 import {timeNow} from '../time/now';
 
@@ -17,28 +20,31 @@ import {timeNow} from '../time/now';
  */
 export class TimerActive {
 	private _timerHandle: unknown;
+	private readonly _checkIntervalMs: Time;
+	public readonly _handlersBound: Bool;
 	public readonly lastIntervalEnd: Float;
-	public readonly running: Bool;
-	public readonly paused: Bool;
-	public readonly handlersBound: Bool;
-	public readonly timeLimit: Time;
 	public readonly limitDuration: Bool;
+	public readonly listeners: Record<TimerEventId, TimerCallbackGroup>;
+	public readonly paused: Bool;
+	public readonly running: Bool;
+	public readonly timeLimit: Time;
 	public readonly timeStart: Time;
 	public readonly timeStop: Time;
-	public readonly checkIntervalMs: Time;
-	public readonly listeners: Record<TimerEventId, TimerCallbackGroup>;
 
-	constructor() {
+	constructor(options?: TimerOptions) {
 		this.lastIntervalEnd = floatMake(0);
 		this.running = boolMake(false);
-		this.handlersBound = boolMake(false);
+		this._handlersBound = boolMake(false);
 
-		this.limitDuration = boolMake(false);
-		this.checkIntervalMs = timeMake('ms', Defaults.Timer.CheckIntervalMs);
+		const limitDuration = typeof options?.limitDuration === 'boolean' ? options?.limitDuration : false;
+		this.limitDuration = boolMake(limitDuration);
+		this._checkIntervalMs = timeMake('ms', Defaults.Timer.CheckIntervalMs);
 		this.timeStart = timeMake('s', 0);
 		this.timeStop = timeMake('s', 0);
-		this.timeLimit = timeMake('s', 0);
+		const timeLimit = typeof options?.timeLimit === 'number' ? options?.timeLimit : 0;
+		this.timeLimit = timeMake('s', timeLimit);
 		this.paused = boolMake(false);
+
 		this.listeners = {
 			start: new TimerCallbackGroup('start'),
 			stop: new TimerCallbackGroup('stop'),
@@ -91,24 +97,31 @@ export class TimerActive {
 		return true;
 	}
 
-	public setTimeLimit(value: number | Time): void {
+	public setTimeLimit(value: number | Time): boolean {
+		if (value === undefined || value === null) {
+			return false;
+		}
+
 		if (typeof value === 'number') {
 			this.timeLimit.set(value);
-			return;
+			return true;
 		}
 
 		if (value.type === 'Time') {
 			this.timeLimit.set(value.asSeconds());
+			return true;
 		}
+
+		return false;
 	}
 
 	public bindHandlers(): void {
-		if (this.handlersBound()) {
+		if (this._handlersBound()) {
 			return;
 		}
 
 		// Mark handlers as bound.
-		this.handlersBound(true);
+		this._handlersBound(true);
 
 		this.start = this.start.bind(this);
 		this.stop = this.stop.bind(this);
@@ -151,6 +164,15 @@ export class TimerActive {
 		await this.executeCallbacks('start');
 
 		return this.running(true);
+	}
+
+	public async done(): Promise<boolean> {
+		if (!this.running()) {
+			return false;
+		}
+
+		await this.executeCallbacks('done');
+		return this.stop();
 	}
 
 	public async stop(): Promise<boolean> {
@@ -207,9 +229,9 @@ export class TimerActive {
 
 		// Fixed duration timers should stop when reaching their time limit.
 		if (this.limitDuration()) {
-			const duration = this.timeStart.since(now());
+			const duration = this.timeStart.since(now);
 			if (duration && duration() >= this.timeLimit()) {
-				this.stop();
+				this.done();
 				return;
 			}
 		}

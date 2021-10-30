@@ -1,15 +1,15 @@
-import {timeCheckValid} from '../../../src/time/check/valid';
 import {timeMake} from '../../../src/time/make';
+import {timeValid} from '../../../src/time/valid';
 
 const EMPTY_STRING = '';
 
-describe('timeCheckValid', () => {
+describe('timeValid', () => {
 	it(`should return false when object arg is undefined`, () => {
-		expect(timeCheckValid(undefined as any)).toBe(false);
+		expect(timeValid(undefined as any)).toBe(false);
 	});
 
 	it(`should return false when object arg is not null`, () => {
-		expect(timeCheckValid(null)).toBe(false);
+		expect(timeValid(null)).toBe(false);
 	});
 
 	it(`should return false when object arg has no type property`, () => {
@@ -17,7 +17,7 @@ describe('timeCheckValid', () => {
 			until: jest.fn()
 		};
 
-		expect(timeCheckValid(o)).toBe(false);
+		expect(timeValid(o)).toBe(false);
 	});
 
 	it(`should return false when o.type is not 'Time'`, () => {
@@ -26,7 +26,7 @@ describe('timeCheckValid', () => {
 			type: 'tiiiime'
 		};
 
-		expect(timeCheckValid(o)).toBe(false);
+		expect(timeValid(o)).toBe(false);
 	});
 
 	it(`should return false when o.type is lowercase 'time'`, () => {
@@ -35,7 +35,7 @@ describe('timeCheckValid', () => {
 			type: 'time'
 		};
 
-		expect(timeCheckValid(o)).toBe(false);
+		expect(timeValid(o)).toBe(false);
 	});
 
 	it(`should return false when o.type is an empty string`, () => {
@@ -44,12 +44,12 @@ describe('timeCheckValid', () => {
 			type: EMPTY_STRING
 		};
 
-		expect(timeCheckValid(o)).toBe(false);
+		expect(timeValid(o)).toBe(false);
 	});
 
 	it(`should return true when o.type is 'Time'`, () => {
 		const o = timeMake('s', 0);
 		expect(o.type).toBe('Time');
-		expect(timeCheckValid(o)).toBe(true);
+		expect(timeValid(o)).toBe(true);
 	});
 });

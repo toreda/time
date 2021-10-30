@@ -1,16 +1,22 @@
 import {TimeUnit} from './time/unit';
 
+/**
+ * Properties required for all Time objects.
+ *
+ * @category Time
+ */
 export interface Time {
 	type: 'Time' | string;
 
-	(setTo?: number | Time | null): number;
+	(setTo?: Time | number | null): number;
 	add: (value: Time | number, decimals?: number) => Time;
 	sub: (value: Time | number, decimals?: number) => Time;
 	setNow: () => Time;
-	set: (value?: number | null) => Time;
+	set: (value?: Time | number | null) => Time;
 	reset: () => Time;
 	units: () => TimeUnit;
 
+	elapsed: (time: Time | number) => boolean;
 	since: (time: Time | number) => Time | null;
 	until: (time: Time | number) => Time | null;
 
@@ -24,25 +30,25 @@ export interface Time {
 	asWeeks: () => number | null;
 	asYears: () => number | null;
 
-	addYears: (value?: number | null) => Time;
-	addMonths: (value?: number | null) => Time;
-	addWeeks: (value?: number | null) => Time;
-	addDays: (value?: number | null) => Time;
-	addHours: (value?: number | null) => Time;
-	addMinutes: (value?: number | null) => Time;
-	addSeconds: (value?: number | null) => Time;
-	addMilliseconds: (value?: number | null) => Time;
-	addMicroseconds: (value?: number | null) => Time;
+	addYears: (value?: Time | number | null) => Time;
+	addMonths: (value?: Time | number | null) => Time;
+	addWeeks: (value?: Time | number | null) => Time;
+	addDays: (value?: Time | number | null) => Time;
+	addHours: (value?: Time | number | null) => Time;
+	addMinutes: (value?: Time | number | null) => Time;
+	addSeconds: (value?: Time | number | null) => Time;
+	addMilliseconds: (value?: Time | number | null) => Time;
+	addMicroseconds: (value?: Time | number | null) => Time;
 
-	subYears: (value?: number | null) => Time;
-	subMonths: (value?: number | null) => Time;
-	subWeeks: (value?: number | null) => Time;
-	subDays: (value?: number | null) => Time;
-	subHours: (value?: number | null) => Time;
-	subMinutes: (value?: number | null) => Time;
-	subSeconds: (value?: number | null) => Time;
-	subMilliseconds: (value?: number | null) => Time;
-	subMicroseconds: (value?: number | null) => Time;
+	subYears: (value?: Time | number | null) => Time;
+	subMonths: (value?: Time | number | null) => Time;
+	subWeeks: (value?: Time | number | null) => Time;
+	subDays: (value?: Time | number | null) => Time;
+	subHours: (value?: Time | number | null) => Time;
+	subMinutes: (value?: Time | number | null) => Time;
+	subSeconds: (value?: Time | number | null) => Time;
+	subMilliseconds: (value?: Time | number | null) => Time;
+	subMicroseconds: (value?: Time | number | null) => Time;
 
 	toYears: () => Time;
 	toMonths: () => Time;

@@ -1,9 +1,11 @@
 import {Defaults} from '../../src/defaults';
+import {Log} from '@toreda/log';
 import {Time} from '../../src/time';
 import {TimeData} from '../../src/time/data';
 import {timeMake} from '../../src/time/make';
 import {timeNow} from '../../src/time/now';
 import {timeUnitKeys} from '../_data/units';
+import {typeMatch} from '@toreda/strong-types';
 
 describe('TimeData', () => {
 	let instance: TimeData;
@@ -25,9 +27,38 @@ describe('TimeData', () => {
 				expect(custom.units()).toBe(key);
 			});
 		}
+
+		it(`should create a new log instance when log arg is undefined`, () => {
+			const custom = new TimeData('s', 0, undefined);
+			expect(typeMatch(custom.log, Log)).toBe(true);
+		});
+
+		it(`should create a new log instance when log arg is null`, () => {
+			const custom = new TimeData('s', 0, null);
+			expect(typeMatch(custom.log, Log)).toBe(true);
+		});
+
+		it(`should create a new log instance when log arg is truthy, but not a log instance`, () => {
+			const custom = new TimeData('s', 0, time as any);
+			expect(typeMatch(custom.log, Log)).toBe(true);
+		});
 	});
 
 	describe('Implementation', () => {
+		describe('getUnitValue', () => {
+			it(`should return null when input is undefined`, () => {
+				expect(instance.getUnitValue('s', undefined)).toBeNull();
+			});
+
+			it(`should return null when input is null`, () => {
+				expect(instance.getUnitValue('s', null)).toBeNull();
+			});
+
+			it(`should return null when input is undefined`, () => {
+				expect(instance.getUnitValue('s', undefined)).toBeNull();
+			});
+		});
+
 		describe('Invert', () => {
 			it(`should change 1 to -1 when posOnly flag is not set`, () => {
 				instance.set(time, 1);

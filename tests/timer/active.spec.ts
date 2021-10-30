@@ -1,16 +1,17 @@
 import {TimerActive} from '../../src/timer/active';
+import {TimerCallback} from '../../src/timer/callback';
 import {TimerEventId} from '../../src/timer/event/id';
-import {seconds} from '../../src/seconds';
-import {timeNow} from '../../src/time/now';
-import {timeNowOffset} from '../../src/time/now/offset';
+import {timeMake} from '../../src/time/make';
 
 const EVENT_IDS: TimerEventId[] = ['pause', 'reset', 'restart', 'start', 'stop', 'unpause', 'done'];
 const EMPTY_STRING = '';
 
 describe('TimerActive', () => {
 	let instance: TimerActive;
+	let sampleCallback: TimerCallback;
 
 	beforeAll(() => {
+		sampleCallback = jest.fn();
 		instance = new TimerActive();
 	});
 
@@ -30,7 +31,7 @@ describe('TimerActive', () => {
 		});
 
 		it(`should initialize handlersBound to false`, () => {
-			expect(custom.handlersBound()).toBe(false);
+			expect(custom._handlersBound()).toBe(false);
 		});
 
 		it(`should initialize lastIntervalEnd to 0`, () => {
@@ -98,9 +99,53 @@ describe('TimerActive', () => {
 					expect(fn).toHaveBeenCalledTimes(1);
 				});
 			}
+
+			it(`should return false when fn arg is undefined`, () => {
+				expect(instance.once('done', undefined as any)).toBe(false);
+			});
+
+			it(`should return false when fn arg is null`, () => {
+				expect(instance.once('done', null as any)).toBe(false);
+			});
+
+			it(`should return false when fn arg is not a function`, () => {
+				expect(instance.once('done', 'aaaaa' as any)).toBe(false);
+			});
+
+			it(`should return false when id is undefined`, () => {
+				expect(instance.once(undefined as any, sampleCallback)).toBe(false);
+			});
+
+			it(`should return false when id is null`, () => {
+				expect(instance.once(null as any, sampleCallback)).toBe(false);
+			});
+
+			it(`should return false when id is an unsupported eventId`, () => {
+				expect(instance.once('aaaaaaa' as any, sampleCallback)).toBe(false);
+			});
+
+			it(`should return false when id is an empty string`, () => {
+				expect(instance.once(EMPTY_STRING as any, sampleCallback)).toBe(false);
+			});
 		});
 
 		describe('on', () => {
+			it(`should return false when id is undefined`, () => {
+				expect(instance.on(undefined as any, sampleCallback)).toBe(false);
+			});
+
+			it(`should return false when id is null`, () => {
+				expect(instance.on(null as any, sampleCallback)).toBe(false);
+			});
+
+			it(`should return false when id is an unsupported eventId`, () => {
+				expect(instance.on('aaaaaaa' as any, sampleCallback)).toBe(false);
+			});
+
+			it(`should return false when id is an empty string`, () => {
+				expect(instance.on(EMPTY_STRING as any, sampleCallback)).toBe(false);
+			});
+
 			it(`should return false when fn arg is null`, () => {
 				expect(instance.on('pause', null as any)).toBe(false);
 			});
@@ -125,6 +170,18 @@ describe('TimerActive', () => {
 				expect(instance.listeners.pause._always().length).toBe(0);
 				expect(instance.on('pause', fn1)).toBe(true);
 				expect(instance.listeners.pause._always().length).toBe(1);
+			});
+
+			it(`should return false when fn arg is undefined`, () => {
+				expect(instance.on('done', undefined as any)).toBe(false);
+			});
+
+			it(`should return false when fn arg is null`, () => {
+				expect(instance.on('done', null as any)).toBe(false);
+			});
+
+			it(`should return false when fn arg is not a function`, () => {
+				expect(instance.on('done', 'aaaaa' as any)).toBe(false);
 			});
 		});
 
@@ -157,6 +214,41 @@ describe('TimerActive', () => {
 			}
 		});
 
+		describe('setTimeLimit', () => {
+			it(`should return true when value is a number`, () => {
+				const value = 1315613;
+				expect(instance.setTimeLimit(value)).toBe(true);
+			});
+
+			it(`should return false when value is undefined`, () => {
+				expect(instance.setTimeLimit(undefined as any)).toBe(false);
+			});
+
+			it(`should return false when value is null`, () => {
+				expect(instance.setTimeLimit(null as any)).toBe(false);
+			});
+
+			it(`should return false when value is not a number or Time object`, () => {
+				expect(instance.setTimeLimit('aaaaaa' as any)).toBe(false);
+			});
+
+			it(`should return set timeLimit value when value is a number`, () => {
+				instance.timeLimit(0);
+				expect(instance.timeLimit()).toBe(0);
+				const value = 46818614;
+				expect(instance.setTimeLimit(value)).toBe(true);
+				expect(instance.timeLimit()).toBe(value);
+			});
+
+			it(`should return set timeLimit value when value is a Time object`, () => {
+				instance.timeLimit(0);
+				expect(instance.timeLimit()).toBe(0);
+				const value = timeMake('s', 771791);
+				expect(instance.setTimeLimit(value)).toBe(true);
+				expect(instance.timeLimit()).toBe(value());
+			});
+		});
+
 		describe('stop', () => {
 			it(`should set running false when timer is running`, async () => {
 				instance.running(true);
@@ -183,9 +275,9 @@ describe('TimerActive', () => {
 
 		describe('bindHandlers', () => {
 			it(`should set handlersBound flag when it is not already set`, () => {
-				instance.handlersBound(false);
+				instance._handlersBound(false);
 				instance.bindHandlers();
-				expect(instance.handlersBound()).toBe(true);
+				expect(instance._handlersBound()).toBe(true);
 			});
 		});
 
@@ -303,9 +395,16 @@ describe('TimerActive', () => {
 				stopSpy.mockRestore();
 			});
 
-			it(`-`, () => {
-
+			it(`should not call stop when timer is not running`, () => {
+				expect(stopSpy).not.toHaveBeenCalled();
+				instance.running(false);
+				instance.limitDuration(true);
+				instance.timeLimit(10);
+				instance.timeStart.setNow().subHours(3);
+				instance.onUpdate();
+				expect(stopSpy).not.toHaveBeenCalled();
 			});
+
 			/**
 			it(`should stop timer when the max duration has elapsed`, () => {
 				expect(stopSpy).not.toHaveBeenCalled();
@@ -320,8 +419,6 @@ describe('TimerActive', () => {
 				expect(stopSpy).toHaveBeenCalledTimes(1);
 			});
 			**/
-
-
 		});
 
 		describe('reset', () => {
@@ -337,9 +434,7 @@ describe('TimerActive', () => {
 				expect(instance.paused()).toBe(false);
 			});
 
-			it(`should reset limitDuration to its fallback value`, () => {
-
-			});
+			it(`should reset limitDuration to its fallback value`, () => {});
 		});
 	});
 });

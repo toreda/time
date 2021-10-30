@@ -5,9 +5,9 @@ import {Log} from '@toreda/log';
 import type {Time} from '../time';
 import type {TimeUnit} from './unit';
 import {timeCheckType} from './check/type';
-import {timeCheckValid} from './check/valid';
 import {timeConvert} from './convert';
 import {timeMake} from './make';
+import {timeValid} from './valid';
 
 /**
  * Internal state data created and wrapped by Time instances.
@@ -17,7 +17,7 @@ export class TimeData {
 	private readonly value: Float;
 	public readonly log: Log;
 
-	constructor(units: TimeUnit, value: number, log?: Log) {
+	constructor(units: TimeUnit, value: number, log?: Log | null) {
 		this.units = strongMake(units);
 		this.value = floatMake(0, value);
 		this.log = this.makeLog(log);
@@ -56,7 +56,7 @@ export class TimeData {
 			return caller;
 		}
 
-		if (!timeCheckValid(input)) {
+		if (!timeValid(input)) {
 			fnLog.error(`time arg failed validity check.`);
 			return caller;
 		}
@@ -102,6 +102,29 @@ export class TimeData {
 		}
 
 		return this.addNumber(caller, input * -1);
+	}
+
+	/**
+	 * Get numeric unit value from a Time or number input. Time inputs are converted from
+	 * their native TimeUnit to the TimeUnit specified by the `convertTo` arg.
+	 * @param convertTo
+	 * @param input
+	 * @returns
+	 */
+	public getUnitValue(convertTo: TimeUnit, input?: Time | number | null): number | null {
+		if (input === null || input === undefined) {
+			return null;
+		}
+
+		if (typeof input === 'number') {
+			return input;
+		}
+
+		if (input.type !== 'Time') {
+			return null;
+		}
+
+		return timeConvert(input.units(), convertTo, input());
 	}
 
 	/**

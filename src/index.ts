@@ -8,7 +8,7 @@ export {seconds} from './seconds';
 export {Time} from './time';
 export {timeCheckMethods} from './time/check/methods';
 export {timeCheckType} from './time/check/type';
-export {timeCheckValid} from './time/check/valid';
+export {timeValid} from './time/valid';
 export {TimeConstants} from './time/constants';
 export {timeConversions} from './time/conversions';
 export {timeConvert, canConvert} from './time/convert';
