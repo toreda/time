@@ -23,9 +23,11 @@
 	},
 	"keywords": [
 		"time",
-		"helpers",
+		"time functions",
+		"time helpers",
 		"timestamp",
-		"typescript"
+		"typescript",
+		"toreda"
 	],
 	"author": "Toreda, Inc.",
 	"license": "MIT",
