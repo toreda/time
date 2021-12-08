@@ -1,5 +1,5 @@
 import {TimerCallbackGroup} from '../../../src/timer/callback/group';
-import {isAsyncFunction} from 'util/types';
+import {isAsyncFunction} from 'node:util/types';
 
 const EMPTY_ARRAY = [];
 
