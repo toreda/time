@@ -16,5 +16,16 @@
 			"coverage/**": true,
 			"test-report.xml": true
 		}
+	},
+	"extensions": {
+		"recommendations": [
+			"yzhang.markdown-all-in-one",
+			"eg2.vscode-npm-script",
+			"sonarsource.sonarlint-vscode",
+			"amatiasq.sort-imports",
+			"dbaeumer.vscode-eslint",
+			"esbenp.prettier-vscode",
+			"aaron-bond.better-comments"
+		]
 	}
 }
