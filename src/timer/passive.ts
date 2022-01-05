@@ -1,7 +1,8 @@
-import {Bool, Float, UInt, boolMake, floatMake, uIntMake} from '@toreda/strong-types';
+import type {Bool, Float, UInt} from '@toreda/strong-types';
+import {boolMake, floatMake, uIntMake} from '@toreda/strong-types';
 
-import {Time} from '../time';
-import {Timer} from '../timer';
+import type {Time} from '../time';
+import type {Timer} from '../timer';
 import {timeMake} from '../time/make';
 import {timeSince} from '../time/since';
 

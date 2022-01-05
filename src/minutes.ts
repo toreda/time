@@ -1,8 +1,8 @@
-import {Time} from './time';
+import type {Time} from './time';
 import {timeMake} from './time/make';
 
 /**
- * Create Time object in 'minutes'
+ * Create Time object using minutes.
  * @param initial		Object's initial value (in minutes).
  * @returns				Time object
  *

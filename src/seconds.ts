@@ -1,4 +1,4 @@
-import {Time} from './time';
+import type {Time} from './time';
 import {timeMake} from './time/make';
 
 /**

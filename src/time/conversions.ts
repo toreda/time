@@ -1,5 +1,5 @@
 import {TimeConstants} from './constants';
-import {TimeUnit} from './unit';
+import type {TimeUnit} from './unit';
 
 export const timeConversions: Record<TimeUnit, Record<TimeUnit, number>> = {
 	m: {

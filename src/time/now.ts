@@ -1,6 +1,6 @@
 import {Defaults} from '../defaults';
-import {Time} from '../time';
-import {TimeUnit} from './unit';
+import type {Time} from '../time';
+import type {TimeUnit} from './unit';
 import {timeMake} from './make';
 
 /**

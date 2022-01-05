@@ -1,4 +1,4 @@
-import {Time} from '../time';
+import type {Time} from '../time';
 import {timeCheckMethods} from './check/methods';
 import {timeCheckType} from './check/type';
 

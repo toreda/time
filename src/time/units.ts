@@ -1,4 +1,4 @@
-import {TimeUnit} from './unit';
+import type {TimeUnit} from './unit';
 
 /**
  * Maps common time unit aliases to unique time unique keys.

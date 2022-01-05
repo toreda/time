@@ -1,9 +1,9 @@
 import {Log} from '@toreda/log';
-import {Time} from './time';
+import type {Time} from './time';
 import {timeMake} from './time/make';
 
 /**
- * Create Time object in 'months'
+ * Create Time object with months as time unit.
  * @param initial		Object's initial value (in months).
  * @returns				Time object
  *

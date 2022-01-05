@@ -1,7 +1,7 @@
 import {canConvert, timeConvert} from '../../src/time/convert';
 
 import {TimeConstants} from '../../src/time/constants';
-import {TimeUnit} from '../../src/time/unit';
+import type {TimeUnit} from '../../src/time/unit';
 import {timeUnitLabels} from '../../src/time/unit/labels';
 
 const MOCK_FROM = 's';
@@ -330,7 +330,7 @@ describe('timeConvert', () => {
 		});
 
 		it(`should return null when converted value is too big to be converted accurately`, () => {
-			expect(timeConvert('d', 'ms', 99999999999999999999999)).toBeNull();
+			expect(timeConvert('d', 'ms', 9999999999999999999999999)).toBeNull();
 		});
 
 		it(`should return null when output value is not finite`, () => {

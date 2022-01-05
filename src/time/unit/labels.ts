@@ -1,6 +1,11 @@
-import {TimeUnit} from '../unit';
-import {TimeUnitLabel} from './label';
+import type {TimeUnit} from '../unit';
+import type {TimeUnitLabel} from './label';
 
+/**
+ * Labels for each time unit including singular and plurals.
+ *
+ * @category Time Units
+ */
 export const timeUnitLabels: Record<TimeUnit, TimeUnitLabel> = {
 	m: {
 		timeUnit: 'm',

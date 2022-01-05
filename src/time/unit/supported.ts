@@ -1,12 +1,15 @@
-import {TimeUnit} from '../unit';
+import type {TimeUnit} from '../unit';
 import {timeUnits} from '../units';
 
 /**
- * Check whether target time unit is supported.
- * @param key
- * @returns
+ * Check if time unit is supported.
+ * @param unit		String to validate as supported time unit.
+ * @returns			true 	-	Provided `unit` string is a supported time unit.
+ *					false	-	Provided `unit` string is not a supported time unit.
+ *
+ * @category Time Units
  */
-export function timeUnitSupported(unit?: TimeUnit): boolean {
+export function timeUnitSupported(unit?: TimeUnit): unit is TimeUnit {
 	if (!unit) {
 		return false;
 	}

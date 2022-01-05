@@ -1,4 +1,4 @@
-import {Time} from '../time';
+import type {Time} from '../time';
 import {timeConvert} from './convert';
 import {timeMake} from './make';
 import {timeNow} from './now';

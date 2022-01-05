@@ -8,7 +8,7 @@ import {TimerCallback} from './callback';
 import {TimerCallbackGroup} from './callback/group';
 import {TimerCallbackSync} from './callback/sync';
 import type {TimerEventId} from './event/id';
-import {TimerOptions} from './options';
+import type {TimerOptions} from './options';
 import {timeMake} from '../time/make';
 import {timeNow} from '../time/now';
 

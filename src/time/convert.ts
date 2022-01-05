@@ -1,5 +1,5 @@
 import {Defaults} from '../defaults';
-import {TimeUnit} from './unit';
+import type {TimeUnit} from './unit';
 import {timeConversions} from './conversions';
 import {timeUnitSupported} from './unit/supported';
 

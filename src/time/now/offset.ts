@@ -1,4 +1,4 @@
-import {Time} from '../../time';
+import type {Time} from '../../time';
 import {timeNow} from '../now';
 
 export function timeNowOffset(offset: number | Time): Time {

@@ -1,4 +1,4 @@
-import {TimeUnit} from '../unit';
+import type {TimeUnit} from '../unit';
 
 /**
  * @category Time Units

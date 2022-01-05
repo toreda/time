@@ -1,4 +1,4 @@
-import {Time} from '../../time';
+import type {Time} from '../../time';
 
 /**
  * Check whether provided object is a Time object.

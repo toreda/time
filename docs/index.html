@@ -1,23 +1,142 @@
-<!DOCTYPE html><html class="default no-js"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@toreda/time</title><meta name="description" content="Documentation for @toreda/time"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@toreda/time</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>@toreda/time</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography">
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>@toreda/time</title><meta name="description" content="Documentation for @toreda/time"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">@toreda/time</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><h1>@toreda/time</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><div class="tsd-panel tsd-typography"><p><a href="https://www.toreda.com"><img src="https://content.toreda.com/logo/toreda-logo.png" alt="Toreda"></a></p>
+<p><a href="https://github.com/toreda/time/actions"><img src="https://img.shields.io/github/workflow/status/toreda/time/CI?style=for-the-badge" alt="CI"></a> <a href="https://sonarcloud.io/project/activity?graph=coverage&amp;id=toreda_time"><img src="https://img.shields.io/sonar/coverage/toreda_time?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge" alt="Coverage"></a> <a href="https://sonarcloud.io/dashboard?id=toreda_time"><img src="https://img.shields.io/sonar/quality_gate/toreda_time?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge" alt="Sonar Quality Gate"></a></p>
+<p><a href="https://github.com/toreda/time/releases/latest"><img src="https://img.shields.io/github/package-json/v/toreda/time/master?style=for-the-badge" alt="GitHub package.json version (branch)"></a> <a href="https://github.com/toreda/time/releases/latest"><img src="https://img.shields.io/github/release-date/toreda/time?style=for-the-badge" alt="GitHub Release Date"></a> <a href="https://github.com/toreda/time/issues"><img src="https://img.shields.io/github/issues/toreda/time?style=for-the-badge" alt="GitHub issues"></a></p>
+<p> <a href="https://github.com/toreda/time/blob/master/LICENSE"><img src="https://img.shields.io/github/license/toreda/time?style=for-the-badge" alt="license"></a></p>
+<p>&nbsp;</p>
+
 <a href="#toredatime" id="toredatime" style="color: inherit; text-decoration: none;">
   <h1><code>@toreda/time</code></h1>
 </a>
-<p><img src="https://content.toreda.com/logo/toreda-logo.png" alt="Toreda"></p>
-<p><img src="https://github.com/toreda/time/workflows/CI/badge.svg?branch=master" alt="CI"> <a href="https://sonarcloud.io/dashboard?id=toreda_time"><img src="https://sonarcloud.io/api/project_badges/measure?project=toreda_time&metric=coverage" alt="Coverage"></a> <a href="https://sonarcloud.io/dashboard?id=toreda_time"><img src="https://sonarcloud.io/api/project_badges/measure?project=toreda_time&metric=alert_status" alt="Quality Gate Status"></a></p>
-<p>Helpers for common time &amp; timer functionality.</p>
+<p>Fast &amp; easy time math and time unit conversions.</p>
+<p>&nbsp;</p>
+
+<a href="#use-cases" id="use-cases" style="color: inherit; text-decoration: none;">
+  <h2>Use Cases</h2>
+</a>
+<ul>
+<li><strong>Time since date</strong><ul>
+<li>Get seconds or any other time unit since <code>date</code>, <code>datetime</code>, <code>timestamp</code>, or <code>unix timestamp</code>.</li>
+</ul>
+</li>
+<li><strong>Time until date</strong><ul>
+<li>Get seconds or other time unit until <code>date</code>, <code>datetime</code>, <code>timestamp</code>, or <code>unix timestamp</code>.</li>
+</ul>
+</li>
+<li><strong>Now</strong><ul>
+<li>Get current timestamp (now) in seconds or other time unit.</li>
+</ul>
+</li>
+<li><strong>Now (with offset)`</strong><ul>
+<li>Get current timestamp (now) with an offset in the past or future.</li>
+</ul>
+</li>
+<li><strong>DateTime Parsing</strong><ul>
+<li>Parse strings as <code>DateTime</code> strings.</li>
+<li>Convert to any other time unit.</li>
+</ul>
+</li>
+<li><strong>Unix Timestamps</strong><ul>
+<li>Parse <code>Unix Timstamps</code> (seconds) &amp; convert to other time units.</li>
+<li>Convert <code>DateTime</code> strings to <code>Unix Timestamp</code>.</li>
+</ul>
+</li>
+</ul>
+<p>&nbsp;</p>
+
+<a href="#highlights" id="highlights" style="color: inherit; text-decoration: none;">
+  <h2>Highlights</h2>
+</a>
+<ul>
+<li><strong>TypeScript Native</strong><ul>
+<li>All types included with package.</li>
+<li>No separate <code>@types</code> package eliminates sync issues between types and the library.</li>
+</ul>
+</li>
+<li><strong>Minimalist</strong><ul>
+<li>Small set of library functions for time calculations.</li>
+<li>Get what you need without extra bloat.</li>
+</ul>
+</li>
+<li><strong>Lightweight</strong><ul>
+<li><strong><code>253 kB</code></strong> unpacked.</li>
+</ul>
+</li>
+<li><strong>Modern Alternative</strong><ul>
+<li>Modern replacement for the excellent <a href="https://momentjs.com/docs/#/-project-status/"><code>moment.js</code></a> (no longer maintained).</li>
+</ul>
+</li>
+<li><strong>Tree-Shaking</strong><ul>
+<li>Package optimizations helps modern bundlers drop unused code.</li>
+</ul>
+</li>
+</ul>
 <p>&nbsp;</p>
 
 <a href="#install" id="install" style="color: inherit; text-decoration: none;">
   <h1>Install</h1>
 </a>
+
+<a href="#npmjsorg" id="npmjsorg" style="color: inherit; text-decoration: none;">
+  <h2><code>npmjs.org</code></h2>
+</a>
+
+<a href="#npm-package" id="npm-package" style="color: inherit; text-decoration: none;">
+  <h2>NPM Package</h2>
+</a>
 <p><code>@toreda/time</code> is available as an <a href="https://www.npmjs.com/package/@toreda/time">NPM package</a>.</p>
-<p>&nbsp;</p>
-<p><strong>Install with yarn:</strong></p>
+
+<a href="#yarn-install-preferred" id="yarn-install-preferred" style="color: inherit; text-decoration: none;">
+  <h3>Yarn Install (preferred)</h3>
+</a>
 <pre><code class="language-bash"><span class="hl-0">yarn add @toreda/time</span>
 </code></pre>
-<p><strong>or Install with NPM:</strong></p>
+
+<a href="#npm-install" id="npm-install" style="color: inherit; text-decoration: none;">
+  <h3>NPM Install</h3>
+</a>
 <pre><code class="language-bash"><span class="hl-0">npm install @toreda/time</span>
 </code></pre>
+<p>&nbsp;</p>
+
+<a href="#source-code" id="source-code" style="color: inherit; text-decoration: none;">
+  <h1>Source Code</h1>
+</a>
+<p><code>@toreda/time</code> source files can be downloaded directly from the public <a href="https://github.com/toreda/time">Github repo</a>.</p>
+
+<a href="#branches" id="branches" style="color: inherit; text-decoration: none;">
+  <h2>Branches</h2>
+</a>
+<ul>
+<li><code>master</code> branch<ul>
+<li>Latest release &amp; stable code.</li>
+<li>Use for production builds.</li>
+</ul>
+</li>
+<li><code>develop</code> branch<ul>
+<li>All completed but unreleased features pending release.</li>
+<li>Generally stable, but not guaranteed.</li>
+<li>Not suitable for production builds.</li>
+</ul>
+</li>
+</ul>
+
+<a href="#git-clone-ssh" id="git-clone-ssh" style="color: inherit; text-decoration: none;">
+  <h2>Git Clone (ssh)</h2>
+</a>
+<pre><code class="language-bash"><span class="hl-0">git@github.com:toreda/time.git</span>
+</code></pre>
+
+<a href="#git-clone-https" id="git-clone-https" style="color: inherit; text-decoration: none;">
+  <h2>Git Clone (https)</h2>
+</a>
+<pre><code class="language-bash"><span class="hl-0">https://github.com/toreda/time.git</span>
+</code></pre>
+
+<a href="#download-zip-https" id="download-zip-https" style="color: inherit; text-decoration: none;">
+  <h2>Download Zip (https)</h2>
+</a>
+<p>Download the current master branch as a zip file
+<code>https://github.com/toreda/time/archive/refs/heads/master.zip</code></p>
 <p>&nbsp;</p>
 
 <a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
@@ -34,7 +153,7 @@
 <pre><code class="language-typescript"><span class="hl-4">// Set time using a Unix Timestamp (in seconds)</span><br/><span class="hl-2">time</span><span class="hl-0">.</span><span class="hl-7">set</span><span class="hl-0">(</span><span class="hl-8">1635577204</span><span class="hl-0">);</span><br/><br/><span class="hl-4">// Set using ISO-8601 string</span><br/><span class="hl-2">time</span><span class="hl-0">.</span><span class="hl-7">set</span><span class="hl-0">(</span><span class="hl-3">&#39;2021-10-30T06:13:33+00:00&#39;</span><span class="hl-0">);</span>
 </code></pre>
 <p><strong>Set current time (now)</strong></p>
-<pre><code class="language-typescript"><span class="hl-4">// Set Time to current time.</span><br/><span class="hl-2">time</span><span class="hl-0">.</span><span class="hl-7">setNow</span><span class="hl-0">();</span><br/>
+<pre><code class="language-typescript"><span class="hl-4">// Set Time to current time.</span><br/><span class="hl-2">time</span><span class="hl-0">.</span><span class="hl-7">setNow</span><span class="hl-0">();</span>
 </code></pre>
 
 <a href="#timestamps" id="timestamps" style="color: inherit; text-decoration: none;">
@@ -62,13 +181,28 @@
 </code></pre>
 <p>&nbsp;</p>
 
-<a href="#source-code" id="source-code" style="color: inherit; text-decoration: none;">
+<a href="#source-code-1" id="source-code-1" style="color: inherit; text-decoration: none;">
   <h1>Source Code</h1>
 </a>
 <p><code>@toreda/time</code> is an open source package provided under the MIT License. Download, clone, or check the complete project source <a href="https://www.npmjs.com/package/@toreda/time">here on Github</a>. We welcome bug reports, comments, and pull requests.</p>
+<p>&nbsp;</p>
+
+<a href="#legal" id="legal" style="color: inherit; text-decoration: none;">
+  <h1>Legal</h1>
+</a>
 
 <a href="#license" id="license" style="color: inherit; text-decoration: none;">
-  <h1>License</h1>
+  <h2>License</h2>
 </a>
 <p><a href="LICENSE">MIT</a> &copy; Toreda, Inc.</p>
-</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-enum"><a href="enums/TimeConstants.html" class="tsd-kind-icon">Time<wbr/>Constants</a></li><li class="tsd-kind-class"><a href="classes/Defaults.html" class="tsd-kind-icon">Defaults</a></li><li class="tsd-kind-class"><a href="classes/TimeData.html" class="tsd-kind-icon">Time<wbr/>Data</a></li><li class="tsd-kind-class"><a href="classes/TimerActive.html" class="tsd-kind-icon">Timer<wbr/>Active</a></li><li class="tsd-kind-class"><a href="classes/TimerCallbackGroup.html" class="tsd-kind-icon">Timer<wbr/>Callback<wbr/>Group</a></li><li class="tsd-kind-class"><a href="classes/TimerPassive.html" class="tsd-kind-icon">Timer<wbr/>Passive</a></li><li class="tsd-kind-interface"><a href="interfaces/Time.html" class="tsd-kind-icon">Time</a></li><li class="tsd-kind-interface"><a href="interfaces/TimeUnitLabel.html" class="tsd-kind-icon">Time<wbr/>Unit<wbr/>Label</a></li><li class="tsd-kind-interface"><a href="interfaces/Timer.html" class="tsd-kind-icon">Timer</a></li><li class="tsd-kind-type-alias"><a href="modules.html#TimeUnit" class="tsd-kind-icon">Time<wbr/>Unit</a></li><li class="tsd-kind-type-alias"><a href="modules.html#TimerCallback" class="tsd-kind-icon">Timer<wbr/>Callback</a></li><li class="tsd-kind-type-alias"><a href="modules.html#TimerCallbackSync" class="tsd-kind-icon">Timer<wbr/>Callback<wbr/>Sync</a></li><li class="tsd-kind-type-alias"><a href="modules.html#TimerEventId" class="tsd-kind-icon">Timer<wbr/>Event<wbr/>Id</a></li><li class="tsd-kind-variable"><a href="modules.html#timeConversions" class="tsd-kind-icon">time<wbr/>Conversions</a></li><li class="tsd-kind-variable"><a href="modules.html#timeMethods" class="tsd-kind-icon">time<wbr/>Methods</a></li><li class="tsd-kind-variable"><a href="modules.html#timeUnitLabels" class="tsd-kind-icon">time<wbr/>Unit<wbr/>Labels</a></li><li class="tsd-kind-variable"><a href="modules.html#timeUnits" class="tsd-kind-icon">time<wbr/>Units</a></li><li class="tsd-kind-function"><a href="modules.html#canConvert" class="tsd-kind-icon">can<wbr/>Convert</a></li><li class="tsd-kind-function"><a href="modules.html#days" class="tsd-kind-icon">days</a></li><li class="tsd-kind-function"><a href="modules.html#microseconds" class="tsd-kind-icon">microseconds</a></li><li class="tsd-kind-function"><a href="modules.html#milliseconds" class="tsd-kind-icon">milliseconds</a></li><li class="tsd-kind-function"><a href="modules.html#minutes" class="tsd-kind-icon">minutes</a></li><li class="tsd-kind-function"><a href="modules.html#months" class="tsd-kind-icon">months</a></li><li class="tsd-kind-function"><a href="modules.html#seconds" class="tsd-kind-icon">seconds</a></li><li class="tsd-kind-function"><a href="modules.html#timeCheckMethods" class="tsd-kind-icon">time<wbr/>Check<wbr/>Methods</a></li><li class="tsd-kind-function"><a href="modules.html#timeCheckType" class="tsd-kind-icon">time<wbr/>Check<wbr/>Type</a></li><li class="tsd-kind-function"><a href="modules.html#timeConvert" class="tsd-kind-icon">time<wbr/>Convert</a></li><li class="tsd-kind-function"><a href="modules.html#timeMake" class="tsd-kind-icon">time<wbr/>Make</a></li><li class="tsd-kind-function"><a href="modules.html#timeNow" class="tsd-kind-icon">time<wbr/>Now</a></li><li class="tsd-kind-function"><a href="modules.html#timeNowOffset" class="tsd-kind-icon">time<wbr/>Now<wbr/>Offset</a></li><li class="tsd-kind-function"><a href="modules.html#timeSince" class="tsd-kind-icon">time<wbr/>Since</a></li><li class="tsd-kind-function"><a href="modules.html#timeUnitSupported" class="tsd-kind-icon">time<wbr/>Unit<wbr/>Supported</a></li><li class="tsd-kind-function"><a href="modules.html#timeUntil" class="tsd-kind-icon">time<wbr/>Until</a></li><li class="tsd-kind-function"><a href="modules.html#timeValid" class="tsd-kind-icon">time<wbr/>Valid</a></li><li class="tsd-kind-function"><a href="modules.html#unixTimestampNow" class="tsd-kind-icon">unix<wbr/>Timestamp<wbr/>Now</a></li><li class="tsd-kind-function"><a href="modules.html#weeks" class="tsd-kind-icon">weeks</a></li><li class="tsd-kind-function"><a href="modules.html#years" class="tsd-kind-icon">years</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li><li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li><li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li><li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>
+
+<a href="#copyright" id="copyright" style="color: inherit; text-decoration: none;">
+  <h2>Copyright</h2>
+</a>
+<p>Copyright &copy; 2019 - 2022 Toreda, Inc. All Rights Reserved.</p>
+
+<a href="#website" id="website" style="color: inherit; text-decoration: none;">
+  <h2>Website</h2>
+</a>
+<p>Toreda&#39;s company website can be found at <a href="https://www.toreda.com">toreda.com</a></p>
+</div></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class="current"><a href="modules.html">Exports</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="tsd-kind-enum"><a href="enums/TimeConstants.html" class="tsd-kind-icon">Time<wbr/>Constants</a></li><li class="tsd-kind-class"><a href="classes/Defaults.html" class="tsd-kind-icon">Defaults</a></li><li class="tsd-kind-class"><a href="classes/TimeData.html" class="tsd-kind-icon">Time<wbr/>Data</a></li><li class="tsd-kind-class"><a href="classes/TimerActive.html" class="tsd-kind-icon">Timer<wbr/>Active</a></li><li class="tsd-kind-class"><a href="classes/TimerCallbackGroup.html" class="tsd-kind-icon">Timer<wbr/>Callback<wbr/>Group</a></li><li class="tsd-kind-class"><a href="classes/TimerPassive.html" class="tsd-kind-icon">Timer<wbr/>Passive</a></li><li class="tsd-kind-interface"><a href="interfaces/Time.html" class="tsd-kind-icon">Time</a></li><li class="tsd-kind-interface"><a href="interfaces/TimeUnitLabel.html" class="tsd-kind-icon">Time<wbr/>Unit<wbr/>Label</a></li><li class="tsd-kind-interface"><a href="interfaces/Timer.html" class="tsd-kind-icon">Timer</a></li><li class="tsd-kind-interface"><a href="interfaces/TimerOptions.html" class="tsd-kind-icon">Timer<wbr/>Options</a></li><li class="tsd-kind-type-alias"><a href="modules.html#TimeUnit" class="tsd-kind-icon">Time<wbr/>Unit</a></li><li class="tsd-kind-type-alias"><a href="modules.html#TimerCallback" class="tsd-kind-icon">Timer<wbr/>Callback</a></li><li class="tsd-kind-type-alias"><a href="modules.html#TimerCallbackSync" class="tsd-kind-icon">Timer<wbr/>Callback<wbr/>Sync</a></li><li class="tsd-kind-type-alias"><a href="modules.html#TimerEventId" class="tsd-kind-icon">Timer<wbr/>Event<wbr/>Id</a></li><li class="tsd-kind-variable"><a href="modules.html#timeConversions" class="tsd-kind-icon">time<wbr/>Conversions</a></li><li class="tsd-kind-variable"><a href="modules.html#timeMethods" class="tsd-kind-icon">time<wbr/>Methods</a></li><li class="tsd-kind-variable"><a href="modules.html#timeUnitLabels" class="tsd-kind-icon">time<wbr/>Unit<wbr/>Labels</a></li><li class="tsd-kind-variable"><a href="modules.html#timeUnits" class="tsd-kind-icon">time<wbr/>Units</a></li><li class="tsd-kind-function"><a href="modules.html#canConvert" class="tsd-kind-icon">can<wbr/>Convert</a></li><li class="tsd-kind-function"><a href="modules.html#days" class="tsd-kind-icon">days</a></li><li class="tsd-kind-function"><a href="modules.html#microseconds" class="tsd-kind-icon">microseconds</a></li><li class="tsd-kind-function"><a href="modules.html#milliseconds" class="tsd-kind-icon">milliseconds</a></li><li class="tsd-kind-function"><a href="modules.html#minutes" class="tsd-kind-icon">minutes</a></li><li class="tsd-kind-function"><a href="modules.html#months" class="tsd-kind-icon">months</a></li><li class="tsd-kind-function"><a href="modules.html#seconds" class="tsd-kind-icon">seconds</a></li><li class="tsd-kind-function"><a href="modules.html#timeCheckMethods" class="tsd-kind-icon">time<wbr/>Check<wbr/>Methods</a></li><li class="tsd-kind-function"><a href="modules.html#timeCheckType" class="tsd-kind-icon">time<wbr/>Check<wbr/>Type</a></li><li class="tsd-kind-function"><a href="modules.html#timeConvert" class="tsd-kind-icon">time<wbr/>Convert</a></li><li class="tsd-kind-function"><a href="modules.html#timeMake" class="tsd-kind-icon">time<wbr/>Make</a></li><li class="tsd-kind-function"><a href="modules.html#timeNow" class="tsd-kind-icon">time<wbr/>Now</a></li><li class="tsd-kind-function"><a href="modules.html#timeNowOffset" class="tsd-kind-icon">time<wbr/>Now<wbr/>Offset</a></li><li class="tsd-kind-function"><a href="modules.html#timeSince" class="tsd-kind-icon">time<wbr/>Since</a></li><li class="tsd-kind-function"><a href="modules.html#timeUnitSupported" class="tsd-kind-icon">time<wbr/>Unit<wbr/>Supported</a></li><li class="tsd-kind-function"><a href="modules.html#timeUntil" class="tsd-kind-icon">time<wbr/>Until</a></li><li class="tsd-kind-function"><a href="modules.html#timeValid" class="tsd-kind-icon">time<wbr/>Valid</a></li><li class="tsd-kind-function"><a href="modules.html#unixTimestampNow" class="tsd-kind-icon">unix<wbr/>Timestamp<wbr/>Now</a></li><li class="tsd-kind-function"><a href="modules.html#weeks" class="tsd-kind-icon">weeks</a></li><li class="tsd-kind-function"><a href="modules.html#years" class="tsd-kind-icon">years</a></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li><li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li><li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li><li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="assets/main.js"></script></body></html>

@@ -1,4 +1,4 @@
-import {TimeUnit} from './time/unit';
+import type {TimeUnit} from './time/unit';
 
 /**
  * Properties required for all Time objects.

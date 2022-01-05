@@ -1,8 +1,8 @@
 import {Defaults} from '../defaults';
 import {Log} from '@toreda/log';
-import {Time} from '../time';
+import type {Time} from '../time';
 import {TimeData} from './data';
-import {TimeUnit} from './unit';
+import type {TimeUnit} from './unit';
 import {timeCheckType} from './check/type';
 import {timeConvert} from './convert';
 import {timeNow} from './now';

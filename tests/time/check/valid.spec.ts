@@ -52,4 +52,11 @@ describe('timeValid', () => {
 		expect(o.type).toBe('Time');
 		expect(timeValid(o)).toBe(true);
 	});
+
+	it(`should return false when o does not implement all required time methods`, () => {
+		const o = timeMake('s', 0);
+		o['addDays'] = undefined as any;
+
+		expect(timeValid(o)).toBe(false);
+	});
 });

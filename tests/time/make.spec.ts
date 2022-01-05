@@ -1,7 +1,7 @@
 import {Defaults} from '../../src/defaults';
 import MockDate from 'mockdate';
-import {Time} from '../../src/time';
-import {TimeUnit} from '../../src/time/unit';
+import type {Time} from '../../src/time';
+import type {TimeUnit} from '../../src/time/unit';
 import {timeConvert} from '../../src/time/convert';
 import {timeMake} from '../../src/time/make';
 import {timeMethods} from '../../src/time/methods';
@@ -54,10 +54,11 @@ const MATH_METHODS: {name: string; unit: TimeUnit; label: string; op: 'add' | 's
 	{name: 'subYears', unit: 'y', label: 'years', op: 'sub'}
 ];
 
+const TIME_INITIAL_VALUE = 11;
 describe('timeMake', () => {
 	let instance: Time;
 	beforeAll(() => {
-		instance = timeMake('s', 11);
+		instance = timeMake('s', TIME_INITIAL_VALUE);
 	});
 
 	it(`should set value when calling instance as a function with a positive non-zero value`, () => {
@@ -111,11 +112,11 @@ describe('timeMake', () => {
 		});
 
 		describe('reset', () => {
-			it(`should reset value back to initial value 0`, () => {
+			it(`should reset value back to initial value '${TIME_INITIAL_VALUE}'`, () => {
 				instance(999);
 				expect(instance()).toBe(999);
 				instance.reset();
-				expect(instance()).toBe(0);
+				expect(instance()).toBe(TIME_INITIAL_VALUE);
 			});
 
 			it(`should return the Time caller`, () => {
