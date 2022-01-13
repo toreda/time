@@ -67,6 +67,6 @@
 	},
 	"dependencies": {
 		"@toreda/log": "^0.6.12",
-		"@toreda/strong-types": "^0.28.3"
+		"@toreda/strong-types": "^0.28.4"
 	}
 }
