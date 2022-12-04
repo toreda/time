@@ -1,7 +1,6 @@
 {
 	"exclude": ["node_modules", "**/*.spec.ts", "tests", "dist/**"],
 	"include": ["./src/index.ts", "./src/"],
-	"filesGlob": ["./src/**", "!./src/evt/**", "!./node_modules/**"],
 	"rootDir": ".",
 	"compilerOptions": {
 		"allowUnreachableCode": false,
