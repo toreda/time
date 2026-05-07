@@ -427,90 +427,72 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns		Time Instance
 			 */
 			toYears(): Time {
-				const value = timeConvert(data.units, 'y', data.get());
 				data.setUnits('y');
-
-				return data.set(o, value);
+				return o;
 			},
 			/**
 			 * Convert current time value to months.
 			 * @returns		Time Instance
 			 */
 			toMonths(): Time {
-				const value = timeConvert(data.units, 'mo', data.get());
 				data.setUnits('mo');
-
-				return data.set(o, value);
+				return o;
 			},
 			/**
 			 * Convert current time value to weeks.
 			 * @returns		Time instance
 			 */
 			toWeeks(): Time {
-				const value = timeConvert(data.units, 'w', data.get());
 				data.setUnits('w');
-
-				return data.set(o, value);
+				return o;
 			},
 			/**
 			 * Convert current time value to days.
 			 * @returns		Time instance
 			 */
 			toDays(): Time {
-				const value = timeConvert(data.units, 'd', data.get());
 				data.setUnits('d');
-
-				return data.set(o, value);
+				return o;
 			},
 			/**
 			 * Convert current time value to hours.
 			 * @returns 	Time instance
 			 */
 			toHours(): Time {
-				const value = timeConvert(data.units, 'h', data.get());
 				data.setUnits('h');
-
-				return data.set(o, value);
+				return o;
 			},
 			/**
 			 * Convert current time value to minutes.
 			 * @returns		Time instance
 			 */
 			toMinutes(): Time {
-				const value = timeConvert(data.units, 'm', data.get());
 				data.setUnits('m');
-
-				return data.set(o, value);
+				return o;
 			},
 			/**
 			 * Convert current time value to seconds.
 			 * @returns		Time instance
 			 */
 			toSeconds(): Time {
-				const value = timeConvert(data.units, 's', data.get());
 				data.setUnits('s');
-
-				return data.set(o, value);
+				return o;
 			},
 			/**
 			 * Convert current time value to milliseconds.
 			 * @returns
 			 */
 			toMilliseconds(): Time {
-				const value = timeConvert(data.units, 'ms', data.get());
 				data.setUnits('ms');
-
-				return data.set(o, value);
+				return o;
 			},
 			/**
 			 * Convert current time value to microseconds.
 			 * @returns
 			 */
 			toMicroseconds(): Time {
-				const value = timeConvert(data.units, 'μs', data.get());
 				data.setUnits('μs');
-
-				return data.set(o, value);
+				return o;
 			},
 			type: 'Time'
 		}

@@ -79,7 +79,7 @@ export class TimerActive {
 			return false;
 		}
 
-		group._always().push(fn);
+		group.alwaysCt().push(fn);
 		return true;
 	}
 

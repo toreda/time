@@ -23,6 +23,14 @@ export class TimerCallbackGroup {
 		this._always.length = 0;
 	}
 
+	public onceCt(): number {
+		return this._once.length;
+	}
+
+	public alwaysCt(): number {
+		return this._always.length;
+	}
+
 	public async execute(duration?: number | null): Promise<void> {
 		await this.once(duration);
 		await this.always(duration);

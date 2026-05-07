@@ -11,7 +11,7 @@ export {timeCheckType} from './time/check/type';
 export {TimeConstants} from './time/constants';
 export {timeConversions} from './time/conversions';
 export {timeConvert, canConvert} from './time/convert';
-export {TimeUnits} from './time/utils';
+export {TimeUtils} from './time/utils';
 export {TimeData} from './time/data';
 export {timeMake} from './time/make';
 export {timeMethods} from './time/methods';

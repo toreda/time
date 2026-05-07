@@ -1,26 +1,18 @@
 import type {TimeUnit} from './unit';
-import {TimeUnits} from './utils';
+import {TimeUtils} from './utils';
 import {timeConversions} from './conversions';
 
 /**
- * Check whether timeConvert can convert between the provided units.
- * @deprecated Use `TimeUnits.canConvert` instead. This re-export will be removed in a future major release.
- * @param from
- * @param to
- * @param value
- * @returns
+ * @deprecated Use `TimeUtils.canConvert` instead. This re-export will be removed in a future major release.
  */
-export function canConvert(from: TimeUnit, to: TimeUnit, value?: number | null): value is number {
-	return TimeUnits.canConvert(from, to, value);
-}
+export const canConvert = TimeUtils.canConvert;
 
 /**
  * Convert value to a different time unit.
- * @param from
- * @param to
- * @param value
- * @param decimals
- * @returns
+ * @param from		`TimeUnit` to convert from.
+ * @param to		`TimeUnit` to convert to.
+ * @param value		value to convert
+ * @param decimals	(optional) Decimals to use for precision.
  */
 export function timeConvert(
 	from: TimeUnit,
@@ -28,7 +20,7 @@ export function timeConvert(
 	value?: number | null,
 	decimals?: number
 ): number | null {
-	if (!TimeUnits.canConvert(from, to, value)) {
+	if (!TimeUtils.canConvert(from, to, value)) {
 		return null;
 	}
 
@@ -42,7 +34,7 @@ export function timeConvert(
 	}
 
 	const result = value * factor;
-	if (!isFinite(result) || !TimeUnits.withinSafeRange(result)) {
+	if (!isFinite(result) || !TimeUtils.withinSafeRange(result)) {
 		return null;
 	}
 
@@ -50,8 +42,8 @@ export function timeConvert(
 		return result;
 	}
 
-	const decimalCount = TimeUnits.resolveDecimals(decimals);
-	const rounded = TimeUnits.roundToDecimals(result, decimalCount);
+	const decimalCount = TimeUtils.resolveDecimals(decimals);
+	const rounded = TimeUtils.roundToDecimals(result, decimalCount);
 
 	if (rounded !== 0) {
 		return rounded;

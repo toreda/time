@@ -5,7 +5,7 @@ import {timeUnitSupported} from './unit/supported';
 const MIN_DECIMALS = 0;
 const MAX_DECIMALS = 100;
 
-export class TimeUnits {
+export class TimeUtils {
 	public static withinSafeRange(n: number): boolean {
 		return n >= Number.MIN_SAFE_INTEGER && n <= Number.MAX_SAFE_INTEGER;
 	}
@@ -26,7 +26,7 @@ export class TimeUnits {
 			return false;
 		}
 
-		return TimeUnits.withinSafeRange(value);
+		return TimeUtils.withinSafeRange(value);
 	}
 
 	public static resolveDecimals(decimals?: number): number {

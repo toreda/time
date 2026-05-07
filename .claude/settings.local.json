@@ -1,7 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pnpm test:dev)"
+      "Bash(pnpm test:dev)",
+      "Bash(pnpm test:silent)",
+      "Bash(pnpm test:silent -- tests/time/)"
     ]
   }
 }

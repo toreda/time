@@ -28,16 +28,30 @@ export class TimeData {
 	}
 
 	/**
-	 * Update the instance's native time unit. Used by in-place conversion
-	 * methods on the wrapping Time instance.
+	 * Convert the current value into the target time unit and update the
+	 * instance's native time unit to match. Used by in-place conversion
+	 * methods on the wrapping Time instance. Leaves state unchanged when
+	 * the conversion fails.
 	 */
-	public setUnits(value: TimeUnit): void {
-		(this as {units: TimeUnit}).units = value;
+	public setUnits(target: TimeUnit): void {
+		const fnLog = this.log.makeLog('setUnits');
+
+		if (target === this.units) {
+			return;
+		}
+
+		const converted = timeConvert(this.units, target, this.value);
+		if (converted === null) {
+			fnLog.error(`bad timeConvert result for target unit.`);
+			return;
+		}
+
+		this.value = converted;
+		(this as {units: TimeUnit}).units = target;
 	}
 
 	/**
 	 * Get the current time value in instance's native time unit.
-	 * @returns
 	 */
 	public get(): number {
 		return this.value;
@@ -113,7 +127,6 @@ export class TimeData {
 	 * their native TimeUnit to the TimeUnit specified by the `convertTo` arg.
 	 * @param convertTo
 	 * @param input
-	 * @returns
 	 */
 	public getUnitValue(convertTo: TimeUnit, input?: Time | number | null): number | null {
 		if (input === null || input === undefined) {
@@ -124,7 +137,7 @@ export class TimeData {
 			return input;
 		}
 
-		if (input.type !== 'Time') {
+		if (!timeCheckType(input)) {
 			return null;
 		}
 
@@ -168,7 +181,6 @@ export class TimeData {
 	 * @param units			Time Unit of provided value.
 	 * @param value			Value to be converted and added to current time.
 	 * @param decimals		Number of decimals to include in final added value.
-	 * @returns
 	 */
 	public addUnit(caller: Time, units: TimeUnit, value?: number | null, decimals?: number): Time {
 		const fnLog = this.log.makeLog('addUnit');
@@ -191,7 +203,6 @@ export class TimeData {
 	 * Invert current value's sign.
 	 * @param caller
 	 * @param posOnly
-	 * @returns
 	 */
 	public invert(caller: Time, posOnly?: boolean): Time {
 		const value = this.get();
@@ -206,7 +217,7 @@ export class TimeData {
 		return caller;
 	}
 
-	public timeSinceTime(target: Time): Time | null {
+	public timeSinceTime(target?: Time | null): Time | null {
 		const fnLog = this.log.makeLog('timeSinceTime');
 
 		if (!timeCheckType(target)) {
@@ -242,10 +253,9 @@ export class TimeData {
 
 	/**
 	 * Get time object containing time left until target time. May return
-	 * negative vamlue when target time is in the past. The returned time
+	 * negative value when target time is in the past. The returned time
 	 * object's time left value uses the same time units as the calling instance.
 	 * @param time
-	 * @returns
 	 */
 	public timeUntilTime(time?: Time | null): Time | null {
 		const fnLog = this.log.makeLog('timeUntilTime');
@@ -255,9 +265,9 @@ export class TimeData {
 			return null;
 		}
 
-		const target = timeConvert(time.units(), 's', time());
+		const target = timeConvert(time.units(), this.units, time());
 		if (target === null) {
-			fnLog.error(`Bad timeConvertresult for time arg.`);
+			fnLog.error(`bad timeConvert result for time arg.`);
 			return null;
 		}
 
@@ -267,7 +277,6 @@ export class TimeData {
 	/**
 	 * Get time remaining until target unix timestamp.
 	 * @param target
-	 * @returns
 	 */
 	public timeUntilNumber(target?: number | null): Time | null {
 		const fnLog = this.log.makeLog(`timeUntilNumber`);
@@ -278,7 +287,7 @@ export class TimeData {
 		}
 
 		if (target === 0) {
-			return timeMake('s', 0);
+			return timeMake(this.units, 0);
 		}
 
 		const result = target - this.value;
@@ -289,7 +298,6 @@ export class TimeData {
 	/**
 	 * Reset internal state variables to their initial values.
 	 * @param caller
-	 * @returns
 	 */
 	public reset(caller: Time): Time {
 		this.value = this.initialValue;

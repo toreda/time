@@ -167,9 +167,9 @@ describe('TimerActive', () => {
 				const fn1 = () => {
 					1 + 1;
 				};
-				expect(instance.listeners.pause._always().length).toBe(0);
+				expect(instance.listeners.pause._always.length).toBe(0);
 				expect(instance.on('pause', fn1)).toBe(true);
-				expect(instance.listeners.pause._always().length).toBe(1);
+				expect(instance.listeners.pause._always.length).toBe(1);
 			});
 
 			it(`should return false when fn arg is undefined`, () => {
