@@ -14,17 +14,17 @@ export enum TimeConstants {
 	/** Conversion factor to convert microseconds to seconds. */
 	MICROSECONDS_TO_SECONDS = 1.0e-6,
 	/** Conversion factor to convert  microseconds to minutes. */
-	MICROSECONDS_TO_MINUTES = 60000000,
+	MICROSECONDS_TO_MINUTES = 1.6666666666667e-8,
 	/** Conversion factor to convert microseconds to hours. */
-	MICROSECONDS_TO_HOURS = 3600000000,
+	MICROSECONDS_TO_HOURS = 2.7777777777778e-10,
 	/** Conversion factor to convert microseconds to days. */
-	MICROSECONDS_TO_DAYS = 86400000000,
+	MICROSECONDS_TO_DAYS = 1.1574074074074e-11,
 	/** Conversion factor to convert microseconds to weeks. */
-	MICROSECONDS_TO_WEEKS = 604800000000,
+	MICROSECONDS_TO_WEEKS = 1.6534391534392e-12,
 	/** Conversion factor to convert microseconds to months. */
-	MICROSECONDS_TO_MONTHS = 2628000000000,
+	MICROSECONDS_TO_MONTHS = 3.8051750380518e-13,
 	/** Conversion factor to convert microseconds to years. */
-	MICROSECONDS_TO_YEARS = 31536000000000,
+	MICROSECONDS_TO_YEARS = 3.1709791983765e-14,
 
 	/**
 	 * MILLISECONDS
@@ -164,8 +164,9 @@ export enum TimeConstants {
 	/** Conversion factor from months -> seconds. */
 	MONTHS_TO_SECONDS = 2628000,
 	/** Conversion factor from months -> microseconds. */
-	MONTHS_TO_MICROSECONDS = 3.8051750380518e-13,
-	MONTHS_TO_MILLISECONDS = 3.8051750380518e-10,
+	MONTHS_TO_MICROSECONDS = 2628000000000,
+	/** Conversion factor from months -> milliseconds. */
+	MONTHS_TO_MILLISECONDS = 2628000000,
 
 	/**
 	 * YEARS

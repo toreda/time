@@ -52,7 +52,10 @@ export function timeConvert(
 	value?: number | null,
 	decimals?: number
 ): number | null {
-	const decimalCount = typeof decimals === 'number' ? decimals : Defaults.Math.Precision.Base;
+	const decimalCount =
+		typeof decimals === 'number' && isFinite(decimals) && decimals >= 0 && decimals <= 100
+			? Math.floor(decimals)
+			: Defaults.Math.Precision.Base;
 
 	if (!canConvert(from, to, value)) {
 		return null;
@@ -81,5 +84,12 @@ export function timeConvert(
 		return result;
 	}
 
-	return Number.parseFloat(result.toFixed(decimalCount));
+	const rounder = Math.pow(10, decimalCount);
+	const rounded = Math.round(result * rounder) / rounder;
+
+	if (rounded !== 0) {
+		return rounded;
+	}
+
+	return Number(result.toPrecision(decimalCount > 0 ? decimalCount : 1));
 }

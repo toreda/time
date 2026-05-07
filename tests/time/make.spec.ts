@@ -1,6 +1,6 @@
-import {Defaults} from '../../src/defaults';
 import MockDate from 'mockdate';
 import type {Time} from '../../src/time';
+import {TimeConstants} from '../../src/time/constants';
 import type {TimeUnit} from '../../src/time/unit';
 import {timeConvert} from '../../src/time/convert';
 import {timeMake} from '../../src/time/make';
@@ -536,7 +536,7 @@ describe('timeMake', () => {
 				const custom = timeMake('s', 0);
 				expect(custom()).toBe(0);
 				MockDate.set(`2005-08-08 12:13:14`);
-				const now = Math.floor(new Date().getTime() / Defaults.Time.MsPerSec);
+				const now = Math.floor(new Date().getTime() / TimeConstants.SECONDS_TO_MILLISECONDS);
 				custom.setNow();
 				expect(custom()).toBe(now);
 				MockDate.reset();
@@ -546,11 +546,11 @@ describe('timeMake', () => {
 				const custom = timeMake('h', 0);
 				expect(custom()).toBe(0);
 				MockDate.set(`2006-08-08 12:13:14`);
-				const now = Math.floor(Date.now() / Defaults.Time.MsPerSec) / 3600;
+				const now = Math.floor(Date.now() / TimeConstants.SECONDS_TO_MILLISECONDS) / 3600;
 
-				const nowHours = Number.parseFloat(now.toFixed(2));
+				const nowHours = Number.parseFloat(now.toFixed(10));
 				custom.setNow();
-				expect(custom()).toBe(nowHours);
+				expect(custom()).toBeCloseTo(nowHours, 6);
 				MockDate.reset();
 			});
 

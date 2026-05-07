@@ -45,7 +45,7 @@ const CONVERT_TESTS = [
 			{from: 'm', to: 'h', value: TimeConstants.HOURS_TO_MINUTES * 10, result: 10},
 			{from: 'm', to: 'h', value: TimeConstants.HOURS_TO_MINUTES, result: 1},
 			{from: 'm', to: 'h', value: TimeConstants.HOURS_TO_MINUTES / 2, result: 0.5},
-			{from: 'm', to: 'h', value: 23, result: 0.38},
+			{from: 'm', to: 'h', value: 23, result: 0.3833333333},
 			{from: 'm', to: 's', value: 1, result: TimeConstants.MINUTES_TO_SECONDS},
 			{from: 'm', to: 's', value: 8, result: TimeConstants.MINUTES_TO_SECONDS * 8},
 			{from: 'm', to: 's', value: 0.25, result: TimeConstants.MINUTES_TO_SECONDS / 4},

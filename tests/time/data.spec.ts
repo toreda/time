@@ -1,6 +1,6 @@
-import {Defaults} from '../../src/defaults';
 import {Log} from '@toreda/log';
 import {Time} from '../../src/time';
+import {TimeConstants} from '../../src/time/constants';
 import {TimeData} from '../../src/time/data';
 import {timeMake} from '../../src/time/make';
 import {timeNow} from '../../src/time/now';
@@ -252,7 +252,7 @@ describe('TimeData', () => {
 			});
 
 			it(`should return seconds since target time`, () => {
-				const curr = Math.floor(Date.now() / Defaults.Time.MsPerSec);
+				const curr = Math.floor(Date.now() / TimeConstants.SECONDS_TO_MILLISECONDS);
 				const offset = 330100;
 				const target = curr - offset;
 				instance.set(time, curr);

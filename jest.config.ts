@@ -1,4 +1,6 @@
-module.exports = {
+import type {Config} from '@jest/types';
+
+const config: Config.InitialOptions = {
 	roots: ['./'],
 	coverageDirectory: './coverage',
 	coveragePathIgnorePatterns: [
@@ -21,3 +23,5 @@ module.exports = {
 	transform: {'^.+\\.(t|j)sx?$': '@swc/jest'},
 	transformIgnorePatterns: ['node_modules/(?!@ngrx|(?!core-js/)|(?!deck.gl)|ng-dynamic)']
 };
+
+export default config;

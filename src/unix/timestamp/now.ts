@@ -1,4 +1,4 @@
-import {Defaults} from '../../defaults';
+import {TimeConstants} from '../../time/constants';
 
 /**
  * Get the current time as a unix timestamp in number form.
@@ -8,7 +8,7 @@ import {Defaults} from '../../defaults';
  * @returns				Number of seconds since Unix Epoch.
  */
 export function unixTimestampNow(offset?: number | null): number {
-	const now = Math.floor(Date.now() / Defaults.Time.MsPerSec);
+	const now = Math.floor(Date.now() / TimeConstants.SECONDS_TO_MILLISECONDS);
 
 	let result = now;
 	if (typeof offset === 'number') {

@@ -41,7 +41,7 @@ export const timeConversions: Record<TimeUnit, Record<TimeUnit, number>> = {
 		m: TimeConstants.MONTHS_TO_MINUTES,
 		mo: 1,
 		ms: TimeConstants.MONTHS_TO_MILLISECONDS,
-		s: 1,
+		s: TimeConstants.MONTHS_TO_SECONDS,
 		w: TimeConstants.MONTHS_TO_WEEKS,
 		y: TimeConstants.MONTHS_TO_YEARS,
 		μs: TimeConstants.MONTHS_TO_MICROSECONDS
