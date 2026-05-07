@@ -10,9 +10,15 @@ import {timeNow} from './now';
 /**
  * Create a new Time instance with the provided unit type and initial value. Wraps an
  * internal data instance only available in factory function closure.
+ *
+ * Bad input is sanitized rather than rejected: an unsupported `units` value
+ * falls back to `'s'` and a non-finite or out-of-safe-range `initial` falls
+ * back to `0`. In both cases the substitution is logged via the `log` arg
+ * (or a default log if none is supplied) and construction still succeeds.
+ *
  * @param units
  * @param initial
- * @returns
+ * @param log
  *
  * @category Factories
  */
@@ -427,7 +433,9 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns		Time Instance
 			 */
 			toYears(): Time {
-				data.setUnits('y');
+				if (!data.setUnits('y')) {
+					fnLog.error(`toYears failed; instance unchanged.`);
+				}
 				return o;
 			},
 			/**
@@ -435,7 +443,9 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns		Time Instance
 			 */
 			toMonths(): Time {
-				data.setUnits('mo');
+				if (!data.setUnits('mo')) {
+					fnLog.error(`toMonths failed; instance unchanged.`);
+				}
 				return o;
 			},
 			/**
@@ -443,7 +453,9 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns		Time instance
 			 */
 			toWeeks(): Time {
-				data.setUnits('w');
+				if (!data.setUnits('w')) {
+					fnLog.error(`toWeeks failed; instance unchanged.`);
+				}
 				return o;
 			},
 			/**
@@ -451,7 +463,9 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns		Time instance
 			 */
 			toDays(): Time {
-				data.setUnits('d');
+				if (!data.setUnits('d')) {
+					fnLog.error(`toDays failed; instance unchanged.`);
+				}
 				return o;
 			},
 			/**
@@ -459,7 +473,9 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns 	Time instance
 			 */
 			toHours(): Time {
-				data.setUnits('h');
+				if (!data.setUnits('h')) {
+					fnLog.error(`toHours failed; instance unchanged.`);
+				}
 				return o;
 			},
 			/**
@@ -467,7 +483,9 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns		Time instance
 			 */
 			toMinutes(): Time {
-				data.setUnits('m');
+				if (!data.setUnits('m')) {
+					fnLog.error(`toMinutes failed; instance unchanged.`);
+				}
 				return o;
 			},
 			/**
@@ -475,7 +493,9 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns		Time instance
 			 */
 			toSeconds(): Time {
-				data.setUnits('s');
+				if (!data.setUnits('s')) {
+					fnLog.error(`toSeconds failed; instance unchanged.`);
+				}
 				return o;
 			},
 			/**
@@ -483,7 +503,9 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			toMilliseconds(): Time {
-				data.setUnits('ms');
+				if (!data.setUnits('ms')) {
+					fnLog.error(`toMilliseconds failed; instance unchanged.`);
+				}
 				return o;
 			},
 			/**
@@ -491,7 +513,9 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			toMicroseconds(): Time {
-				data.setUnits('μs');
+				if (!data.setUnits('μs')) {
+					fnLog.error(`toMicroseconds failed; instance unchanged.`);
+				}
 				return o;
 			},
 			type: 'Time'
