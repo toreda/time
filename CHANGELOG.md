@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+* `TimeUnits` class exported from the package root, providing static helpers `canConvert`, `withinSafeRange`, `resolveDecimals`, and `roundToDecimals`.
+
+### Deprecated
+* Top-level `canConvert` export is deprecated in favor of `TimeUnits.canConvert`. The re-export is preserved for backwards compatibility and will be removed in a future major release.
+
 [0.1.5] - 2022-04-11
 
 ### Maintenance

@@ -1,6 +1,3 @@
-import type {Float, Strong} from '@toreda/strong-types';
-import {floatMake, strongMake, typeMatch} from '@toreda/strong-types';
-
 import {Log} from '@toreda/log';
 import type {Time} from '../time';
 import type {TimeUnit} from './unit';
@@ -13,26 +10,29 @@ import {timeValid} from './valid';
  * Internal state data created and wrapped by Time instances.
  */
 export class TimeData {
-	public readonly units: Strong<TimeUnit>;
-	private readonly value: Float;
+	public readonly units: TimeUnit;
+	private value: number;
+	private readonly initialValue: number;
 	public readonly log: Log;
 
 	constructor(units: TimeUnit, value: number, log?: Log | null) {
-		this.units = strongMake(units);
-		this.value = floatMake(0, value);
+		this.units = units;
+		this.value = value;
+		this.initialValue = value;
 		this.log = this.makeLog(log);
 	}
 
 	private makeLog(log?: Log | null): Log {
-		let classLog: Log;
-
-		if (!log || !typeMatch(log, Log)) {
-			classLog = new Log();
-		} else {
-			classLog = log;
-		}
-
+		const classLog = log instanceof Log ? log : new Log();
 		return classLog.makeLog('TimeData');
+	}
+
+	/**
+	 * Update the instance's native time unit. Used by in-place conversion
+	 * methods on the wrapping Time instance.
+	 */
+	public setUnits(value: TimeUnit): void {
+		(this as {units: TimeUnit}).units = value;
 	}
 
 	/**
@@ -40,7 +40,7 @@ export class TimeData {
 	 * @returns
 	 */
 	public get(): number {
-		return this.value();
+		return this.value;
 	}
 
 	public set(caller: Time, input?: number | Time | null): Time {
@@ -52,7 +52,7 @@ export class TimeData {
 		}
 
 		if (typeof input === 'number') {
-			this.value(input);
+			this.value = input;
 			return caller;
 		}
 
@@ -61,8 +61,12 @@ export class TimeData {
 			return caller;
 		}
 
-		const updated = timeConvert(input.units(), this.units(), input());
-		this.value(updated);
+		const updated = timeConvert(input.units(), this.units, input());
+		if (updated === null) {
+			fnLog.error(`bad timeConvert result for input.`);
+			return caller;
+		}
+		this.value = updated;
 
 		return caller;
 	}
@@ -81,7 +85,7 @@ export class TimeData {
 			return caller;
 		}
 
-		const total = this.value() + input;
+		const total = this.value + input;
 		this.set(caller, total);
 
 		return caller;
@@ -148,7 +152,7 @@ export class TimeData {
 			return caller;
 		}
 
-		const converted = timeConvert(units, this.units(), value, decimals);
+		const converted = timeConvert(units, this.units, value, decimals);
 		if (converted === null) {
 			fnLog.error(`bad timeConvert result for value.`);
 			return caller;
@@ -174,7 +178,7 @@ export class TimeData {
 			return caller;
 		}
 
-		const converted = timeConvert(units, this.units(), value, decimals);
+		const converted = timeConvert(units, this.units, value, decimals);
 		if (converted === null) {
 			fnLog.error(`bad timeConvert result for value.`);
 			return caller;
@@ -210,7 +214,7 @@ export class TimeData {
 			return null;
 		}
 
-		const since = timeConvert(target.units(), this.units(), target());
+		const since = timeConvert(target.units(), this.units, target());
 		if (since === null) {
 			fnLog.error(`bad timeConvert result for target.`);
 			return null;
@@ -228,12 +232,12 @@ export class TimeData {
 		}
 
 		if (target === 0) {
-			return timeMake(this.units(), 0);
+			return timeMake(this.units, 0);
 		}
 
-		const result = this.value() - target;
+		const result = this.value - target;
 
-		return timeMake(this.units(), result);
+		return timeMake(this.units, result);
 	}
 
 	/**
@@ -277,9 +281,9 @@ export class TimeData {
 			return timeMake('s', 0);
 		}
 
-		const result = target - this.value();
+		const result = target - this.value;
 
-		return timeMake(this.units(), result);
+		return timeMake(this.units, result);
 	}
 
 	/**
@@ -288,7 +292,7 @@ export class TimeData {
 	 * @returns
 	 */
 	public reset(caller: Time): Time {
-		this.value.reset();
+		this.value = this.initialValue;
 		this.log.debug(`TimeData reset complete`);
 
 		return caller;

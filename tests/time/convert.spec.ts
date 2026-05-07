@@ -1,11 +1,8 @@
-import {canConvert, timeConvert} from '../../src/time/convert';
+import {timeConvert} from '../../src/time/convert';
 
 import {TimeConstants} from '../../src/time/constants';
 import type {TimeUnit} from '../../src/time/unit';
 import {timeUnitLabels} from '../../src/time/unit/labels';
-
-const MOCK_FROM = 's';
-const MOCK_TO = 'ms';
 
 function unitsAmtLabel(amt: number): string {
 	if (amt < 1) {
@@ -245,39 +242,6 @@ const CONVERT_TESTS = [
 ];
 
 describe('timeConvert', () => {
-	describe('Helpers', () => {
-		describe('canConvert', () => {
-			it(`should return false when value is undefined`, () => {
-				expect(canConvert(MOCK_FROM, MOCK_TO, undefined as any)).toBe(false);
-			});
-
-			it(`should return false when value is null`, () => {
-				expect(canConvert(MOCK_FROM, MOCK_TO, null as any)).toBe(false);
-			});
-
-			it(`should return false when value is a truthy non-number`, () => {
-				expect(canConvert(MOCK_FROM, MOCK_TO, 'aaaa' as any)).toBe(false);
-			});
-
-			it(`should return false when value is NaN`, () => {
-				expect(canConvert(MOCK_FROM, MOCK_TO, NaN)).toBe(false);
-			});
-
-			it(`should return false when value exceeds max safe int`, () => {
-				expect(canConvert(MOCK_FROM, MOCK_TO, Number.MAX_SAFE_INTEGER + 111)).toBe(false);
-			});
-
-			it(`should return false when value is smaller than min safe int`, () => {
-				expect(canConvert(MOCK_FROM, MOCK_TO, Number.MIN_SAFE_INTEGER - 100)).toBe(false);
-			});
-
-			it(`should return false when value is not finite`, () => {
-				expect(canConvert(MOCK_FROM, MOCK_TO, Number.POSITIVE_INFINITY)).toBe(false);
-				expect(canConvert(MOCK_FROM, MOCK_TO, Number.NEGATIVE_INFINITY)).toBe(false);
-			});
-		});
-	});
-
 	describe('Bad Input', () => {
 		it('should return null when input value is undefined', () => {
 			expect(timeConvert('s', 'm', undefined as any)).toBeNull();

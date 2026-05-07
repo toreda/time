@@ -1,41 +1,17 @@
-import {Defaults} from '../defaults';
 import type {TimeUnit} from './unit';
+import {TimeUnits} from './utils';
 import {timeConversions} from './conversions';
-import {timeUnitSupported} from './unit/supported';
 
 /**
  * Check whether timeConvert can convert between the provided units.
+ * @deprecated Use `TimeUnits.canConvert` instead. This re-export will be removed in a future major release.
  * @param from
  * @param to
  * @param value
  * @returns
  */
 export function canConvert(from: TimeUnit, to: TimeUnit, value?: number | null): value is number {
-	if (!timeUnitSupported(from)) {
-		return false;
-	}
-
-	if (!timeUnitSupported(to)) {
-		return false;
-	}
-
-	if (typeof value !== 'number' || isNaN(value)) {
-		return false;
-	}
-
-	if (!isFinite(value)) {
-		return false;
-	}
-
-	if (value > Number.MAX_SAFE_INTEGER) {
-		return false;
-	}
-
-	if (value < Number.MIN_SAFE_INTEGER) {
-		return false;
-	}
-
-	return true;
+	return TimeUnits.canConvert(from, to, value);
 }
 
 /**
@@ -52,44 +28,35 @@ export function timeConvert(
 	value?: number | null,
 	decimals?: number
 ): number | null {
-	const decimalCount =
-		typeof decimals === 'number' && isFinite(decimals) && decimals >= 0 && decimals <= 100
-			? Math.floor(decimals)
-			: Defaults.Math.Precision.Base;
-
-	if (!canConvert(from, to, value)) {
+	if (!TimeUnits.canConvert(from, to, value)) {
 		return null;
 	}
 
-	if (value === 0) {
-		return 0;
-	}
-
-	if (from === to) {
+	if (value === 0 || from === to) {
 		return value;
 	}
 
-	const conversionFactor = timeConversions[from][to];
-	const result = value * conversionFactor;
-
-	if (isNaN(result)) {
+	const factor = timeConversions[from][to];
+	if (typeof factor !== 'number' || !isFinite(factor)) {
 		return null;
 	}
 
-	if (result < Number.MIN_SAFE_INTEGER || result > Number.MAX_SAFE_INTEGER) {
+	const result = value * factor;
+	if (!isFinite(result) || !TimeUnits.withinSafeRange(result)) {
 		return null;
 	}
 
-	if (Math.floor(result) === result) {
+	if (Number.isInteger(result)) {
 		return result;
 	}
 
-	const rounder = Math.pow(10, decimalCount);
-	const rounded = Math.round(result * rounder) / rounder;
+	const decimalCount = TimeUnits.resolveDecimals(decimals);
+	const rounded = TimeUnits.roundToDecimals(result, decimalCount);
 
 	if (rounded !== 0) {
 		return rounded;
 	}
 
-	return Number(result.toPrecision(decimalCount > 0 ? decimalCount : 1));
+	const preserved = Number(result.toPrecision(Math.max(decimalCount, 1)));
+	return isFinite(preserved) ? preserved : null;
 }

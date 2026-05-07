@@ -1,5 +1,5 @@
-import type {Id, StrongArray} from '@toreda/strong-types';
-import {arrayMake, idMake} from '@toreda/strong-types';
+import type {Id} from '@toreda/strong-types';
+import {idMake} from '@toreda/strong-types';
 
 import type {TimerCallback} from '../callback';
 import type {TimerCallbackSync} from './sync';
@@ -9,20 +9,18 @@ import type {TimerCallbackSync} from './sync';
  */
 export class TimerCallbackGroup {
 	public readonly id: Id;
-	public readonly _once: StrongArray<TimerCallback | TimerCallbackSync>;
-	public readonly _always: StrongArray<TimerCallback | TimerCallbackSync>;
+	private readonly _once: (TimerCallback | TimerCallbackSync)[];
+	private readonly _always: (TimerCallback | TimerCallbackSync)[];
 
 	constructor(id: string) {
 		this.id = idMake('timer', id);
-		this._once = arrayMake([], []);
-		this._always = arrayMake([], []);
+		this._once = [];
+		this._always = [];
 	}
 
 	public reset(): void {
-		this._once.reset();
-		this._once([]);
-		this._always.reset();
-		this._always([]);
+		this._once.length = 0;
+		this._always.length = 0;
 	}
 
 	public async execute(duration?: number | null): Promise<void> {
@@ -34,7 +32,7 @@ export class TimerCallbackGroup {
 		const value = typeof duration === 'number' ? duration : 0;
 
 		try {
-			await fn(value);
+			fn(value);
 		} catch (e: unknown) {
 			if (e instanceof Error) {
 				console.error(`Callback group invoke error: ${e.message}`);
@@ -43,19 +41,17 @@ export class TimerCallbackGroup {
 	}
 
 	public async once(duration?: number | null): Promise<void> {
-		const items = this._once();
-
-		for (let i = items.length - 1; i >= 0; i--) {
-			const item = items[i];
+		for (let i = this._once.length - 1; i >= 0; i--) {
+			const item = this._once[i];
 			await this.invoke(item, duration);
 
 			// Listener was one-time use. Remove it after invoking it.
-			items.splice(i, 1);
+			this._once.splice(i, 1);
 		}
 	}
 
 	public async always(duration?: number | null): Promise<void> {
-		for (const item of this._always()) {
+		for (const item of this._always) {
 			await this.invoke(item, duration);
 		}
 	}
