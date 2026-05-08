@@ -1,3 +1,4 @@
+import type {LogLike} from './log/like';
 import type {Time} from './time';
 import {timeMake} from './time/make';
 
@@ -8,6 +9,6 @@ import {timeMake} from './time/make';
  *
  * @category Time Conversions
  */
-export function milliseconds(initial: number): Time {
-	return timeMake('ms', initial);
+export function milliseconds(initial: number, log?: LogLike): Time {
+	return timeMake('ms', initial, log);
 }
