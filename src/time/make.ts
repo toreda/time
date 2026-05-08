@@ -6,15 +6,21 @@ import type {TimeUnit} from './unit';
 import {timeCheckType} from './check/type';
 import {timeConvert} from './convert';
 import {timeNow} from './now';
+import {timeValueParse} from './value/parse';
 
 /**
  * Create a new Time instance with the provided unit type and initial value. Wraps an
  * internal data instance only available in factory function closure.
  *
  * Bad input is sanitized rather than rejected: an unsupported `units` value
- * falls back to `'s'` and a non-finite or out-of-safe-range `initial` falls
- * back to `0`. In both cases the substitution is logged via the `log` arg
- * (or a default log if none is supplied) and construction still succeeds.
+ * falls back to `'s'` and a non-finite, out-of-safe-range, or unparseable
+ * `initial` falls back to `0`. In both cases the substitution is logged via
+ * the `log` arg (or a default log if none is supplied) and construction
+ * still succeeds.
+ *
+ * `initial` accepts a number or any duration string supported by
+ * `timeValueParse` (e.g. '5', '1.5h', '1h30m'). Date strings should be
+ * parsed via `timeValueParseDate` / `timeFromDate` instead.
  *
  * @param units
  * @param initial
@@ -22,8 +28,9 @@ import {timeNow} from './now';
  *
  * @category Factories
  */
-export function timeMake(units: TimeUnit, initial: number, log?: LogLike): Time {
-	const data = new TimeData(units, initial, log);
+export function timeMake(units: TimeUnit, initial: number | string, log?: LogLike): Time {
+	const parsed = typeof initial === 'string' ? timeValueParse(initial, units) : initial;
+	const data = new TimeData(units, parsed as number, log);
 
 	const o = Object.assign(
 		(setTo?: number | Time | null): number => {

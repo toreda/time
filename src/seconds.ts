@@ -9,6 +9,6 @@ import {timeMake} from './time/make';
  *
  * @category Time Conversions
  */
-export function seconds(initial: number, log?: LogLike): Time {
+export function seconds(initial: number | string, log?: LogLike): Time {
 	return timeMake('s', initial, log);
 }

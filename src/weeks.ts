@@ -9,6 +9,6 @@ import {timeMake} from './time/make';
  *
  * @category Time Conversions
  */
-export function weeks(initial: number, log?: LogLike): Time {
+export function weeks(initial: number | string, log?: LogLike): Time {
 	return timeMake('w', initial, log);
 }
