@@ -1,7 +1,8 @@
 import {timeUnitSupported} from '../../../src/time/unit/supported';
 
 const EMPTY_STRING = '';
-const supportedUnits = [{unit: 'w', label: 'week', inputs: ['w', 'wk', 'wks', 'week', 'weeks']}];
+const canonicalUnits = ['μs', 'ms', 's', 'm', 'h', 'd', 'w', 'mo', 'y'];
+const aliases = ['day', 'sec', 'minute', 'hour', 'week', 'month', 'year', 'wk', 'wks', 'hr'];
 
 describe('timeUnitSupported', () => {
 	it('should return false when unit arg is not provided', () => {
@@ -13,22 +14,26 @@ describe('timeUnitSupported', () => {
 	});
 
 	it('should return false when unit arg is null', () => {
-		expect(timeUnitSupported(null as any)).toBe(false);
+		expect(timeUnitSupported(null)).toBe(false);
 	});
 
 	it(`should return false when unit arg is an empty string`, () => {
-		expect(timeUnitSupported(EMPTY_STRING as any)).toBe(false);
+		expect(timeUnitSupported(EMPTY_STRING)).toBe(false);
 	});
 
-	it(`should return false when unit arg is an unsupported time unit`, () => {
-		expect(timeUnitSupported('aaaa' as any)).toBe(false);
+	it(`should return false when unit arg is an unsupported string`, () => {
+		expect(timeUnitSupported('aaaa')).toBe(false);
 	});
 
-	for (const unit of supportedUnits) {
-		for (const input of unit.inputs) {
-			it(`should support ${unit.label} alias '${input}'`, () => {
-				expect(timeUnitSupported(input as any)).toBe(true);
-			});
-		}
-	}
+	it(`should return false when unit arg is a number`, () => {
+		expect(timeUnitSupported(42)).toBe(false);
+	});
+
+	it.each(canonicalUnits)(`should return true for canonical unit '%s'`, (unit) => {
+		expect(timeUnitSupported(unit)).toBe(true);
+	});
+
+	it.each(aliases)(`should return false for alias '%s' (use timeUnitFromAlias)`, (alias) => {
+		expect(timeUnitSupported(alias)).toBe(false);
+	});
 });

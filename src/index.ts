@@ -33,6 +33,8 @@ export {TimeUnit} from './time/unit';
 export {TimeUnitLabel} from './time/unit/label';
 export {timeUnitLabels} from './time/unit/labels';
 export {timeUnits} from './time/units';
+export {timeUnitAliases} from './time/unit/aliases';
+export {timeUnitFromAlias} from './time/unit/from/alias';
 export {timeUnitSupported} from './time/unit/supported';
 export {timeUntil} from './time/until';
 export {timeValid} from './time/valid';

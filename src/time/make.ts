@@ -103,7 +103,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: LogLike): Time 
 			 * @returns
 			 */
 			setNow: (): Time => {
-				return data.set(o, timeNow());
+				return o.set(timeNow(data.units()));
 			},
 			/**
 			 * Current unit type as a TimeUnit.

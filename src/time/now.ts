@@ -1,17 +1,16 @@
 import type {Time} from '../time';
-import {TimeConstants} from './constants';
 import type {TimeUnit} from './unit';
+import {timeConvert} from './convert';
 import {timeMake} from './make';
 
 /**
- * Create timestamp using current time at creation. Does not automatically
- * update  to match
- * @param units
- * @returns
+ * Create a Time snapshot of the current system clock in `units`
+ * (defaults to seconds). The returned Time holds a frozen value
+ * captured at call time and does not auto-update.
  */
 export function timeNow(units?: TimeUnit): Time {
 	const targetUnits = units ?? 's';
-	const now = Math.floor(Date.now() / TimeConstants.SECONDS_TO_MILLISECONDS);
+	const value = timeConvert('ms', targetUnits, Date.now()) ?? 0;
 
-	return timeMake(targetUnits, now);
+	return timeMake(targetUnits, value);
 }

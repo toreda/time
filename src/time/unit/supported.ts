@@ -2,21 +2,20 @@ import type {TimeUnit} from '../unit';
 import {timeUnits} from '../units';
 
 /**
- * Check if time unit is supported.
- * @param unit		String to validate as supported time unit.
- * @returns			true 	-	Provided `unit` string is a supported time unit.
- *					false	-	Provided `unit` string is not a supported time unit.
+ * Type guard: returns `true` only when `unit` is a canonical `TimeUnit`.
+ * Aliases (e.g. `'day'`, `'sec'`) are rejected — use `timeUnitFromAlias`
+ * to resolve aliases to canonical values first.
+ *
+ * @param unit		Value to validate as a canonical time unit.
+ * @returns			true 	-	`unit` is a canonical `TimeUnit`.
+ *					false	-	`unit` is not a canonical `TimeUnit`.
  *
  * @category Time Units
  */
-export function timeUnitSupported(unit?: TimeUnit): unit is TimeUnit {
-	if (!unit) {
+export function timeUnitSupported(unit?: unknown): unit is TimeUnit {
+	if (typeof unit !== 'string') {
 		return false;
 	}
 
-	if (!timeUnits.has(unit)) {
-		return false;
-	}
-
-	return typeof timeUnits.get(unit) === 'string';
+	return timeUnits.has(unit as TimeUnit);
 }

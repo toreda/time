@@ -4,7 +4,8 @@
       "Bash(pnpm test:dev)",
       "Bash(pnpm test:silent)",
       "Bash(pnpm test:silent -- tests/time/)",
-      "Bash(pnpm exec *)"
+      "Bash(pnpm exec *)",
+      "Bash(npx jest *)"
     ]
   }
 }
