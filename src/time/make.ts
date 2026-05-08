@@ -490,7 +490,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: LogLike): Time 
 			toMicroseconds(): Time {
 				return data.setUnits(o, 'μs');
 			},
-			type: 'Time'
+			type: 'Time' as const
 		}
 	);
 

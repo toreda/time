@@ -11,13 +11,5 @@ import {timeCheckType} from './check/type';
  * @category Validators
  */
 export function timeValid(o: unknown): o is Time {
-	if (!timeCheckType(o)) {
-		return false;
-	}
-
-	if (!timeCheckMethods(o)) {
-		return false;
-	}
-
-	return true;
+	return timeCheckType(o) && timeCheckMethods(o);
 }

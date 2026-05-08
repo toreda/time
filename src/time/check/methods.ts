@@ -1,21 +1,21 @@
-import type {Time} from '../../time';
 import {timeMethods} from '../methods';
 
 /**
  * Check whether provided object defines all time methods required to
- * a Time object.
+ * a Time object, and is itself callable (Time instances are callable).
  * @param o
  * @returns
  *
  * @category Validators
  */
-export function timeCheckMethods(o?: Time | null): boolean {
-	if (!o) {
+export function timeCheckMethods(o: unknown): boolean {
+	if (typeof o !== 'function') {
 		return false;
 	}
 
+	const candidate = o as unknown as Record<string, unknown>;
 	for (const timeMethod of timeMethods) {
-		if (typeof o[timeMethod] !== 'function') {
+		if (typeof candidate[timeMethod] !== 'function') {
 			return false;
 		}
 	}

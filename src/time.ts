@@ -6,7 +6,7 @@ import type {TimeUnit} from './time/unit';
  * @category Time
  */
 export interface Time {
-	type: 'Time' | string;
+	type: 'Time';
 
 	(setTo?: Time | number | null): number;
 	add: (value: Time | number, decimals?: number) => Time;
