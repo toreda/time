@@ -11,7 +11,7 @@
 		"isolatedModules": false,
 		"lib": ["es6", "DOM", "DOM.Iterable"],
 		"module": "commonjs",
-		"moduleResolution": "node",
+		"moduleResolution": "bundler",
 		"noImplicitUseStrict": false,
 		"outDir": "./dist",
 		"preserveConstEnums": true,

@@ -26,7 +26,7 @@ describe('TimerActive', () => {
 		});
 
 		it(`should initialize running to false`, () => {
-			expect(custom.running()).toBe(false);
+			expect(custom.running).toBe(false);
 		});
 
 		it(`should initialize lastIntervalEnd to 0`, () => {
@@ -37,25 +37,25 @@ describe('TimerActive', () => {
 	describe('Implementation', () => {
 		describe('start', () => {
 			it(`should set running true when timer is not running`, async () => {
-				instance.running(false);
+				instance.running = false;
 				await instance.start();
-				expect(instance.running()).toBe(true);
+				expect(instance.running).toBe(true);
 			});
 
 			it(`should return true when start can be executed`, async () => {
-				instance.running(false);
+				instance.running = false;
 				const result = await instance.start();
 				expect(result).toBe(true);
 			});
 
 			it(`should not set running true when timer is already running`, async () => {
-				instance.running(true);
+				instance.running = true;
 				await instance.start();
-				expect(instance.running()).toBe(true);
+				expect(instance.running).toBe(true);
 			});
 
 			it(`should return false when timer is already running`, async () => {
-				instance.running(true);
+				instance.running = true;
 				const result = await instance.start();
 				expect(result).toBe(false);
 			});
@@ -226,27 +226,27 @@ describe('TimerActive', () => {
 
 		describe('stop', () => {
 			it(`should set running false when timer is running`, async () => {
-				instance.running(true);
+				instance.running = true;
 				await instance.stop();
-				expect(instance.running()).toBe(false);
+				expect(instance.running).toBe(false);
 			});
 
 			it(`should return true when stop executes`, async () => {
-				instance.running(true);
+				instance.running = true;
 				const result = await instance.stop();
 				expect(result).toBe(true);
 			});
 
 			it(`should not change running true when timer is not running`, async () => {
-				instance.running(false);
+				instance.running = false;
 				await instance.stop();
-				expect(instance.running()).toBe(false);
+				expect(instance.running).toBe(false);
 			});
 
 			it(`should execute stop callbacks when timer is running`, async () => {
 				const fn = jest.fn();
 				instance.on('stop', fn);
-				instance.running(true);
+				instance.running = true;
 				await instance.stop();
 				expect(fn).toHaveBeenCalledTimes(1);
 			});
@@ -254,7 +254,7 @@ describe('TimerActive', () => {
 			it(`should not execute stop callbacks when timer is not running`, async () => {
 				const fn = jest.fn();
 				instance.on('stop', fn);
-				instance.running(false);
+				instance.running = false;
 				await instance.stop();
 				expect(fn).not.toHaveBeenCalled();
 			});
@@ -266,8 +266,8 @@ describe('TimerActive', () => {
 				const fn2 = jest.fn();
 				instance.on('pause', fn1);
 				instance.on('pause', fn2);
-				instance.running(true);
-				instance.paused(false);
+				instance.running = true;
+				instance.paused = false;
 
 				expect(fn1).not.toHaveBeenCalled();
 				expect(fn2).not.toHaveBeenCalled();
@@ -282,8 +282,8 @@ describe('TimerActive', () => {
 				const fn2 = jest.fn();
 				instance.on('pause', fn1);
 				instance.on('pause', fn2);
-				instance.running(false);
-				instance.paused(false);
+				instance.running = false;
+				instance.paused = false;
 
 				expect(fn1).not.toHaveBeenCalled();
 				expect(fn2).not.toHaveBeenCalled();
@@ -298,8 +298,8 @@ describe('TimerActive', () => {
 				const fn2 = jest.fn();
 				instance.on('pause', fn1);
 				instance.on('pause', fn2);
-				instance.running(true);
-				instance.paused(true);
+				instance.running = true;
+				instance.paused = true;
 
 				expect(fn1).not.toHaveBeenCalled();
 				expect(fn2).not.toHaveBeenCalled();
@@ -310,26 +310,26 @@ describe('TimerActive', () => {
 			});
 
 			it(`should set paused to true when timer is running and not already paused`, async () => {
-				instance.running(true);
-				instance.paused(false);
+				instance.running = true;
+				instance.paused = false;
 				await instance.pause();
-				expect(instance.paused()).toBe(true);
+				expect(instance.paused).toBe(true);
 			});
 
 			it(`should return true when pause executes successfully`, async () => {
-				instance.running(true);
-				instance.paused(false);
+				instance.running = true;
+				instance.paused = false;
 				expect(await instance.pause()).toBe(true);
 			});
 
 			it(`should return false when timer is not running`, async () => {
-				instance.running(false);
+				instance.running = false;
 				expect(await instance.pause()).toBe(false);
 			});
 
 			it(`should return false when timer is already paused`, async () => {
-				instance.running(true);
-				instance.paused(true);
+				instance.running = true;
+				instance.paused = true;
 				expect(await instance.pause()).toBe(false);
 			});
 		});
@@ -340,8 +340,8 @@ describe('TimerActive', () => {
 				const fn2 = jest.fn();
 				instance.on('unpause', fn1);
 				instance.on('unpause', fn2);
-				instance.running(true);
-				instance.paused(true);
+				instance.running = true;
+				instance.paused = true;
 
 				expect(fn1).not.toHaveBeenCalled();
 				expect(fn2).not.toHaveBeenCalled();
@@ -356,8 +356,8 @@ describe('TimerActive', () => {
 				const fn2 = jest.fn();
 				instance.on('unpause', fn1);
 				instance.on('unpause', fn2);
-				instance.running(false);
-				instance.paused(false);
+				instance.running = false;
+				instance.paused = false;
 
 				expect(fn1).not.toHaveBeenCalled();
 				expect(fn2).not.toHaveBeenCalled();
@@ -372,8 +372,8 @@ describe('TimerActive', () => {
 				const fn2 = jest.fn();
 				instance.on('unpause', fn1);
 				instance.on('unpause', fn2);
-				instance.running(true);
-				instance.paused(false);
+				instance.running = true;
+				instance.paused = false;
 
 				expect(fn1).not.toHaveBeenCalled();
 				expect(fn2).not.toHaveBeenCalled();
@@ -384,18 +384,18 @@ describe('TimerActive', () => {
 			});
 
 			it(`should set paused to false when timer is running and paused`, async () => {
-				instance.running(true);
-				instance.paused(true);
+				instance.running = true;
+				instance.paused = true;
 				await instance.unpause();
-				expect(instance.paused()).toBe(false);
+				expect(instance.paused).toBe(false);
 			});
 		});
 
 		describe('onUpdate', () => {
 			it(`should not call stop when timer is not running`, () => {
 				const stopSpy = jest.spyOn(instance, 'stop');
-				instance.running(false);
-				instance.limitDuration(true);
+				instance.running = false;
+				instance.limitDuration = true;
 				instance.timeLimit(10);
 				instance.timeStart.setNow().subHours(3);
 				instance.onUpdate();

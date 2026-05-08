@@ -1,8 +1,7 @@
-import type {Bool, Float, UInt} from '@toreda/strong-types';
-import {boolMake, floatMake, uIntMake} from '@toreda/strong-types';
-
+import type {Mutable} from '../mutable';
 import type {Time} from '../time';
 import type {Timer} from '../timer';
+import {mutable} from '../mutable';
 import {timeMake} from '../time/make';
 import {timeSince} from '../time/since';
 
@@ -10,17 +9,17 @@ import {timeSince} from '../time/since';
  * @category Timers
  */
 export class TimerPassive implements Timer {
-	public readonly running: Bool;
-	public readonly interval: Float;
-	public readonly lastTrigger: Float;
-	public readonly triggerLimit: UInt;
+	public running: boolean;
+	public readonly interval: Mutable<number>;
+	public readonly lastTrigger: Mutable<number>;
+	public readonly triggerLimit: Mutable<number>;
 	public timeStart: Time;
 
 	constructor() {
-		this.running = boolMake(false);
-		this.interval = floatMake(0);
-		this.lastTrigger = floatMake(0);
-		this.triggerLimit = uIntMake(0);
+		this.running = false;
+		this.interval = mutable(0);
+		this.lastTrigger = mutable(0);
+		this.triggerLimit = mutable(0);
 		this.timeStart = timeMake('s', 0);
 	}
 
@@ -29,12 +28,13 @@ export class TimerPassive implements Timer {
 	 * @returns		Whether timer started successfully.
 	 */
 	public start(): boolean {
-		if (this.running()) {
+		if (this.running) {
 			return false;
 		}
 
 		this.timeStart.setNow();
-		return this.running(true);
+		this.running = true;
+		return true;
 	}
 
 	/**
@@ -42,11 +42,12 @@ export class TimerPassive implements Timer {
 	 * @returns		Whether timer stopped succesfully.
 	 */
 	public stop(): boolean {
-		if (!this.running()) {
+		if (!this.running) {
 			return false;
 		}
 
-		return this.running(false);
+		this.running = false;
+		return true;
 	}
 
 	public trigger(): void {
@@ -54,8 +55,7 @@ export class TimerPassive implements Timer {
 	}
 
 	public onUpdate(): void {
-		// do nothing
-		if (!this.running()) {
+		if (!this.running) {
 			return;
 		}
 
@@ -77,6 +77,6 @@ export class TimerPassive implements Timer {
 	}
 
 	public reset(): void {
-		this.running.reset();
+		this.running = false;
 	}
 }

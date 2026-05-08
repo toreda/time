@@ -25,10 +25,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `timeUntil` and `timeSince` now return `Time | null` (matching the `Time.until` / `Time.since` interface declarations), and accept an optional second `units` argument so callers can preserve sub-second precision. Previously both helpers always returned a non-null `Time` rounded to seconds, which silently dropped precision and could not signal invalid input.
 * `Time.type` is now the literal `'Time'` instead of `'Time' | string`. The runtime check in `timeCheckType` was already enforcing this; the type now matches.
 * `timeCheckMethods` now also requires that the candidate is itself callable (`Time` instances are callable). Object literals with all the right method properties but no call signature no longer pass `timeValid`.
+* **Breaking**: `TimerActive` and `TimerPassive` boolean fields (`running`, `paused`, `limitDuration`) are now plain mutable booleans instead of `@toreda/strong-types` `Bool` wrappers. Read with `timer.running` (not `timer.running()`); write with `timer.running = true` (not `timer.running(true)`).
+* **Breaking**: `TimerActive.lastIntervalEnd` and `TimerPassive.{interval, lastTrigger, triggerLimit}` are now backed by an internal callable `Mutable<number>` helper instead of `@toreda/strong-types` `Float` / `UInt`. The call-style read/write API (`timer.interval()`, `timer.interval(5)`) is preserved.
 
 ### Fixed
 * `unixTimestampNow` now ignores non-finite `offset` values (`NaN`, `Infinity`, `-Infinity`) instead of returning a non-finite result.
 * Duplicate `'asDays'` entry in `timeMethods` removed.
+
+### Removed
+* `@toreda/strong-types` is no longer a peer or dev dependency. The three internal usages (`TimerActive`, `TimerPassive`, `TimerCallbackGroup`) were replaced with plain TypeScript primitives or a small internal `Mutable<T>` helper. Reduces install size and removes a transitive `big.js` dependency.
 
 ### Deprecated
 * Top-level `canConvert` export is deprecated in favor of `TimeUtils.canConvert`. The re-export is preserved for backwards compatibility and will be removed in a future major release.

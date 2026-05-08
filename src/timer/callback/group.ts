@@ -1,7 +1,6 @@
 import type {TimerCallback} from '../callback';
 import type {TimerCallbackSync} from './sync';
 import {timerCallbackGroupIdNext} from './group/id';
-import {stringValue} from '@toreda/strong-types';
 
 export type TimerCallbackKind = 'once' | 'always';
 export type TimerCallbackFn = TimerCallback | TimerCallbackSync;
@@ -15,7 +14,7 @@ export class TimerCallbackGroup {
 	private readonly _always: TimerCallbackFn[];
 
 	constructor(id?: string | null) {
-		this.id = stringValue(id, timerCallbackGroupIdNext());
+		this.id = typeof id === 'string' && id.length > 0 ? id : timerCallbackGroupIdNext();
 		this._once = [];
 		this._always = [];
 	}
