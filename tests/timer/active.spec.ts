@@ -12,11 +12,10 @@ describe('TimerActive', () => {
 
 	beforeAll(() => {
 		sampleCallback = jest.fn();
-		instance = new TimerActive();
 	});
 
 	beforeEach(() => {
-		instance.reset();
+		instance = new TimerActive();
 	});
 
 	describe('Constructor', () => {
@@ -28,10 +27,6 @@ describe('TimerActive', () => {
 
 		it(`should initialize running to false`, () => {
 			expect(custom.running()).toBe(false);
-		});
-
-		it(`should initialize handlersBound to false`, () => {
-			expect(custom._handlersBound()).toBe(false);
 		});
 
 		it(`should initialize lastIntervalEnd to 0`, () => {
@@ -63,15 +58,6 @@ describe('TimerActive', () => {
 				instance.running(true);
 				const result = await instance.start();
 				expect(result).toBe(false);
-			});
-
-			it(`should not bind handlers when timer is already running`, async () => {
-				instance.running(true);
-				const spy = jest.spyOn(instance, 'bindHandlers');
-				await instance.start();
-
-				expect(spy).not.toHaveBeenCalled();
-				spy.mockRestore();
 			});
 		});
 
@@ -186,14 +172,6 @@ describe('TimerActive', () => {
 		});
 
 		describe('getListenerGroup', () => {
-			it(`should return null when id is undefined`, () => {
-				expect(instance.getListenerGroup(undefined as any)).toBeNull();
-			});
-
-			it(`should return null when id is null`, () => {
-				expect(instance.getListenerGroup(null as any)).toBeNull();
-			});
-
 			it(`should return null when event id is an empty string`, () => {
 				expect(instance.getListenerGroup(EMPTY_STRING as any)).toBeNull();
 			});
@@ -206,8 +184,7 @@ describe('TimerActive', () => {
 				it(`should return listener group for supported event ID '${eventId}'`, () => {
 					const result = instance.getListenerGroup(eventId);
 					expect(result).not.toBeNull();
-					expect(result).toHaveProperty('_once');
-					expect(result).toHaveProperty('_always');
+					expect(result!.id).toBe(eventId);
 				});
 			}
 		});
@@ -266,16 +243,20 @@ describe('TimerActive', () => {
 				expect(instance.running()).toBe(false);
 			});
 
-			it(`should execute stop callbacks`, async () => {
+			it(`should execute stop callbacks when timer is running`, async () => {
 				const fn = jest.fn();
+				instance.on('stop', fn);
+				instance.running(true);
+				await instance.stop();
+				expect(fn).toHaveBeenCalledTimes(1);
 			});
-		});
 
-		describe('bindHandlers', () => {
-			it(`should set handlersBound flag when it is not already set`, () => {
-				instance._handlersBound(false);
-				instance.bindHandlers();
-				expect(instance._handlersBound()).toBe(true);
+			it(`should not execute stop callbacks when timer is not running`, async () => {
+				const fn = jest.fn();
+				instance.on('stop', fn);
+				instance.running(false);
+				await instance.stop();
+				expect(fn).not.toHaveBeenCalled();
 			});
 		});
 
@@ -327,6 +308,30 @@ describe('TimerActive', () => {
 				expect(fn1).not.toHaveBeenCalled();
 				expect(fn2).not.toHaveBeenCalled();
 			});
+
+			it(`should set paused to true when timer is running and not already paused`, async () => {
+				instance.running(true);
+				instance.paused(false);
+				await instance.pause();
+				expect(instance.paused()).toBe(true);
+			});
+
+			it(`should return true when pause executes successfully`, async () => {
+				instance.running(true);
+				instance.paused(false);
+				expect(await instance.pause()).toBe(true);
+			});
+
+			it(`should return false when timer is not running`, async () => {
+				instance.running(false);
+				expect(await instance.pause()).toBe(false);
+			});
+
+			it(`should return false when timer is already paused`, async () => {
+				instance.running(true);
+				instance.paused(true);
+				expect(await instance.pause()).toBe(false);
+			});
 		});
 
 		describe('unpause', () => {
@@ -377,62 +382,26 @@ describe('TimerActive', () => {
 				expect(fn1).not.toHaveBeenCalled();
 				expect(fn2).not.toHaveBeenCalled();
 			});
+
+			it(`should set paused to false when timer is running and paused`, async () => {
+				instance.running(true);
+				instance.paused(true);
+				await instance.unpause();
+				expect(instance.paused()).toBe(false);
+			});
 		});
 
 		describe('onUpdate', () => {
-			let stopSpy: jest.SpyInstance;
-			beforeAll(() => {
-				stopSpy = jest.spyOn(instance, 'stop');
-			});
-
-			beforeEach(() => {
-				stopSpy.mockClear();
-			});
-
-			afterAll(() => {
-				stopSpy.mockRestore();
-			});
-
 			it(`should not call stop when timer is not running`, () => {
-				expect(stopSpy).not.toHaveBeenCalled();
+				const stopSpy = jest.spyOn(instance, 'stop');
 				instance.running(false);
 				instance.limitDuration(true);
 				instance.timeLimit(10);
 				instance.timeStart.setNow().subHours(3);
 				instance.onUpdate();
 				expect(stopSpy).not.toHaveBeenCalled();
+				stopSpy.mockRestore();
 			});
-
-			/**
-			it(`should stop timer when the max duration has elapsed`, () => {
-				expect(stopSpy).not.toHaveBeenCalled();
-				const start = timeNowOffset(-1000);
-				instance.timeStart(start);
-				instance.timeStart.subHours(10);
-				instance.limitDuration(true);
-				instance.timeLimit(seconds(1));
-
-				instance.running(true);
-				instance.onUpdate();
-				expect(stopSpy).toHaveBeenCalledTimes(1);
-			});
-			**/
-		});
-
-		describe('reset', () => {
-			it(`should reset running to false`, () => {
-				instance.running(true);
-				instance.reset();
-				expect(instance.running()).toBe(false);
-			});
-
-			it(`should reset paused to false`, () => {
-				instance.paused(true);
-				instance.reset();
-				expect(instance.paused()).toBe(false);
-			});
-
-			it(`should reset limitDuration to its fallback value`, () => {});
 		});
 	});
 });

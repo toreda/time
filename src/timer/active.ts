@@ -1,7 +1,6 @@
 import type {Bool, Float} from '@toreda/strong-types';
 import {boolMake, floatMake} from '@toreda/strong-types';
 
-import {Defaults} from '../defaults';
 import type {Time} from '../time';
 import {TimerCallback} from './callback';
 import {TimerCallbackGroup} from './callback/group';
@@ -12,15 +11,11 @@ import {timeMake} from '../time/make';
 import {timeNow} from '../time/now';
 
 /**
- * Active timer with internal timing clock. Takes a callback to invoke
- * every timer trigger.
+ * Active timer driven by external ticker calls to `onUpdate`.
  *
  * @category Timers
  */
 export class TimerActive {
-	private _timerHandle: unknown;
-	private readonly _checkIntervalMs: Time;
-	public readonly _handlersBound: Bool;
 	public readonly lastIntervalEnd: Float;
 	public readonly limitDuration: Bool;
 	public readonly listeners: Record<TimerEventId, TimerCallbackGroup>;
@@ -33,11 +28,9 @@ export class TimerActive {
 	constructor(options?: TimerOptions) {
 		this.lastIntervalEnd = floatMake(0);
 		this.running = boolMake(false);
-		this._handlersBound = boolMake(false);
 
 		const limitDuration = typeof options?.limitDuration === 'boolean' ? options?.limitDuration : false;
 		this.limitDuration = boolMake(limitDuration);
-		this._checkIntervalMs = timeMake('ms', Defaults.Timer.CheckIntervalMs);
 		this.timeStart = timeMake('s', 0);
 		this.timeStop = timeMake('s', 0);
 		const timeLimit = typeof options?.timeLimit === 'number' ? options?.timeLimit : 0;
@@ -53,13 +46,13 @@ export class TimerActive {
 			restart: new TimerCallbackGroup('restart'),
 			reset: new TimerCallbackGroup('reset')
 		};
+
+		this.start = this.start.bind(this);
+		this.stop = this.stop.bind(this);
+		this.onUpdate = this.onUpdate.bind(this);
 	}
 
 	public getListenerGroup(id: TimerEventId): TimerCallbackGroup | null {
-		if (typeof id !== 'string') {
-			return null;
-		}
-
 		const group = this.listeners[id];
 		if (!group) {
 			return null;
@@ -112,20 +105,6 @@ export class TimerActive {
 		return false;
 	}
 
-	public bindHandlers(): void {
-		if (this._handlersBound()) {
-			return;
-		}
-
-		// Mark handlers as bound.
-		this._handlersBound(true);
-
-		this.start = this.start.bind(this);
-		this.stop = this.stop.bind(this);
-		this.reset = this.reset.bind(this);
-		this.onUpdate = this.onUpdate.bind(this);
-	}
-
 	public async unpause(): Promise<boolean> {
 		if (!this.running() || !this.paused()) {
 			return false;
@@ -142,12 +121,12 @@ export class TimerActive {
 		}
 
 		await this.executeCallbacks('pause');
-		return this.paused(true);
+		this.paused(true);
+		return true;
 	}
 
 	/**
 	 * Start the timer.
-	 * @returns
 	 */
 	public async start(): Promise<boolean> {
 		// Timer is already running.
@@ -155,9 +134,7 @@ export class TimerActive {
 			return false;
 		}
 
-		this.bindHandlers();
 		this.timeStart.setNow();
-		this._timerHandle = setTimeout(this.onUpdate, Defaults.Timer.CheckIntervalMs);
 		await this.executeCallbacks('start');
 
 		return this.running(true);
@@ -178,11 +155,8 @@ export class TimerActive {
 			return false;
 		}
 
-		clearInterval(this._timerHandle as number);
 		this.timeStop.setNow();
-		const timeSince = this.timeStart.since(this.timeStop());
-		const value = timeSince ? timeSince() : 0;
-		await this.listeners.stop.executeAlways(value);
+		await this.executeCallbacks('stop');
 
 		this.running(false);
 
@@ -194,27 +168,11 @@ export class TimerActive {
 		if (!group) {
 			return;
 		}
-		const now = timeNow();
-		const timeSince = now.since(now());
-		const duration = timeSince ? timeSince() : 0;
+
+		const elapsed = this.timeStart.since(timeNow());
+		const duration = elapsed ? elapsed() : 0;
 
 		await group.executeAll(duration);
-	}
-
-	public reset(): void {
-		this.stop();
-
-		this.lastIntervalEnd.reset();
-		this.listeners.done.reset();
-		this.listeners.pause.reset();
-		this.listeners.reset.reset();
-		this.listeners.restart.reset();
-		this.listeners.start.reset();
-		this.listeners.stop.reset();
-		this.listeners.unpause.reset();
-		this.running(false);
-		this.paused(false);
-		this.limitDuration.reset();
 	}
 
 	public onUpdate(): void {
