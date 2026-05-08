@@ -6,7 +6,6 @@ import {timeCheckType} from './check/type';
 import {timeConvert} from './convert';
 import {timeMake} from './make';
 import {timeUnitSupported} from './unit/supported';
-import {timeValid} from './valid';
 
 const FALLBACK_UNIT: TimeUnit = 's';
 
@@ -15,7 +14,9 @@ function isSafeFiniteNumber(value: unknown): value is number {
 }
 
 /**
- * Internal state data created and wrapped by Time instances.
+ * Internal state data created and wrapped by Time instances. All mutators
+ * are silent no-ops on bad input: the failure is logged and `caller` is
+ * returned unchanged.
  */
 export class TimeData {
 	private _units: TimeUnit;
@@ -50,7 +51,7 @@ export class TimeData {
 	/**
 	 * Get the instance's current native time unit.
 	 */
-	public get units(): TimeUnit {
+	public units(): TimeUnit {
 		return this._units;
 	}
 
@@ -64,35 +65,35 @@ export class TimeData {
 	 * instance's native time unit to match. Used by in-place conversion
 	 * methods on the wrapping Time instance.
 	 *
-	 * @returns		`true` when the unit (and value) were updated. `false` when
-	 *				the target was unsupported or the conversion failed; in the
-	 *				failure case state is left unchanged. The no-op case where
-	 *				`target` already matches the current unit also returns `true`.
-	 *
-	 * @internal	Intended for use by the wrapping `Time` instance in `timeMake`.
-	 *				External callers should rely on the `Time.to*()` API.
+	 * @returns		`caller` for chaining. The conversion is a no-op when the
+	 *				target is unsupported, the conversion fails, or `target`
+	 *				already matches the current unit.
 	 */
-	public setUnits(target: TimeUnit): boolean {
+	public setUnits(caller: Time, target: TimeUnit): Time {
 		const fnLog = this.log.makeLog('setUnits');
 
 		if (!timeUnitSupported(target)) {
 			fnLog.error(`target arg is not a supported TimeUnit.`);
-			return false;
+			return caller;
 		}
 
 		if (target === this._units) {
-			return true;
+			if (!isSafeFiniteNumber(this.value)) {
+				fnLog.error(`current value is not a finite number in safe range; refusing no-op.`);
+				return caller;
+			}
+			return caller;
 		}
 
 		const converted = timeConvert(this._units, target, this.value);
 		if (converted === null) {
 			fnLog.error(`bad timeConvert result for target unit.`);
-			return false;
+			return caller;
 		}
 
 		this.value = converted;
 		this._units = target;
-		return true;
+		return caller;
 	}
 
 	/**
@@ -102,6 +103,12 @@ export class TimeData {
 		return this.value;
 	}
 
+	/**
+	 * Replace the current value with `input`.
+	 * @returns		`caller` for chaining. State is left unchanged when `input`
+	 *				is missing, not a finite number in safe range, or a Time
+	 *				instance whose conversion fails.
+	 */
 	public set(caller: Time, input?: number | Time | null): Time {
 		const fnLog = this.log.makeLog('set');
 
@@ -120,13 +127,13 @@ export class TimeData {
 			return caller;
 		}
 
-		if (!timeValid(input)) {
-			fnLog.error(`time arg failed validity check.`);
+		if (!timeCheckType(input)) {
+			fnLog.error(`input arg is not a valid Time instance.`);
 			return caller;
 		}
 
-		const updated = timeConvert(input.units(), this.units, input());
-		if (!isSafeFiniteNumber(updated)) {
+		const updated = timeConvert(input.units(), this._units, input());
+		if (updated === null) {
 			fnLog.error(`bad timeConvert result for input.`);
 			return caller;
 		}
@@ -139,8 +146,9 @@ export class TimeData {
 	 * Add number input to current value.
 	 * @param caller		Time instance calling this method.
 	 * @param input			number value to be added.
-	 * @returns				Returns the Time instance which invoked the function
-	 *						to support method chaining.
+	 * @returns				`caller` for chaining. State is left unchanged when
+	 *						`input` is not a finite number in safe range or the
+	 *						resulting sum overflows the safe range.
 	 */
 	public addNumber(caller: Time, input?: number | null): Time {
 		const fnLog = this.log.makeLog('addNumber');
@@ -165,8 +173,9 @@ export class TimeData {
 	 * Subtract number input from the current value.
 	 * @param caller		Time instance calling this method.
 	 * @param input			number value to be subtracted.
-	 * @returns				Returns the Time instance which invoked the function
-	 *						to support method chaining.
+	 * @returns				`caller` for chaining. State is left unchanged when
+	 *						`input` is not a finite number in safe range or the
+	 *						resulting difference overflows the safe range.
 	 */
 	public subNumber(caller: Time, input?: number | null): Time {
 		const fnLog = this.log.makeLog('subNumber');
@@ -214,7 +223,7 @@ export class TimeData {
 		}
 
 		const converted = timeConvert(input.units(), convertTo, input());
-		return isSafeFiniteNumber(converted) ? converted : null;
+		return converted;
 	}
 
 	/**
@@ -238,7 +247,7 @@ export class TimeData {
 			return caller;
 		}
 
-		const converted = timeConvert(units, this.units, value, decimals);
+		const converted = timeConvert(units, this._units, value, decimals);
 		if (converted === null) {
 			fnLog.error(`bad timeConvert result for value.`);
 			return caller;
@@ -268,7 +277,7 @@ export class TimeData {
 			return caller;
 		}
 
-		const converted = timeConvert(units, this.units, value, decimals);
+		const converted = timeConvert(units, this._units, value, decimals);
 		if (converted === null) {
 			fnLog.error(`bad timeConvert result for value.`);
 			return caller;
@@ -278,27 +287,23 @@ export class TimeData {
 	}
 
 	/**
-	 * Invert current value's sign.
-	 * @param caller
-	 * @param posOnly
+	 * Invert the current value's sign in place.
+	 * @param caller		Time instance calling this method.
+	 * @param positivesOnly	When true, only positive values are inverted.
+	 *						Negative values are left unchanged.
 	 */
-	public invert(caller: Time, posOnly?: boolean): Time {
-		const value = this.get();
-
+	public invert(caller: Time, positivesOnly?: boolean): Time {
 		// 0 has no meaningful inversion and `0 * -1 === -0`, which would
 		// otherwise leak into stored state.
-		if (value === 0) {
+		if (this.value === 0) {
 			return caller;
 		}
 
-		// When posOnly flag is set only positive values
-		// will be inverted.
-		if (posOnly === true && value < 0) {
+		if (positivesOnly === true && this.value < 0) {
 			return caller;
 		}
 
-		this.set(caller, value * -1);
-
+		this.value = this.value * -1;
 		return caller;
 	}
 
@@ -312,11 +317,11 @@ export class TimeData {
 		const fnLog = this.log.makeLog('timeSinceTime');
 
 		if (!timeCheckType(target)) {
-			fnLog.error(`target arg did not pass time check type test. target is not a valid Time instance.`);
+			fnLog.error(`target arg is not a valid Time instance.`);
 			return null;
 		}
 
-		const since = timeConvert(target.units(), this.units, target());
+		const since = timeConvert(target.units(), this._units, target());
 		if (since === null) {
 			fnLog.error(`bad timeConvert result for target.`);
 			return null;
@@ -333,20 +338,13 @@ export class TimeData {
 			return null;
 		}
 
-		// `target === 0` is treated as an "unset" sentinel and returns 0
-		// regardless of `this.value`. Locked by contract test:
-		// tests/time/make.spec.ts → 'since' / 'should return time object with value 0 when time value is 0'.
-		if (target === 0) {
-			return timeMake(this.units, 0);
-		}
-
 		const result = this.value - target;
 		if (!isSafeFiniteNumber(result)) {
 			fnLog.error(`computed result is not finite or is out of safe range.`);
 			return null;
 		}
 
-		return timeMake(this.units, result);
+		return timeMake(this._units, result);
 	}
 
 	/**
@@ -359,11 +357,11 @@ export class TimeData {
 		const fnLog = this.log.makeLog('timeUntilTime');
 
 		if (!timeCheckType(time)) {
-			fnLog.error(`time arg did not pass type check and is not a valid Time instance.`);
+			fnLog.error(`time arg is not a valid Time instance.`);
 			return null;
 		}
 
-		const target = timeConvert(time.units(), this.units, time());
+		const target = timeConvert(time.units(), this._units, time());
 		if (target === null) {
 			fnLog.error(`bad timeConvert result for time arg.`);
 			return null;
@@ -384,20 +382,13 @@ export class TimeData {
 			return null;
 		}
 
-		// `target === 0` is treated as an "unset" sentinel and returns 0
-		// regardless of `this.value`. Locked by contract test:
-		// tests/time/make.spec.ts → 'until' / 'should return time object with value 0 when time value is 0'.
-		if (target === 0) {
-			return timeMake(this.units, 0);
-		}
-
 		const result = target - this.value;
 		if (!isSafeFiniteNumber(result)) {
 			fnLog.error(`computed result is not finite or is out of safe range.`);
 			return null;
 		}
 
-		return timeMake(this.units, result);
+		return timeMake(this._units, result);
 	}
 
 	/**
@@ -407,7 +398,7 @@ export class TimeData {
 	public reset(caller: Time): Time {
 		this.value = this.initialValue;
 		this._units = this.initialUnits;
-		this.log.debug(`TimeData reset complete`);
+		this.log.debug(`TimeData reset complete.`);
 
 		return caller;
 	}

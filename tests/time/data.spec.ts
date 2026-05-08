@@ -24,7 +24,7 @@ describe('TimeData', () => {
 		for (const key of timeUnitKeys) {
 			it(`should create instance with unit '${key}' when units arg is '${key}'`, () => {
 				const custom = new TimeData(key, 1);
-				expect(custom.units).toBe(key);
+				expect(custom.units()).toBe(key);
 			});
 		}
 
@@ -104,21 +104,21 @@ describe('TimeData', () => {
 		});
 		describe('set', () => {
 			it(`should not change value or time units when input is null`, () => {
-				const units = instance.units;
+				const units = instance.units();
 				const value = 11974;
 				instance.set(time, value);
 				instance.set(time, null);
 				expect(instance.get()).toBe(value);
-				expect(instance.units).toBe(units);
+				expect(instance.units()).toBe(units);
 			});
 
 			it(`should not change value or time units when input is undefined`, () => {
-				const units = instance.units;
+				const units = instance.units();
 				const value = 11974;
 				instance.set(time, value);
 				instance.set(time, undefined);
 				expect(instance.get()).toBe(value);
-				expect(instance.units).toBe(units);
+				expect(instance.units()).toBe(units);
 			});
 
 			it(`should be able to set value to 0`, () => {

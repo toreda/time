@@ -464,28 +464,36 @@ describe('timeMake', () => {
 		});
 
 		describe('until', () => {
-			it(`should return time object with value 0 when time value is 0`, () => {
-				const result = instance.until(0);
-				expect(result!()).toBe(0);
+			beforeEach(() => {
+				instance.reset();
 			});
 
-			it(`should return time object with value 0 when time is a Time object with value 0`, () => {
+			it(`should return target minus instance value when target number is 0`, () => {
+				const result = instance.until(0);
+				expect(result!()).toBe(0 - TIME_INITIAL_VALUE);
+			});
+
+			it(`should return target minus instance value when target Time has value 0`, () => {
 				const time = timeMake('s', 0);
 				const result = instance.until(time);
-				expect(result!()).toBe(0);
+				expect(result!()).toBe(0 - TIME_INITIAL_VALUE);
 			});
 		});
 
 		describe('since', () => {
-			it(`should return time object with value 0 when time value is 0`, () => {
-				const result = instance.since(0);
-				expect(result!()).toBe(0);
+			beforeEach(() => {
+				instance.reset();
 			});
 
-			it(`should return time object with value 0 when time is a Time object with value 0`, () => {
+			it(`should return instance value minus target when target number is 0`, () => {
+				const result = instance.since(0);
+				expect(result!()).toBe(TIME_INITIAL_VALUE);
+			});
+
+			it(`should return instance value minus target when target Time has value 0`, () => {
 				const time = timeMake('s', 0);
 				const result = instance.since(time);
-				expect(result!()).toBe(0);
+				expect(result!()).toBe(TIME_INITIAL_VALUE);
 			});
 		});
 

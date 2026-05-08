@@ -91,7 +91,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			set: (value?: number | Time | null): Time => {
-				const unitValue = data.getUnitValue(data.units, value);
+				const unitValue = data.getUnitValue(data.units(), value);
 				if (unitValue === null) {
 					return o;
 				}
@@ -111,7 +111,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			units: (): TimeUnit => {
-				return data.units;
+				return data.units();
 			},
 			/**
 			 * Time elapsed since target time. When time arg is a Time object
@@ -156,7 +156,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			asMicroseconds: (): number | null => {
-				return timeConvert(data.units, 'μs', data.get());
+				return timeConvert(data.units(), 'μs', data.get());
 			},
 			/**
 			 * Copy and convert current time value from the instance unit type
@@ -165,7 +165,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			asMilliseconds: () => {
-				return timeConvert(data.units, 'ms', data.get());
+				return timeConvert(data.units(), 'ms', data.get());
 			},
 			/**
 			 * Copy and convert current time value from the instance unit type
@@ -174,7 +174,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			asSeconds: () => {
-				return timeConvert(data.units, 's', data.get());
+				return timeConvert(data.units(), 's', data.get());
 			},
 			/**
 			 * Copy and convert current time value from the instance unit type
@@ -183,7 +183,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			asMinutes: () => {
-				return timeConvert(data.units, 'm', data.get());
+				return timeConvert(data.units(), 'm', data.get());
 			},
 			/**
 			 * Copy and convert current time value from the instance unit type
@@ -192,7 +192,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			asHours: () => {
-				return timeConvert(data.units, 'h', data.get());
+				return timeConvert(data.units(), 'h', data.get());
 			},
 			/**
 			 * Copy and convert current time value from the instance unit type
@@ -201,7 +201,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			asDays: () => {
-				return timeConvert(data.units, 'd', data.get());
+				return timeConvert(data.units(), 'd', data.get());
 			},
 			/**
 			 * Copy and convert current time value from the instance unit type
@@ -210,7 +210,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			asWeeks: () => {
-				return timeConvert(data.units, 'w', data.get());
+				return timeConvert(data.units(), 'w', data.get());
 			},
 			/**
 			 * Copy and convert current time value from the instance unit type
@@ -219,7 +219,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			asMonths: () => {
-				return timeConvert(data.units, 'mo', data.get());
+				return timeConvert(data.units(), 'mo', data.get());
 			},
 			/**
 			 * Copy and convert current time value from the instance unit type
@@ -228,7 +228,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns
 			 */
 			asYears: () => {
-				return timeConvert(data.units, 'y', data.get());
+				return timeConvert(data.units(), 'y', data.get());
 			},
 			/**
 			 * Converts provided vlaue in microseconds to instance's unit type
@@ -433,90 +433,63 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 			 * @returns		Time Instance
 			 */
 			toYears(): Time {
-				if (!data.setUnits('y')) {
-					fnLog.error(`toYears failed; instance unchanged.`);
-				}
-				return o;
+				return data.setUnits(o, 'y');
 			},
 			/**
 			 * Convert current time value to months.
 			 * @returns		Time Instance
 			 */
 			toMonths(): Time {
-				if (!data.setUnits('mo')) {
-					fnLog.error(`toMonths failed; instance unchanged.`);
-				}
-				return o;
+				return data.setUnits(o, 'mo');
 			},
 			/**
 			 * Convert current time value to weeks.
 			 * @returns		Time instance
 			 */
 			toWeeks(): Time {
-				if (!data.setUnits('w')) {
-					fnLog.error(`toWeeks failed; instance unchanged.`);
-				}
-				return o;
+				return data.setUnits(o, 'w');
 			},
 			/**
 			 * Convert current time value to days.
 			 * @returns		Time instance
 			 */
 			toDays(): Time {
-				if (!data.setUnits('d')) {
-					fnLog.error(`toDays failed; instance unchanged.`);
-				}
-				return o;
+				return data.setUnits(o, 'd');
 			},
 			/**
 			 * Convert current time value to hours.
 			 * @returns 	Time instance
 			 */
 			toHours(): Time {
-				if (!data.setUnits('h')) {
-					fnLog.error(`toHours failed; instance unchanged.`);
-				}
-				return o;
+				return data.setUnits(o, 'h');
 			},
 			/**
 			 * Convert current time value to minutes.
 			 * @returns		Time instance
 			 */
 			toMinutes(): Time {
-				if (!data.setUnits('m')) {
-					fnLog.error(`toMinutes failed; instance unchanged.`);
-				}
-				return o;
+				return data.setUnits(o, 'm');
 			},
 			/**
 			 * Convert current time value to seconds.
 			 * @returns		Time instance
 			 */
 			toSeconds(): Time {
-				if (!data.setUnits('s')) {
-					fnLog.error(`toSeconds failed; instance unchanged.`);
-				}
-				return o;
+				return data.setUnits(o, 's');
 			},
 			/**
 			 * Convert current time value to milliseconds.
 			 * @returns
 			 */
 			toMilliseconds(): Time {
-				if (!data.setUnits('ms')) {
-					fnLog.error(`toMilliseconds failed; instance unchanged.`);
-				}
-				return o;
+				return data.setUnits(o, 'ms');
 			},
 			/**
 			 * Convert current time value to microseconds.
 			 * @returns
 			 */
 			toMicroseconds(): Time {
-				if (!data.setUnits('μs')) {
-					fnLog.error(`toMicroseconds failed; instance unchanged.`);
-				}
-				return o;
+				return data.setUnits(o, 'μs');
 			},
 			type: 'Time'
 		}
