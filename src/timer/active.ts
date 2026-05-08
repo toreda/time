@@ -3,7 +3,6 @@ import {boolMake, floatMake} from '@toreda/strong-types';
 
 import {Defaults} from '../defaults';
 import type {Time} from '../time';
-import {Timer} from '../timer';
 import {TimerCallback} from './callback';
 import {TimerCallbackGroup} from './callback/group';
 import {TimerCallbackSync} from './callback/sync';
@@ -79,11 +78,10 @@ export class TimerActive {
 			return false;
 		}
 
-		group.alwaysCt().push(fn);
-		return true;
+		return group.always(fn);
 	}
 
-	public once(id: TimerEventId, fn: Timer | TimerCallbackSync): boolean {
+	public once(id: TimerEventId, fn: TimerCallback | TimerCallbackSync): boolean {
 		if (typeof fn !== 'function') {
 			return false;
 		}
@@ -93,8 +91,7 @@ export class TimerActive {
 			return false;
 		}
 
-		group._once().push(fn);
-		return true;
+		return group.once(fn);
 	}
 
 	public setTimeLimit(value: number | Time): boolean {
@@ -185,7 +182,7 @@ export class TimerActive {
 		this.timeStop.setNow();
 		const timeSince = this.timeStart.since(this.timeStop());
 		const value = timeSince ? timeSince() : 0;
-		this.listeners.stop.always(value);
+		await this.listeners.stop.executeAlways(value);
 
 		this.running(false);
 
@@ -201,7 +198,7 @@ export class TimerActive {
 		const timeSince = now.since(now());
 		const duration = timeSince ? timeSince() : 0;
 
-		await group.execute(duration);
+		await group.executeAll(duration);
 	}
 
 	public reset(): void {

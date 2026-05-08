@@ -1,19 +1,21 @@
-import type {Id} from '@toreda/strong-types';
-import {idMake} from '@toreda/strong-types';
-
 import type {TimerCallback} from '../callback';
 import type {TimerCallbackSync} from './sync';
+import {timerCallbackGroupIdNext} from './group/id';
+import {stringValue} from '@toreda/strong-types';
+
+export type TimerCallbackKind = 'once' | 'always';
+export type TimerCallbackFn = TimerCallback | TimerCallbackSync;
 
 /**
  * @category Timers
  */
 export class TimerCallbackGroup {
-	public readonly id: Id;
-	private readonly _once: (TimerCallback | TimerCallbackSync)[];
-	private readonly _always: (TimerCallback | TimerCallbackSync)[];
+	public readonly id: string;
+	private readonly _once: TimerCallbackFn[];
+	private readonly _always: TimerCallbackFn[];
 
-	constructor(id: string) {
-		this.id = idMake('timer', id);
+	constructor(id?: string | null) {
+		this.id = stringValue(id, timerCallbackGroupIdNext());
 		this._once = [];
 		this._always = [];
 	}
@@ -31,12 +33,36 @@ export class TimerCallbackGroup {
 		return this._always.length;
 	}
 
-	public async execute(duration?: number | null): Promise<void> {
-		await this.once(duration);
-		await this.always(duration);
+	public on(kind: TimerCallbackKind, fn: TimerCallbackFn): boolean {
+		if (typeof fn !== 'function') {
+			return false;
+		}
+
+		const list = kind === 'once' ? this._once : this._always;
+		list.push(fn);
+		return true;
 	}
 
-	public async invoke(fn: TimerCallback | TimerCallbackSync, duration?: number | null): Promise<void> {
+	public once(fn: TimerCallbackFn): boolean {
+		return this.on('once', fn);
+	}
+
+	public always(fn: TimerCallbackFn): boolean {
+		return this.on('always', fn);
+	}
+
+	public remove(kind: TimerCallbackKind, fn: TimerCallbackFn): boolean {
+		const list = kind === 'once' ? this._once : this._always;
+		const i = list.indexOf(fn);
+		if (i === -1) {
+			return false;
+		}
+
+		list.splice(i, 1);
+		return true;
+	}
+
+	public async invoke(fn: TimerCallbackFn, duration?: number | null): Promise<void> {
 		const value = typeof duration === 'number' ? duration : 0;
 
 		try {
@@ -48,7 +74,12 @@ export class TimerCallbackGroup {
 		}
 	}
 
-	public async once(duration?: number | null): Promise<void> {
+	public async executeAll(duration?: number | null): Promise<void> {
+		await this.executeOnce(duration);
+		await this.executeAlways(duration);
+	}
+
+	public async executeOnce(duration?: number | null): Promise<void> {
 		for (let i = this._once.length - 1; i >= 0; i--) {
 			const item = this._once[i];
 			await this.invoke(item, duration);
@@ -58,7 +89,7 @@ export class TimerCallbackGroup {
 		}
 	}
 
-	public async always(duration?: number | null): Promise<void> {
+	public async executeAlways(duration?: number | null): Promise<void> {
 		for (const item of this._always) {
 			await this.invoke(item, duration);
 		}

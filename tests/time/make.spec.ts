@@ -9,7 +9,23 @@ import {timeUnitLabels} from '../../src/time/unit/labels';
 
 const TIME_UNITS: TimeUnit[] = ['s', 'm', 'mo', 'd', 'y', 'w', 'ms', 'μs'];
 
-const AS_METHODS = [
+interface TimeGroup {
+	name: keyof Time;
+	unit: TimeUnit;
+}
+
+type TimeMethodName = {[K in keyof Time]: Time[K] extends (...args: any[]) => any ? K : never}[keyof Time];
+type TimeAsMethodName = {[K in keyof Time]: Time[K] extends () => number | null ? K : never}[keyof Time];
+type TimeToMethodName = {[K in keyof Time]: K extends `to${string}` ? K : never}[keyof Time];
+type TimeMathMethodName = {
+	[K in keyof Time]: K extends `add${string}` | `sub${string}`
+		? Time[K] extends (value?: Time | number | null) => Time
+			? K
+			: never
+		: never;
+}[keyof Time];
+
+const AS_METHODS: {name: TimeAsMethodName; unit: TimeUnit}[] = [
 	{name: 'asMilliseconds', unit: 'ms'},
 	{name: 'asMicroseconds', unit: 'μs'},
 	{name: 'asSeconds', unit: 's'},
@@ -21,7 +37,7 @@ const AS_METHODS = [
 	{name: 'asWeeks', unit: 'w'}
 ];
 
-const TO_METHODS = [
+const TO_METHODS: {name: TimeToMethodName; unit: TimeUnit}[] = [
 	{name: 'toMilliseconds', unit: 'ms'},
 	{name: 'toMicroseconds', unit: 'μs'},
 	{name: 'toSeconds', unit: 's'},
@@ -33,7 +49,7 @@ const TO_METHODS = [
 	{name: 'toWeeks', unit: 'w'}
 ];
 
-const MATH_METHODS: {name: string; unit: TimeUnit; label: string; op: 'add' | 'sub'}[] = [
+const MATH_METHODS: {name: TimeMathMethodName; unit: TimeUnit; label: string; op: 'add' | 'sub'}[] = [
 	{name: 'addDays', unit: 'd', label: 'days', op: 'add'},
 	{name: 'addHours', unit: 'h', label: 'hours', op: 'add'},
 	{name: 'addMicroseconds', unit: 'μs', label: 'microseconds', op: 'add'},
@@ -101,7 +117,7 @@ describe('timeMake', () => {
 
 	describe('Time interface', () => {
 		describe('Methods', () => {
-			for (const timeMethod of timeMethods) {
+			for (const timeMethod of timeMethods as TimeMethodName[]) {
 				describe(timeMethod, () => {
 					it(`should return instance implementing method '${timeMethod}'`, () => {
 						expect(instance[timeMethod]).not.toBeUndefined();
