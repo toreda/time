@@ -1,5 +1,5 @@
 import {Defaults} from '../defaults';
-import {Log} from '@toreda/log';
+import type {LogLike} from '../log/like';
 import type {Time} from '../time';
 import {TimeData} from './data';
 import type {TimeUnit} from './unit';
@@ -22,9 +22,8 @@ import {timeNow} from './now';
  *
  * @category Factories
  */
-export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
+export function timeMake(units: TimeUnit, initial: number, log?: LogLike): Time {
 	const data = new TimeData(units, initial, log);
-	const fnLog = data.log.makeLog('timeMake');
 
 	const o = Object.assign(
 		(setTo?: number | Time | null): number => {
@@ -48,7 +47,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 				}
 
 				if (!timeCheckType(time)) {
-					fnLog.error('time arg is not a valid number or Time object.');
+					data.log.error(`timeMake.add:`, `time arg is not a valid number or Time object.`);
 					return o;
 				}
 
@@ -68,7 +67,7 @@ export function timeMake(units: TimeUnit, initial: number, log?: Log): Time {
 				}
 
 				if (!timeCheckType(time)) {
-					fnLog.error(`time arg is not a valid number or Time object.`);
+					data.log.error(`timeMake.sub:`, `time arg is not a valid number or Time object.`);
 					return o;
 				}
 

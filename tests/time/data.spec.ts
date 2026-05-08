@@ -1,11 +1,9 @@
-import {Log} from '@toreda/log';
 import {Time} from '../../src/time';
 import {TimeConstants} from '../../src/time/constants';
 import {TimeData} from '../../src/time/data';
 import {timeMake} from '../../src/time/make';
 import {timeNow} from '../../src/time/now';
 import {timeUnitKeys} from '../_data/units';
-import {typeMatch} from '@toreda/strong-types';
 
 describe('TimeData', () => {
 	let instance: TimeData;
@@ -28,19 +26,31 @@ describe('TimeData', () => {
 			});
 		}
 
-		it(`should create a new log instance when log arg is undefined`, () => {
+		it(`should fall back to console when log arg is undefined`, () => {
 			const custom = new TimeData('s', 0, undefined);
-			expect(typeMatch(custom.log, Log)).toBe(true);
+			expect(custom.log).toBe(console);
 		});
 
-		it(`should create a new log instance when log arg is null`, () => {
+		it(`should fall back to console when log arg is null`, () => {
 			const custom = new TimeData('s', 0, null);
-			expect(typeMatch(custom.log, Log)).toBe(true);
+			expect(custom.log).toBe(console);
 		});
 
-		it(`should create a new log instance when log arg is truthy, but not a log instance`, () => {
+		it(`should fall back to console when log arg is truthy but does not satisfy LogLike`, () => {
 			const custom = new TimeData('s', 0, time as any);
-			expect(typeMatch(custom.log, Log)).toBe(true);
+			expect(custom.log).toBe(console);
+		});
+
+		it(`should use the provided log when it satisfies LogLike`, () => {
+			const customLog = {
+				error: jest.fn(),
+				warn: jest.fn(),
+				info: jest.fn(),
+				debug: jest.fn(),
+				trace: jest.fn()
+			};
+			const custom = new TimeData('s', 0, customLog);
+			expect(custom.log).toBe(customLog);
 		});
 	});
 
