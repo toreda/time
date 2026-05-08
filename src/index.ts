@@ -1,5 +1,7 @@
 export {days} from './days';
 export {Defaults} from './defaults';
+export {hours} from './hours';
+export {LogLike, logLike} from './log/like';
 export {microseconds} from './microseconds';
 export {milliseconds} from './milliseconds';
 export {minutes} from './minutes';
@@ -20,7 +22,8 @@ export {timeNowOffset} from './time/now/offset';
 export {Timer} from './timer';
 export {TimerActive} from './timer/active';
 export {TimerCallback} from './timer/callback';
-export {TimerCallbackGroup} from './timer/callback/group';
+export {TimerCallbackFn, TimerCallbackGroup, TimerCallbackKind} from './timer/callback/group';
+export {timerCallbackGroupIdNext} from './timer/callback/group/id';
 export {TimerCallbackSync} from './timer/callback/sync';
 export {TimerEventId} from './timer/event/id';
 export {TimerOptions} from './timer/options';
