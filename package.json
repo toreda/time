@@ -2,8 +2,22 @@
 	"name": "@toreda/time",
 	"version": "0.2.0",
 	"description": "Simple, small footprint library for common time operations and converting between units of time. ",
-	"main": "./dist/index",
-	"typings": "./dist/index.d.ts",
+	"main": "./dist/cjs/index.js",
+	"module": "./dist/esm/index.js",
+	"typings": "./dist/cjs/index.d.ts",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/esm/index.d.ts",
+				"default": "./dist/esm/index.js"
+			},
+			"require": {
+				"types": "./dist/cjs/index.d.ts",
+				"default": "./dist/cjs/index.js"
+			}
+		},
+		"./package.json": "./package.json"
+	},
 	"sideEffects": false,
 	"directories": {
 		"test": "tests"
@@ -46,22 +60,10 @@
 		"marked": "^4.0.10",
 		"postcss": "^8.2.13"
 	},
-	"pnpm": {
-		"overrides": {
-			"jest": "^30.3.0",
-			"jest-cli": "^30.3.0",
-			"jest-runtime": "^30.3.0",
-			"jest-config": "^30.3.0",
-			"@jest/core": "^30.3.0",
-			"@jest/types": "^30.3.0",
-			"@jest/transform": "^30.3.0",
-			"@jest/environment": "^30.3.0",
-			"@jest/globals": "^30.3.0"
-		}
-	},
 	"prettier": "@toreda/prettier-config",
 	"homepage": "https://github.com/toreda/time#readme",
 	"devDependencies": {
+		"@jest/types": "^30.3.0",
 		"@swc/core": "^1.15.33",
 		"@swc/jest": "^0.2.39",
 		"@toreda/build-tools": "^0.8.0",

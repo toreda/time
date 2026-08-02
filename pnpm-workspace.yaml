@@ -1,2 +1,20 @@
+allowBuilds:
+  '@swc/core': true
+  es5-ext: true
+  unrs-resolver: true
 onlyBuiltDependencies:
   - '@swc/core'
+overrides:
+  glob-parent: ^5.1.2
+  nanoid: ^3.1.31
+  marked: ^4.0.10
+  postcss: ^8.2.13
+  jest: ^30.3.0
+  jest-cli: ^30.3.0
+  jest-runtime: ^30.3.0
+  jest-config: ^30.3.0
+  '@jest/core': ^30.3.0
+  '@jest/types': ^30.3.0
+  '@jest/transform': ^30.3.0
+  '@jest/environment': ^30.3.0
+  '@jest/globals': ^30.3.0
