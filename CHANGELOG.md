@@ -7,18 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+[0.3.1] - 2026-08-21
+
+* Scrubbed unicode characters from comments and misc files that might be incidentally included in bundle.
 
 [0.3.0] - 2026-08-21
 
 ### Breaking Changes
-* All time unit references to `μs` changed to `us` to fix a possible exception when bundled for browser use and included under certain charsets.
+* The microseconds unit abbreviation changed from the Unicode mu form to the ASCII `us` to fix a possible exception when bundled for browser use and included under certain charsets. The old spelling is no longer accepted as a unit or alias; use `us`, `microsecond`, or `microseconds`.
 
 [0.2.0] - 2026-05-08
 
 ### Added
 * `TimeUtils` class exported from the package root, providing static helpers `canConvert`, `withinSafeRange`, `resolveDecimals`, and `roundToDecimals`.
 * All time functions that accepted `value: number` & similar now also accept a wide range of `string` time values.
-* `timeValueParse(value, units)` — parses duration values (numbers, numeric strings, simple suffix like `'5m'`, `'-1.5h'`, and compound suffix like `'1h30m'`, `'2d4h30m'`) into a number expressed in the target unit. Compound forms must use canonical units in descending order (`y > mo > w > d > h > m > s > ms > μs`) with no repeats and no whitespace; sign applies to the whole expression. Date-like strings are rejected — use `timeValueParseDate` instead.
+* `timeValueParse(value, units)` — parses duration values (numbers, numeric strings, simple suffix like `'5m'`, `'-1.5h'`, and compound suffix like `'1h30m'`, `'2d4h30m'`) into a number expressed in the target unit. Compound forms must use canonical units in descending order (`y > mo > w > d > h > m > s > ms > us`) with no repeats and no whitespace; sign applies to the whole expression. Date-like strings are rejected — use `timeValueParseDate` instead.
 * `timeValueParseDate(value, units)` — parses timestamp values via `Date.parse`. Numeric input is treated as already a timestamp in the target unit; pre-epoch results return `null`.
 * `timeFromDate(input, units?, log?)` — factory that builds a `Time` from a date string or numeric timestamp. Defaults to `'s'`.
 * `timeUnitValue(fallback, ...values)` — returns the first value that is a valid canonical `TimeUnit`, or `fallback` when none match.
@@ -52,6 +55,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed `postcss` package from dependencies. It is not directly used in project but is used by dev packages.
 * Ran `yarn upgrade` on project.
 
+[0.3.1]: https://github.com/toreda/time/compare/v0.3.0...v0.3.1
+[0.3.0]: https://github.com/toreda/time/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/toreda/time/releases/compare/v0.1.5...v0.2.0 
 [0.1.5]: https://github.com/toreda/time/releases/compare/v0.0.0...v0.1.5 
-[unreleased]: https://github.com/toreda/time/compare/v0.2.0...HEAD
+[unreleased]: https://github.com/toreda/time/compare/v0.3.0...HEAD

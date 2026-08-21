@@ -1,6 +1,6 @@
 {
 	"name": "@toreda/time",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "Zero-dependency time math for TypeScript & JavaScript. Convert between time units from microseconds to years, parse duration and date strings, and compute time since, until, and now. Ships dual ESM + CJS builds.",
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",
