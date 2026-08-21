@@ -57,7 +57,7 @@ describe('timeUnitFromAlias', () => {
 		expect(timeUnitFromAlias('d')).toBe('d');
 	});
 
-	it(`should pass canonical 'μs' through unchanged`, () => {
-		expect(timeUnitFromAlias('μs')).toBe('μs');
+	it(`should pass canonical 'us' through unchanged`, () => {
+		expect(timeUnitFromAlias('us')).toBe('us');
 	});
 });

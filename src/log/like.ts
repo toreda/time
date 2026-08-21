@@ -10,7 +10,7 @@
  * Methods take any arguments and the return value is ignored. Implementations
  * that return a Promise (e.g. `@toreda/log`) are accepted because their return
  * type is assignable to `void`; fire-and-forget is the only supported usage
- * inside this package — callers must not await results.
+ * inside this package - callers must not await results.
  *
  * Note: `log(level, ...args)` is intentionally excluded. The signatures of
  * `console.log` (message-first) and `Log.log` (level-first) conflict, so a

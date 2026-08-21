@@ -3,7 +3,7 @@ import {timeUnits} from '../units';
 
 /**
  * Type guard: returns `true` only when `unit` is a canonical `TimeUnit`.
- * Aliases (e.g. `'day'`, `'sec'`) are rejected — use `timeUnitFromAlias`
+ * Aliases (e.g. `'day'`, `'sec'`) are rejected - use `timeUnitFromAlias`
  * to resolve aliases to canonical values first.
  *
  * @param unit		Value to validate as a canonical time unit.

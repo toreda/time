@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+[0.3.0] - 2026-08-21
+
+### Breaking Changes
+* All time unit references to `μs` changed to `us` to fix a possible exception when bundled for browser use and included under certain charsets.
+
 [0.2.0] - 2026-05-08
 
 ### Added

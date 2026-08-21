@@ -6,7 +6,7 @@ import {timeConvert} from '../convert';
  * Parse a timestamp value into a number expressed in `units`. Accepts:
  *   - finite numbers (treated as **already** a timestamp in `units`; not
  *     re-interpreted as ms or seconds)
- *   - any string accepted by `Date.parse` (ISO 8601, RFC 2822, etc.) —
+ *   - any string accepted by `Date.parse` (ISO 8601, RFC 2822, etc.) -
  *     converted from ms to `units`
  *
  * Returns null for empty / whitespace-only strings, NaN/Infinity numeric

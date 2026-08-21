@@ -73,19 +73,19 @@ export const timeUnitLabels: Record<TimeUnit, TimeUnitLabel> = {
 			plural: 'wks'
 		}
 	},
-	μs: {
-		timeUnit: 'μs',
+	us: {
+		timeUnit: 'us',
 		full: {
 			singular: 'microsecond',
 			plural: 'microseconds'
 		},
 		short: {
-			singular: 'μs',
-			plural: 'μs'
+			singular: 'us',
+			plural: 'us'
 		}
 	},
 	s: {
-		timeUnit: 'μs',
+		timeUnit: 'us',
 		full: {
 			singular: 'second',
 			plural: 'seconds'
@@ -96,7 +96,7 @@ export const timeUnitLabels: Record<TimeUnit, TimeUnitLabel> = {
 		}
 	},
 	y: {
-		timeUnit: 'μs',
+		timeUnit: 'us',
 		full: {
 			singular: 'year',
 			plural: 'years'

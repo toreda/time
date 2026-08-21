@@ -9,7 +9,7 @@
 
 &nbsp;
 # `@toreda/time`
-Fast &amp; easy time math and time unit conversions.
+Zero-dependency time math for TypeScript & JavaScript. Convert between time units from microseconds to years, parse duration and date strings, and compute time since, until, and now. Ships dual ESM + CJS builds.
 
 &nbsp;
 

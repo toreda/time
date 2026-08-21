@@ -2,11 +2,11 @@ import type {TimeUnit} from '../unit';
 import {TimeUtils} from '../utils';
 import {timeConvert} from '../convert';
 
-const SUFFIX_RE = /(\d+(?:\.\d+)?)(μs|ms|mo|y|w|d|h|m|s)/g;
+const SUFFIX_RE = /(\d+(?:\.\d+)?)(us|ms|mo|y|w|d|h|m|s)/g;
 const PURE_NUMERIC_RE = /^[+-]?\d+(\.\d+)?$/;
 const DATE_LIKE_RE = /[-/:T]/;
 
-const UNIT_ORDER: TimeUnit[] = ['y', 'mo', 'w', 'd', 'h', 'm', 's', 'ms', 'μs'];
+const UNIT_ORDER: TimeUnit[] = ['y', 'mo', 'w', 'd', 'h', 'm', 's', 'ms', 'us'];
 const UNIT_RANK: Record<TimeUnit, number> = UNIT_ORDER.reduce(
 	(acc, u, i) => {
 		acc[u] = i;
@@ -18,14 +18,14 @@ const UNIT_RANK: Record<TimeUnit, number> = UNIT_ORDER.reduce(
 /**
  * Parse a duration value into a number expressed in `units`. Accepts:
  *   - finite numbers (returned as-is when in safe range)
- *   - pure numeric strings ('5', '-1.5', '+30') — interpreted as a duration in `units`
- *   - simple suffix form ('5m', '-1.5h', '+30s') — converted to `units`
- *   - compound suffix form ('1h30m', '2d4h30m') — components must be in
+ *   - pure numeric strings ('5', '-1.5', '+30') - interpreted as a duration in `units`
+ *   - simple suffix form ('5m', '-1.5h', '+30s') - converted to `units`
+ *   - compound suffix form ('1h30m', '2d4h30m') - components must be in
  *     descending unit order with no repeats and no whitespace; sign applies
  *     to the whole expression, not per component
  *
  * Returns null for empty / whitespace-only strings, NaN/Infinity, date-like
- * strings (those containing '-', '/', ':', or 'T' — use `timeValueParseDate`
+ * strings (those containing '-', '/', ':', or 'T' - use `timeValueParseDate`
  * for those), unit aliases like '5min', and any result outside the safe
  * integer range.
  *

@@ -10,5 +10,5 @@ import {timeMake} from './time/make';
  * @category Time Conversions
  */
 export function microseconds(initial: number | string, log?: LogLike): Time {
-	return timeMake('μs', initial, log);
+	return timeMake('us', initial, log);
 }

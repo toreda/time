@@ -162,7 +162,7 @@ export function timeMake(units: TimeUnit, initial: number | string, log?: LogLik
 			 * @returns
 			 */
 			asMicroseconds: (): number | null => {
-				return timeConvert(data.units(), 'μs', data.get());
+				return timeConvert(data.units(), 'us', data.get());
 			},
 			/**
 			 * Copy and convert current time value from the instance unit type
@@ -243,9 +243,9 @@ export function timeMake(units: TimeUnit, initial: number | string, log?: LogLik
 			 * @returns
 			 */
 			addMicroseconds(value?: Time | number | null): Time {
-				const unitValue = data.getUnitValue('μs', value);
+				const unitValue = data.getUnitValue('us', value);
 
-				return data.addUnit(o, 'μs', unitValue, Defaults.Math.Precision.Microseconds);
+				return data.addUnit(o, 'us', unitValue, Defaults.Math.Precision.Microseconds);
 			},
 			/**
 			 * Converts provided value from milliseconds to instance's unit type
@@ -342,9 +342,9 @@ export function timeMake(units: TimeUnit, initial: number | string, log?: LogLik
 			 * @returns
 			 */
 			subMicroseconds(value?: Time | number | null): Time {
-				const unitValue = data.getUnitValue('μs', value);
+				const unitValue = data.getUnitValue('us', value);
 
-				return data.subUnit(o, 'μs', unitValue, Defaults.Math.Precision.Microseconds);
+				return data.subUnit(o, 'us', unitValue, Defaults.Math.Precision.Microseconds);
 			},
 			/**
 			 * Converts provided value from milliseconds to instance's unit type
@@ -495,7 +495,7 @@ export function timeMake(units: TimeUnit, initial: number | string, log?: LogLik
 			 * @returns
 			 */
 			toMicroseconds(): Time {
-				return data.setUnits(o, 'μs');
+				return data.setUnits(o, 'us');
 			},
 			type: 'Time' as const
 		}

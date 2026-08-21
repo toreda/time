@@ -186,9 +186,9 @@ describe('Time Object functions', () => {
 	});
 
 	describe('microseconds', () => {
-		it(`should make time object with unit type 'μs'`, () => {
+		it(`should make time object with unit type 'us'`, () => {
 			const o = microseconds(0);
-			expect(o.units()).toBe('μs');
+			expect(o.units()).toBe('us');
 		});
 
 		it(`should initialize value to 0 when initial arg is 0`, () => {

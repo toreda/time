@@ -1,7 +1,7 @@
 import {timeUnitSupported} from '../../../src/time/unit/supported';
 
 const EMPTY_STRING = '';
-const canonicalUnits = ['μs', 'ms', 's', 'm', 'h', 'd', 'w', 'mo', 'y'];
+const canonicalUnits = ['us', 'ms', 's', 'm', 'h', 'd', 'w', 'mo', 'y'];
 const aliases = ['day', 'sec', 'minute', 'hour', 'week', 'month', 'year', 'wk', 'wks', 'hr'];
 
 describe('timeUnitSupported', () => {

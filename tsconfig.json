@@ -15,7 +15,7 @@
 		"noImplicitUseStrict": false,
 		"outDir": "./dist/cjs",
 		"preserveConstEnums": true,
-		"removeComments": false,
+		"removeComments": true,
 		"resolveJsonModule": true,
 		"rootDir": ".",
 		"sourceMap": true,

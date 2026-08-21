@@ -3,6 +3,7 @@ import {series, src} from 'gulp';
 
 import {Build} from '@toreda/build-tools';
 import {EventEmitter} from 'events';
+import {execFile} from 'child_process';
 import {promises as fs} from 'fs';
 import path from 'path';
 
@@ -40,6 +41,31 @@ function buildCjs(): Promise<NodeJS.ReadWriteStream> {
 
 function buildEsm(): Promise<NodeJS.ReadWriteStream> {
 	return build.run.typescript('./dist/esm', 'tsconfig.esm.json');
+}
+
+function runTsc(args: string[]): Promise<void> {
+	const tscPath = path.join(path.dirname(require.resolve('typescript')), 'tsc.js');
+
+	return new Promise((resolve, reject) => {
+		execFile(process.execPath, [tscPath, ...args], (err, stdout, stderr) => {
+			if (err) {
+				log.error(`tsc failed:\n${stdout}${stderr}`);
+				return reject(err);
+			}
+
+			resolve();
+		});
+	});
+}
+
+/**
+ * The main compile strips comments from all output. Re-emit declarations
+ * with comments intact so consumers keep JSDoc hover docs - .d.ts files
+ * never reach a runtime bundle, so charset-sensitive bytes are fine there.
+ */
+async function buildTypes(): Promise<void> {
+	await runTsc(['-p', 'tsconfig.types.json', '--outDir', './dist/esm']);
+	await runTsc(['-p', 'tsconfig.types.json', '--outDir', './dist/cjs']);
 }
 
 /**
@@ -109,4 +135,4 @@ async function finalizeDist(): Promise<void> {
 	await fs.writeFile(path.resolve('./dist/cjs/package.json'), JSON.stringify({type: 'commonjs'}, null, '\t'));
 }
 
-exports.default = series(createDist, cleanDist, runLint, buildCjs, buildEsm, finalizeDist);
+exports.default = series(createDist, cleanDist, runLint, buildCjs, buildEsm, buildTypes, finalizeDist);

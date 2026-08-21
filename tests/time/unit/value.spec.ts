@@ -1,7 +1,7 @@
 import {timeUnitValue} from '../../../src/time/unit/value';
 
 const EMPTY_STRING = '';
-const canonicalUnits = ['μs', 'ms', 's', 'm', 'h', 'd', 'w', 'mo', 'y'] as const;
+const canonicalUnits = ['us', 'ms', 's', 'm', 'h', 'd', 'w', 'mo', 'y'] as const;
 const aliases = ['day', 'sec', 'minute', 'hour', 'week', 'month', 'year', 'wk', 'wks', 'hr'];
 
 describe('timeUnitValue', () => {
@@ -104,7 +104,7 @@ describe('timeUnitValue', () => {
 		});
 
 		it(`should preserve order with all canonical units in reverse`, () => {
-			expect(timeUnitValue('s', 'y', 'mo', 'w', 'd', 'h', 'm', 's', 'ms', 'μs')).toBe('y');
+			expect(timeUnitValue('s', 'y', 'mo', 'w', 'd', 'h', 'm', 's', 'ms', 'us')).toBe('y');
 		});
 	});
 

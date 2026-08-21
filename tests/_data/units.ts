@@ -1,3 +1,3 @@
 import type {TimeUnit} from '../../src/time/unit';
 
-export const timeUnitKeys: TimeUnit[] = ['s', 'd', 'h', 'm', 'mo', 'ms', 'w', 'y', 'μs'];
+export const timeUnitKeys: TimeUnit[] = ['s', 'd', 'h', 'm', 'mo', 'ms', 'w', 'y', 'us'];

@@ -89,9 +89,9 @@ const CONVERT_TESTS = [
 			{from: 'h', to: 'ms', value: 1 * 3, result: TimeConstants.HOURS_TO_MILLISECONDS * 3},
 			{from: 'h', to: 'ms', value: 1, result: TimeConstants.HOURS_TO_MILLISECONDS},
 			{from: 'h', to: 'ms', value: 0.5, result: TimeConstants.HOURS_TO_MILLISECONDS / 2},
-			{from: 'h', to: 'μs', value: 1, result: TimeConstants.HOURS_TO_MICROSECONDS},
-			{from: 'h', to: 'μs', value: 2, result: TimeConstants.HOURS_TO_MICROSECONDS * 2},
-			{from: 'h', to: 'μs', value: 0.5, result: TimeConstants.HOURS_TO_MICROSECONDS / 2},
+			{from: 'h', to: 'us', value: 1, result: TimeConstants.HOURS_TO_MICROSECONDS},
+			{from: 'h', to: 'us', value: 2, result: TimeConstants.HOURS_TO_MICROSECONDS * 2},
+			{from: 'h', to: 'us', value: 0.5, result: TimeConstants.HOURS_TO_MICROSECONDS / 2},
 
 			{from: 'h', to: 'h', value: 1, result: 1},
 			{from: 'h', to: 'h', value: 2, result: 2},
@@ -230,9 +230,9 @@ const CONVERT_TESTS = [
 			{from: 'w', to: 'd', value: 2, result: TimeConstants.WEEKS_TO_DAYS * 2},
 			{from: 'w', to: 'd', value: 1, result: TimeConstants.WEEKS_TO_DAYS},
 			{from: 'w', to: 'd', value: 0.5, result: TimeConstants.WEEKS_TO_DAYS / 2},
-			{from: 'w', to: 'μs', value: 2, result: TimeConstants.WEEKS_TO_MICROSECONDS * 2},
-			{from: 'w', to: 'μs', value: 1, result: TimeConstants.WEEKS_TO_MICROSECONDS},
-			{from: 'w', to: 'μs', value: 0.5, result: TimeConstants.WEEKS_TO_MICROSECONDS / 2},
+			{from: 'w', to: 'us', value: 2, result: TimeConstants.WEEKS_TO_MICROSECONDS * 2},
+			{from: 'w', to: 'us', value: 1, result: TimeConstants.WEEKS_TO_MICROSECONDS},
+			{from: 'w', to: 'us', value: 0.5, result: TimeConstants.WEEKS_TO_MICROSECONDS / 2},
 
 			{from: 'w', to: 'w', value: 2, result: 2},
 			{from: 'w', to: 'w', value: 1, result: 1},
@@ -298,7 +298,7 @@ describe('timeConvert', () => {
 		});
 
 		it(`should return null when output value is not finite`, () => {
-			expect(timeConvert('μs', 'y', Number.POSITIVE_INFINITY)).toBeNull();
+			expect(timeConvert('us', 'y', Number.POSITIVE_INFINITY)).toBeNull();
 		});
 
 		let sectionId = 0;

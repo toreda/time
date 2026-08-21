@@ -1,7 +1,7 @@
 import {timeUnits} from '../../src/time/units';
 
 describe('timeUnits', () => {
-	const canonical = ['μs', 'ms', 's', 'm', 'h', 'd', 'w', 'mo', 'y'] as const;
+	const canonical = ['us', 'ms', 's', 'm', 'h', 'd', 'w', 'mo', 'y'] as const;
 
 	it('should be a Set instance', () => {
 		expect(timeUnits).toBeInstanceOf(Set);

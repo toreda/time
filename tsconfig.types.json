@@ -1,0 +1,11 @@
+{
+	"extends": "./tsconfig.esm.json",
+	"compilerOptions": {
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"removeComments": false,
+		"sourceMap": false,
+		"rootDir": "./src",
+		"outDir": "./dist/esm"
+	}
+}

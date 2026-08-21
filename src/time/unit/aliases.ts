@@ -44,7 +44,7 @@ export const timeUnitAliases = new Map<string, TimeUnit>([
 	['ms', 'ms'],
 	['milliseconds', 'ms'],
 	['millisecond', 'ms'],
-	['microsecond', 'μs'],
-	['microseconds', 'μs'],
-	['μs', 'μs']
+	['microsecond', 'us'],
+	['microseconds', 'us'],
+	['us', 'us']
 ]);

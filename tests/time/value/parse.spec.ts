@@ -103,16 +103,16 @@ describe('timeValueParse', () => {
 			['5m', 'm', 5],
 			['5s', 's', 5],
 			['5ms', 'ms', 5],
-			['5μs', 'μs', 5]
+			['5us', 'us', 5]
 		] as const)(`should parse %s as 5 in target units when target matches`, (input, units, expected) => {
 			expect(timeValueParse(input, units)).toBe(expected);
 		});
 
-		it(`should convert simple form across units (1h → 60 minutes)`, () => {
+		it(`should convert simple form across units (1h -> 60 minutes)`, () => {
 			expect(timeValueParse('1h', 'm')).toBe(60);
 		});
 
-		it(`should convert simple form across units (1h → 3600 seconds)`, () => {
+		it(`should convert simple form across units (1h -> 3600 seconds)`, () => {
 			expect(timeValueParse('1h', 's')).toBe(3600);
 		});
 
@@ -174,12 +174,12 @@ describe('timeValueParse', () => {
 
 		it(`should return null when a single component overflows during conversion`, () => {
 			// 1e15 years to microseconds is far outside safe-integer range
-			expect(timeValueParse('1000000000000000y', 'μs')).toBeNull();
+			expect(timeValueParse('1000000000000000y', 'us')).toBeNull();
 		});
 
 		it(`should return null when summed components exceed safe range`, () => {
-			// Each component fits but the sum to μs blows past MAX_SAFE_INTEGER
-			expect(timeValueParse('1000000y1000000mo', 'μs')).toBeNull();
+			// Each component fits but the sum to us blows past MAX_SAFE_INTEGER
+			expect(timeValueParse('1000000y1000000mo', 'us')).toBeNull();
 		});
 	});
 
@@ -209,7 +209,7 @@ describe('timeValueParse', () => {
 		});
 
 		it(`should reject same-rank components in different order`, () => {
-			// w (rank 2) before mo (rank 1) — descending broken
+			// w (rank 2) before mo (rank 1) - descending broken
 			expect(timeValueParse('1w1mo', 'd')).toBeNull();
 		});
 
@@ -248,8 +248,8 @@ describe('timeValueParse', () => {
 
 	describe('unit ordering across the full canonical set', () => {
 		it(`should accept full canonical descending sequence`, () => {
-			// 1y 1mo 1w 1d 1h 1m 1s 1ms 1μs — all distinct, descending
-			const result = timeValueParse('1y1mo1w1d1h1m1s1ms1μs', 'μs');
+			// 1y 1mo 1w 1d 1h 1m 1s 1ms 1us - all distinct, descending
+			const result = timeValueParse('1y1mo1w1d1h1m1s1ms1us', 'us');
 			expect(result).not.toBeNull();
 			expect(typeof result).toBe('number');
 		});

@@ -7,7 +7,7 @@ import {timeMake} from '../../src/time/make';
 import {timeMethods} from '../../src/time/methods';
 import {timeUnitLabels} from '../../src/time/unit/labels';
 
-const TIME_UNITS: TimeUnit[] = ['s', 'm', 'mo', 'd', 'y', 'w', 'ms', 'μs'];
+const TIME_UNITS: TimeUnit[] = ['s', 'm', 'mo', 'd', 'y', 'w', 'ms', 'us'];
 
 interface TimeGroup {
 	name: keyof Time;
@@ -27,7 +27,7 @@ type TimeMathMethodName = {
 
 const AS_METHODS: {name: TimeAsMethodName; unit: TimeUnit}[] = [
 	{name: 'asMilliseconds', unit: 'ms'},
-	{name: 'asMicroseconds', unit: 'μs'},
+	{name: 'asMicroseconds', unit: 'us'},
 	{name: 'asSeconds', unit: 's'},
 	{name: 'asMinutes', unit: 'm'},
 	{name: 'asHours', unit: 'h'},
@@ -39,7 +39,7 @@ const AS_METHODS: {name: TimeAsMethodName; unit: TimeUnit}[] = [
 
 const TO_METHODS: {name: TimeToMethodName; unit: TimeUnit}[] = [
 	{name: 'toMilliseconds', unit: 'ms'},
-	{name: 'toMicroseconds', unit: 'μs'},
+	{name: 'toMicroseconds', unit: 'us'},
 	{name: 'toSeconds', unit: 's'},
 	{name: 'toMinutes', unit: 'm'},
 	{name: 'toHours', unit: 'h'},
@@ -52,7 +52,7 @@ const TO_METHODS: {name: TimeToMethodName; unit: TimeUnit}[] = [
 const MATH_METHODS: {name: TimeMathMethodName; unit: TimeUnit; label: string; op: 'add' | 'sub'}[] = [
 	{name: 'addDays', unit: 'd', label: 'days', op: 'add'},
 	{name: 'addHours', unit: 'h', label: 'hours', op: 'add'},
-	{name: 'addMicroseconds', unit: 'μs', label: 'microseconds', op: 'add'},
+	{name: 'addMicroseconds', unit: 'us', label: 'microseconds', op: 'add'},
 	{name: 'addMilliseconds', unit: 'ms', label: 'milliseconds', op: 'add'},
 	{name: 'addMinutes', unit: 'm', label: 'minutes', op: 'add'},
 	{name: 'addMonths', unit: 'mo', label: 'months', op: 'add'},
@@ -61,7 +61,7 @@ const MATH_METHODS: {name: TimeMathMethodName; unit: TimeUnit; label: string; op
 	{name: 'addYears', unit: 'y', label: 'years', op: 'add'},
 	{name: 'subDays', unit: 'd', label: 'days', op: 'sub'},
 	{name: 'subHours', unit: 'h', label: 'hours', op: 'sub'},
-	{name: 'subMicroseconds', unit: 'μs', label: 'microseconds', op: 'sub'},
+	{name: 'subMicroseconds', unit: 'us', label: 'microseconds', op: 'sub'},
 	{name: 'subMilliseconds', unit: 'ms', label: 'milliseconds', op: 'sub'},
 	{name: 'subMinutes', unit: 'm', label: 'minutes', op: 'sub'},
 	{name: 'subMonths', unit: 'mo', label: 'months', op: 'sub'},
