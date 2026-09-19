@@ -197,7 +197,7 @@ console.log('is valid: ' + timeValid(undefined));
 
 
 ## Copyright
-Copyright &copy; 2019 - 2022 Toreda, Inc. All Rights Reserved.
+Copyright &copy; 2019 - 2026 Toreda, Inc. All Rights Reserved.
 
 
 ## Website

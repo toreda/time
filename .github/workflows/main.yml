@@ -19,7 +19,6 @@ jobs:
       - name: Install pnpm & Node.js ${{ matrix.node }}
         uses: pnpm/setup@v2
         with:
-          version: 12
           runtime: node@${{ matrix.node }}
           cache: true
           install: false
