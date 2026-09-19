@@ -12,14 +12,15 @@ overrides:
     '@jest/globals': ^30.4.1
     '@jest/transform': ^30.4.1
     '@jest/types': ^30.4.1
-    braces: '>=3.0.3'
     brace-expansion: '>=5.0.7'
+    braces: '>=3.0.3'
     browserslist: '>=4.28.7'
     decode-uri-component: '>=0.5.0'
     fast-uri: '>=3.1.5'
     glob-parent: ^5.1.2
     jest-cli: ^30.4.2
     jest-config: ^30.4.2
+    jest-runtime: ^30.4.2
     jest: ^30.4.2
     js-yaml: '>=4.3.1'
     lodash: '>=4.18.0'
@@ -28,6 +29,5 @@ overrides:
     nanoid: '>=3.3.16'
     postcss: '>=8.5.23'
     serialize-javascript: '>=7.0.5'
-    test-exclude>minimatch: ^3.1.2
+    test-exclude@6>minimatch: ^3.1.2
     webpack: '>=5.104.1'
-    jest-runtime: ^30.4.2
