@@ -1,7 +1,7 @@
 
 [![Toreda](https://content.toreda.com/logo/toreda-logo.png)](https://www.toreda.com)
 
-[![CI](https://img.shields.io/github/workflow/status/toreda/time/CI?style=for-the-badge)](https://github.com/toreda/time/actions) [![Coverage](https://img.shields.io/sonar/coverage/toreda_time?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge)](https://sonarcloud.io/project/activity?graph=coverage&id=toreda_time) [![Sonar Quality Gate](https://img.shields.io/sonar/quality_gate/toreda_time?server=https%3A%2F%2Fsonarcloud.io&style=for-the-badge)](https://sonarcloud.io/dashboard?id=toreda_time)
+[![CI](https://img.shields.io/github/actions/workflow/status/toreda/time/main.yml?branch=master&style=for-the-badge)](https://github.com/toreda/time/actions)
 
 [![GitHub package.json version (branch)](https://img.shields.io/github/package-json/v/toreda/time/master?style=for-the-badge)](https://github.com/toreda/time/releases/latest) [![GitHub Release Date](https://img.shields.io/github/release-date/toreda/time?style=for-the-badge)](https://github.com/toreda/time/releases/latest) [![GitHub issues](https://img.shields.io/github/issues/toreda/time?style=for-the-badge)](https://github.com/toreda/time/issues)
 

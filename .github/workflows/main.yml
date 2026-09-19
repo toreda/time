@@ -12,20 +12,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [20.x, 22.x]
+        node: [22, 24]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
+      - name: Install pnpm & Node.js ${{ matrix.node }}
+        uses: pnpm/setup@v2
         with:
-          version: 9
-
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node }}
-          cache: 'pnpm'
+          version: 12
+          runtime: node@${{ matrix.node }}
+          cache: true
+          install: false
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
